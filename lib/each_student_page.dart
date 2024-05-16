@@ -117,8 +117,9 @@ class _EachStudentPageState extends State<EachStudentPage> {
 
   getOneStudent() async {
     // var client = BrowserClient()..withCredentials = true;
+
     var url = Uri.parse(
-        '$ipv4/getOneStudent/${widget.schoolCode}/${Uri.encodeQueryComponent(widget.admNo)}');
+        '$ipv4/getOneStudent/${widget.schoolCode}/?admNo=${Uri.encodeQueryComponent(widget.admNo)}');
     var res = await http.get(url);
     print(res.body);
 
@@ -165,7 +166,7 @@ class _EachStudentPageState extends State<EachStudentPage> {
 
   getProfilePic() async {
     var url2 = Uri.parse(
-        '$ipv4/getProfilePicMid/${widget.schoolCode}/${widget.admNo}');
+        '$ipv4/getProfilePicMid/${widget.schoolCode}/?admNo=${Uri.encodeQueryComponent(widget.admNo)}');
     // var client = BrowserClient()..withCredentials = true;
     var response2 = await http.get(url2);
 
@@ -408,23 +409,18 @@ class _EachStudentPageState extends State<EachStudentPage> {
                                   });
                                 },
                               ),
-
-                            //  Text('sec'),
-
                             MidTextField(
-                              isEdit: isEdit,
+                              isEdit: false,
                               isValidted: true,
                               label: 'Admission No.',
                               controller: admNo,
                             ),
-
                             if (form['session'] == 'true')
                               MidTextField(
                                 isEdit: isEdit,
                                 label: 'Session',
                                 controller: session,
                               ),
-
                             if (form['gender'] == 'true')
                               MidDropDownWidget(
                                 isEdit: isEdit,
@@ -572,7 +568,6 @@ class _EachStudentPageState extends State<EachStudentPage> {
                                 label: 'School House',
                                 controller: schoolHouse,
                               ),
-
                             if (form['boardingType'] == 'true')
                               MidDropDownWidget(
                                   isEdit: isEdit,
@@ -584,7 +579,6 @@ class _EachStudentPageState extends State<EachStudentPage> {
                                     });
                                   },
                                   selected: boardingType),
-
                             if (form['transportMode'] == 'true')
                               MidDropDownWidget(
                                   isEdit: isEdit,
@@ -602,7 +596,6 @@ class _EachStudentPageState extends State<EachStudentPage> {
                                     });
                                   },
                                   selected: transportMode),
-
                             if (form['vehicleNo'] == 'true')
                               MidTextField(
                                   label: 'Vehicle No.',
@@ -900,7 +893,7 @@ class _ProfilePicViewState extends State<ProfilePicView> {
   late Future _getProfilePic;
   getProfilePic() async {
     var url2 = Uri.parse(
-        '$ipv4/getProfilePicMid/${widget.schoolCode}/${widget.admNo}');
+        '$ipv4/getProfilePicMid/${widget.schoolCode}/?admNo=${Uri.encodeQueryComponent(widget.admNo)}');
     // var client = BrowserClient()..withCredentials = true;
     var response2 = await http.get(url2);
 

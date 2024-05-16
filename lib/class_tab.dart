@@ -275,7 +275,7 @@ class _EachClassPageState extends State<EachClassPage> {
                                             .containsKey('profilePic')
                                     ? AssetImage('assets/images/logoImg.jpg')
                                     : NetworkImage(
-                                            "${Uri.parse('$ipv4/getProfilePicMid/${widget.schoolCode}/${students[index]['admNo']}')}")
+                                            "${Uri.parse('$ipv4/getProfilePicMid/${widget.schoolCode}/?admNo=${Uri.encodeQueryComponent(students[index]['admNo'])}')}")
                                         as ImageProvider,
                               ),
                               // FutureBuilder(
