@@ -102,6 +102,26 @@ class _AddTeacherPageState extends State<AddTeacherPage> {
             ),
           );
         }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red[600],
+              behavior: SnackBarBehavior.floating,
+              content: Row(
+                children: [
+                  Text(
+                    res.body,
+                  ),
+                  Icon(
+                    Icons.error,
+                    color: Colors.white,
+                  )
+                ],
+              ),
+            ),
+          );
+        }
       }
     }
   }

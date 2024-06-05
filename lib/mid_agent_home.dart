@@ -11,6 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'all_list.dart';
 import 'drawer.dart';
+import 'printed.dart';
+import 'printing.dart';
 import 'search_page.dart';
 import 'ip_address.dart';
 import 'add_menu.dart';
@@ -564,6 +566,40 @@ class _RightMenuState extends State<RightMenu> {
                                     callback: () => Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (context) => ReadyPrintPage(
+                                          schoolCode: widget.schoolCode,
+                                          user: widget.user,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  MidTile(
+                                    icon: Icons.restart_alt_rounded,
+                                    title: 'Printing',
+                                    color: Colors.green,
+                                    // count: (counts['staffReady'] +
+                                    //     counts['studentReady']),
+                                    callback: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => PrintingPage(
+                                          schoolCode: widget.schoolCode,
+                                          user: widget.user,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  MidTile(
+                                    icon: Icons.done_all_rounded,
+                                    title: 'Printed',
+                                    color: Colors.green,
+                                    // count: (counts['staffReady'] +
+                                    //     counts['studentReady']),
+                                    callback: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => PrintedPage(
                                           schoolCode: widget.schoolCode,
                                           user: widget.user,
                                         ),

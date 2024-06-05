@@ -19,7 +19,8 @@ class _SearchPageState extends State<SearchPage> {
   late Future _getStudents;
 
   getAllMidStudents(String term) async {
-    var url = Uri.parse('$ipv4/allForSearch/${widget.schoolCode}/$term');
+    var url = Uri.parse(
+        '$ipv4/allForSearch/${widget.schoolCode}/?term=${Uri.encodeQueryComponent(term)}');
 
     var res = await http.get(url);
 

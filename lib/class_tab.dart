@@ -241,13 +241,23 @@ class _EachClassPageState extends State<EachClassPage> {
                           bool value = true;
                           switch (widget.menuName) {
                             case 'print':
-                              value = students[index]['ready'];
+                              value = students[index]['ready'] ?? false;
                               break;
                             case 'unchecked':
-                              value = !students[index]['ready'];
+                              value = students[index]['ready'] == null
+                                  ? false
+                                  : !students[index]['ready'];
                               break;
                             case 'noPhoto':
                               value = students[index]['profilePic'] == '';
+                            case 'printing':
+                              value = students[index]['printed'] == null
+                                  ? false
+                                  : !students[index]['printed'];
+                              break;
+                            case 'printed':
+                              value = students[index]['printed'] ?? false;
+                              break;
                           }
 
                           if (value) {

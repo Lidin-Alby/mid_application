@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import 'package:intl/intl.dart';
+
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
 
 import 'ip_address.dart';
-import 'attendance_details.dart';
+import 'view_attendance.dart';
+import 'manual_attendance.dart';
 
 class AttendanceMid extends StatefulWidget {
   const AttendanceMid({super.key, required this.schoolCode});
@@ -78,26 +81,7 @@ class EachClassPage extends StatefulWidget {
 }
 
 class _EachClassPageState extends State<EachClassPage> {
-  late Future _getStudents;
-
-  getStudentsEachClass() async {
-    // var client = BrowserClient()..withCredentials = true;
-    var url = Uri.parse(
-        '$ipv4/eachClassMid/${widget.schoolCode}/${widget.classTitle}');
-    var res = await http.get(url);
-
-    print('done');
-    print(res.body);
-    List data = jsonDecode(res.body);
-
-    return data;
-  }
-
-  @override
-  void initState() {
-    _getStudents = getStudentsEachClass();
-    super.initState();
-  }
+  List students = [];
 
   @override
   Widget build(BuildContext context) {
@@ -109,47 +93,59 @@ class _EachClassPageState extends State<EachClassPage> {
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => QRScanner(
                         schoolCode: widget.schoolCode,
+                        classTitle: widget.classTitle,
                       ),
                     )),
                 icon: Icon(Icons.qr_code_scanner))
           ],
         ),
-        body: FutureBuilder(
-          future: _getStudents,
-          builder: (context, snapshot) {
-            List students = [];
-            if (snapshot.hasData) {
-              students = snapshot.data;
-              return ListView.builder(
-                itemCount: students.length,
-                itemBuilder: (context, index) => Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.account_circle,
-                      size: 40,
-                    ),
-                    title: Text(students[index]['fullName']),
-                    onTap: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => AttendanceDetails(
-                                schoolCode: widget.schoolCode,
-                                admNo: students[index]['admNo'],
-                              )),
-                    ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              FilledButton.tonalIcon(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => QRScanner(
+                    schoolCode: widget.schoolCode,
+                    classTitle: widget.classTitle,
                   ),
-                ),
-              );
-            } else {
-              return CircularProgressIndicator();
-            }
-          },
+                )),
+                label: Text('Mark Attendance'),
+                icon: Icon(Icons.task_alt_rounded),
+              ),
+              FilledButton.tonalIcon(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ManualAttendance(
+                      schoolCode: widget.schoolCode,
+                      classTitle: widget.classTitle),
+                )),
+                label: Text('Manual Attendance'),
+                icon: Icon(Icons.edit_square),
+              ),
+              FilledButton.tonalIcon(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ViewAttendance(
+                      schoolCode: widget.schoolCode,
+                      classTitle: widget.classTitle),
+                )),
+                label: Text('View Attendance'),
+                icon: Icon(Icons.view_list_rounded),
+              )
+            ],
+          ),
         ));
   }
 }
 
 class QRScanner extends StatefulWidget {
-  const QRScanner({super.key, required this.schoolCode});
+  const QRScanner({
+    super.key,
+    required this.schoolCode,
+    required this.classTitle,
+  });
   final String schoolCode;
+  final String classTitle;
 
   @override
   State<QRScanner> createState() => _QRScannerState();
@@ -159,77 +155,92 @@ class _QRScannerState extends State<QRScanner> {
   bool scanned = false;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  String _selectedDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
+  late Future _getClassAttendance;
+  List allStudents = [];
+  List students = [];
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      print(scanData.code);
-      if (scanned) {
-        return;
-      } else {
-        sendRequest(scanData.code);
-        // Navigator.of(context).pushReplacement(MaterialPageRoute(
-        //   builder: (context) => Scaffold(
-        //     appBar: AppBar(),
-        //     body: Text(
-        //       'Attendance Marked',
-        //       style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-        //     ),
-        //   ),
-        // ));
-      }
-      setState(() {
-        scanned = true;
-      });
+      {
+        // sendRequest(scanData.code);
+        // String info = '';
+        for (Map i in allStudents) {
+          // info = '';
+          if (i['admNo'] == scanData.code) {
+            i['status'] = 'present';
 
-      // Handle scanned data (QR code content)
-      // _handleDeepLink(scanData.code);
+            // if (!allStudents
+            //     .any((element) => element['admNo'] == scanData.code)) {
+            //   info = 'W';
+            // }
+
+            // if (info == 'W') {
+            //   message = 'Wrong QR Code';
+            // } else if (info == 'A') {
+            //   message = 'Already Marked';
+            // } else if (info == 'P') {
+            //   message = 'Attendance Marked';
+            // }
+
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     backgroundColor: info == 'W'
+            //         ? Colors.red[600]
+            //         : info == 'A'
+            //             ? Colors.yellow[900]
+            //             : Colors.green[600],
+            //     behavior: SnackBarBehavior.floating,
+            //     content: Row(
+            //       children: [
+            //         Text(
+            //           message,
+            //         ),
+            //         Icon(
+            //           info == 'true' ? Icons.check_circle : Icons.error,
+            //           color: Colors.white,
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // );
+            // info = '';
+
+            setState(() {
+              students = allStudents
+                  .where((element) => element['status'] == 'present')
+                  .toList();
+            });
+            break;
+          }
+        }
+      }
     });
   }
 
-  sendRequest(String? data) async {
-    // var client = BrowserClient()..withCredentials = true;
-    var url = Uri.parse('$ipv4/markMidAttendance');
-    var res = await http
-        .post(url, body: {'admNo': data, 'schoolCode': widget.schoolCode});
+  getClassDetailsMid() async {
+    var url = Uri.parse(
+        '$ipv4/getAttendanceClassMid/$_selectedDate/?scCode=${Uri.encodeQueryComponent(widget.schoolCode)}&classTitle=${Uri.encodeQueryComponent(widget.classTitle)}');
+    var res = await http.get(url);
     print(res.body);
-    String message = '';
-    if (res.body == 'W') {
-      message = 'Wrong QR Code';
-    } else if (res.body == 'A') {
-      message = 'Already Marked';
-    } else {
-      message = 'Attendance Marked';
-    }
-    if (mounted) {
-      Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: res.body == 'W'
-              ? Colors.red[600]
-              : res.body == 'A'
-                  ? Colors.yellow[900]
-                  : Colors.green[600],
-          behavior: SnackBarBehavior.floating,
-          content: Row(
-            children: [
-              Text(
-                message,
-              ),
-              Icon(
-                res.body == 'true' ? Icons.check_circle : Icons.error,
-                color: Colors.white,
-              )
-            ],
-          ),
-        ),
-      );
-    }
+    return jsonDecode(res.body);
+  }
+
+  saveAttendance() async {
+    // var client = BrowserClient()..withCredentials = true;
+    var url = Uri.parse('$ipv4/saveClassAttendanceMid');
+    var res = await http.post(url, body: {
+      'students': jsonEncode(students),
+      'date': _selectedDate,
+      'schoolCode': widget.schoolCode
+    });
+    print(res.body);
   }
 
   @override
   void initState() {
-    // encrpt();
+    _getClassAttendance = getClassDetailsMid();
     super.initState();
   }
 
@@ -240,40 +251,136 @@ class _QRScannerState extends State<QRScanner> {
     super.dispose();
   }
 
-  // encrpt() {
-  //   final String plain = 'hello';
-  //   final key = enpt.Key.fromUtf8('qwertyuioplkjhgfdsazxcvbnmpoiuyt');
-  //   final iv = enpt.IV.fromLength(16);
-  //   final encrypter = enpt.Encrypter(enpt.AES(key));
-  //   final encrypted = encrypter.encrypt(plain, iv: iv);
-  //   final decrypted = encrypter.decrypt(encrypted, iv: iv);
-
-  //   print(decrypted); // Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  //   print(encrypted.base64);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Attendance'),
       ),
-      body: Center(
-        child: SizedBox(
-          width: 700,
-          height: 400,
-          child: QRView(
-            key: qrKey,
-            onQRViewCreated: _onQRViewCreated,
-            cameraFacing: CameraFacing.front,
-            overlay: QrScannerOverlayShape(
-                borderColor: Colors.red,
-                borderRadius: 10,
-                borderLength: 30,
-                borderWidth: 10,
-                cutOutSize: 300),
-          ),
-        ),
+      body: FutureBuilder(
+        future: _getClassAttendance,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            allStudents = snapshot.data;
+            students = allStudents
+                .where((element) => element['status'] == 'present')
+                .toList();
+            int presentCount = students
+                .where((element) => element['status'] == 'present')
+                .length;
+            return Stack(
+              children: [
+                Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      color: Theme.of(context).colorScheme.secondaryContainer,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'Students: ${snapshot.data.length}',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary),
+                          ),
+                          Text(
+                            'Present: $presentCount',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green[600]),
+                          ),
+                          Text(
+                            'Absent: ${snapshot.data.length - presentCount}',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                        ],
+                      ),
+                    ),
+                    FilledButton.icon(
+                      icon: Icon(Icons.edit_calendar_outlined),
+                      onPressed: () async {
+                        DateTime? datetime = await showDatePicker(
+                            context: context,
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime.now());
+                        setState(() {
+                          _selectedDate =
+                              DateFormat('dd-MM-yyyy').format(datetime!);
+                          _getClassAttendance = getClassDetailsMid();
+                        });
+                      },
+                      label: Text(_selectedDate),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: 700,
+                      height: 300,
+                      child: QRView(
+                        key: qrKey,
+                        onQRViewCreated: _onQRViewCreated,
+                        cameraFacing: CameraFacing.back,
+                        overlay: QrScannerOverlayShape(
+                            borderColor: Colors.red,
+                            borderRadius: 10,
+                            borderLength: 30,
+                            borderWidth: 10,
+                            cutOutSize: 250),
+                      ),
+                    ),
+                    // FilterChip(
+                    //   label: Text('Present'),
+                    //   onSelected: (value) {},
+                    // ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: students.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: EdgeInsets.only(
+                              bottom: index == students.length - 1 ? 50 : 0),
+                          child: Card(
+                            color: students[index]['status'] == 'present'
+                                ? Colors.green[100]
+                                : Colors.red[200],
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 8),
+                              child: Text(students[index]['fullName']),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    FilledButton(
+                      onPressed: saveAttendance,
+                      child: Text('Submit'),
+                      style: FilledButton.styleFrom(
+                        shape: LinearBorder(),
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
       ),
     );
   }

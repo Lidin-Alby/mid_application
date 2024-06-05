@@ -68,9 +68,28 @@ class _StaffTabState extends State<StaffTab> {
                 return ListView.builder(
                   itemCount: staffs.length,
                   itemBuilder: (context, index) {
-                    if (widget.menuName == 'print'
-                        ? staffs[index]['ready']
-                        : !staffs[index]['ready']) {
+                    bool value = true;
+                    switch (widget.menuName) {
+                      case 'print':
+                        value = staffs[index]['ready'] ?? false;
+                        break;
+                      case 'unchecked':
+                        value = staffs[index]['ready'] == null
+                            ? false
+                            : !staffs[index]['ready'];
+                        break;
+                      case 'noPhoto':
+                        value = staffs[index]['profilePic'] == '';
+                      case 'printing':
+                        value = staffs[index]['printed'] == null
+                            ? false
+                            : !staffs[index]['printed'];
+                        break;
+                      case 'printed':
+                        value = staffs[index]['printed'] ?? false;
+                        break;
+                    }
+                    if (value) {
                       return Card(
                         child: ListTile(
                           title: Text(staffs[index]['fullName']),

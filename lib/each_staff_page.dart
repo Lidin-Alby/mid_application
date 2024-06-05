@@ -582,29 +582,29 @@ class _EachStaffPageState extends State<EachStaffPage> {
                                                 'schoolCode': widget.schoolCode
                                               });
                                               if (res.body == 'true') {
-                                                if (mounted) {
-                                                  Navigator.of(context).pop();
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      backgroundColor:
-                                                          Colors.red[600],
-                                                      behavior: SnackBarBehavior
-                                                          .floating,
-                                                      content: const Row(
-                                                        children: [
-                                                          Text(
-                                                            'Deleted Sucessfully',
-                                                          ),
-                                                          Icon(
-                                                            Icons.check_circle,
-                                                            color: Colors.white,
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
+                                                // Navigator.of(context).pop();
+
+                                                // ScaffoldMessenger.of(context)
+                                                //     .showSnackBar(
+                                                //   SnackBar(
+                                                //     backgroundColor:
+                                                //         Colors.red[600],
+                                                //     behavior: SnackBarBehavior
+                                                //         .floating,
+                                                //     content: const Row(
+                                                //       children: [
+                                                //         Text(
+                                                //           'Deleted Sucessfully',
+                                                //         ),
+                                                //         Icon(
+                                                //           Icons.check_circle,
+                                                //           color: Colors.white,
+                                                //         )
+                                                //       ],
+                                                //     ),
+                                                //   ),
+                                                // );
+
                                                 widget.listRefresh();
                                               }
                                             },

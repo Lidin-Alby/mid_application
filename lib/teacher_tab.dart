@@ -75,9 +75,28 @@ class _TeacherTabState extends State<TeacherTab> {
                 return ListView.builder(
                     itemCount: teachers.length,
                     itemBuilder: (context, index) {
-                      if (widget.menuName == 'print'
-                          ? teachers[index]['ready']
-                          : !teachers[index]['ready']) {
+                      bool value = true;
+                      switch (widget.menuName) {
+                        case 'print':
+                          value = teachers[index]['ready'] ?? false;
+                          break;
+                        case 'unchecked':
+                          value = teachers[index]['ready'] == null
+                              ? false
+                              : !teachers[index]['ready'];
+                          break;
+                        case 'noPhoto':
+                          value = teachers[index]['profilePic'] == '';
+                        case 'printing':
+                          value = teachers[index]['printed'] == null
+                              ? false
+                              : !teachers[index]['printed'];
+                          break;
+                        case 'printed':
+                          value = teachers[index]['printed'] ?? false;
+                          break;
+                      }
+                      if (value) {
                         return Card(
                           child: ListTile(
                             leading: CircleAvatar(
@@ -102,6 +121,7 @@ class _TeacherTabState extends State<TeacherTab> {
                                   setState(() {
                                     _getTeachers = getTeachersMid();
                                   });
+                                  Navigator.of(context).pop();
                                 },
                               ),
                             )),
