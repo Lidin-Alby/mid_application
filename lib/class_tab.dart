@@ -2,6 +2,7 @@ import 'dart:convert';
 
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 // import 'package:flutter/widgets.dart';
 // import 'package:http/browser_client.dart';
 import 'package:http/http.dart' as http;
@@ -70,7 +71,14 @@ class _ClassTabState extends State<ClassTab> {
                   menuName: widget.menuName,
                 ),
               )),
-              title: Text(classes[index]['title']),
+              title: Text(
+                classes[index]['title'],
+                style: TextStyle(fontSize: 20),
+              ),
+              subtitle: Text(
+                'Total Students: ${classes[index]['count']}',
+                style: TextStyle(fontSize: 16),
+              ),
             )),
           );
         } else {
@@ -102,6 +110,7 @@ class _EachClassPageState extends State<EachClassPage> {
   late String barTitle;
   String searchText = '';
   bool search = false;
+  String sort = 'name';
 
   Future getStudentsEachClass() async {
     // var client = BrowserClient()..withCredentials = true;
@@ -179,20 +188,79 @@ class _EachClassPageState extends State<EachClassPage> {
             SizedBox(
               height: 8,
             ),
-            SegmentedButton(
-              segments: [
-                ButtonSegment(label: Text('All'), value: 'all'),
-                ButtonSegment(label: Text('Unchecked'), value: 'unchecked'),
-                ButtonSegment(label: Text('Checked'), value: 'checked')
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (widget.menuName == 'unchecked')
+                  SegmentedButton(
+                    segments: [
+                      ButtonSegment(label: Text('All'), value: 'all'),
+                      ButtonSegment(
+                          label: Text('Unchecked'), value: 'unchecked'),
+                      ButtonSegment(label: Text('Checked'), value: 'checked')
+                    ],
+                    selected: filter,
+                    // multiSelectionEnabled: true,
+                    onSelectionChanged: (p0) {
+                      setState(() {
+                        // print(p0);
+                        filter = p0;
+                      });
+                    },
+                  ),
+                SizedBox(
+                  width: 10,
+                ),
+                MenuAnchor(
+                  builder: (context, controller, child) =>
+                      IconButton.filledTonal(
+                    onPressed: () {
+                      if (controller.isOpen) {
+                        controller.close();
+                      } else {
+                        controller.open();
+                      }
+                    },
+                    icon: Icon(Icons.sort_rounded),
+                  ),
+                  menuChildren: [
+                    RadioMenuButton(
+                      value: 'name',
+                      groupValue: sort,
+                      onChanged: (value) {
+                        setState(() {
+                          sort = value!;
+                        });
+                      },
+                      child: Text('Name'),
+                    ),
+                    RadioMenuButton(
+                      value: 'admNo',
+                      groupValue: sort,
+                      onChanged: (value) {
+                        setState(() {
+                          sort = value!;
+                        });
+                      },
+                      child: Text('Adm No.'),
+                    ),
+                    RadioMenuButton(
+                      value: 'date',
+                      groupValue: sort,
+                      onChanged: (value) {
+                        setState(() {
+                          sort = value!;
+                        });
+                      },
+                      child: Text('Date Modified'),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: 5,
+                )
               ],
-              selected: filter,
-              // multiSelectionEnabled: true,
-              onSelectionChanged: (p0) {
-                setState(() {
-                  // print(p0);
-                  filter = p0;
-                });
-              },
             ),
             SizedBox(
               height: 10,
@@ -214,9 +282,29 @@ class _EachClassPageState extends State<EachClassPage> {
                 future: _getStudents,
                 builder: (context, snapshot) {
                   List students = [];
+
                   if (snapshot.hasData) {
                     // searchText.startsWith(pattern)
                     students = snapshot.data;
+                    switch (sort) {
+                      case 'admNo':
+                        students.sort(
+                          (a, b) => a['admNo'].compareTo(b['admNo']),
+                        );
+                        break;
+                      case 'date':
+                        students.sort(
+                          (a, b) => DateTime.parse(b['modified'])
+                              .compareTo(DateTime.parse(a['modified'])),
+                        );
+                        break;
+
+                      default:
+                        students.sort(
+                          (a, b) => a['fullName'].compareTo(b['fullName']),
+                        );
+                    }
+
                     switch (filter.first) {
                       case 'checked':
                         students = students
@@ -239,6 +327,9 @@ class _EachClassPageState extends State<EachClassPage> {
                         itemCount: students.length,
                         itemBuilder: (context, index) {
                           bool value = true;
+
+                          // print(widget.menuName);
+
                           switch (widget.menuName) {
                             case 'print':
                               value = students[index]['ready'] ?? false;
@@ -261,54 +352,7 @@ class _EachClassPageState extends State<EachClassPage> {
                           }
 
                           if (value) {
-                            return ListTile(
-                              trailing: students[index]['check']
-                                  ? Icon(Icons.check_circle_outline_rounded)
-                                  : null,
-                              subtitle: Text(students[index]['admNo']),
-                              leading: CircleAvatar(
-                                radius: 25,
-                                onForegroundImageError:
-                                    (exception, stackTrace) => CircleAvatar(
-                                  foregroundImage:
-                                      AssetImage('assets/images/logoImg.jpg'),
-                                ),
-                                child: Icon(
-                                  Icons.account_circle,
-                                  size: 50,
-                                ),
-                                key: UniqueKey(),
-                                foregroundImage: students[index]
-                                                ['profilePic'] ==
-                                            '' ||
-                                        !students[index]
-                                            .containsKey('profilePic')
-                                    ? AssetImage('assets/images/logoImg.jpg')
-                                    : NetworkImage(
-                                            "${Uri.parse('$ipv4/getProfilePicMid/${widget.schoolCode}/?admNo=${Uri.encodeQueryComponent(students[index]['admNo'])}')}")
-                                        as ImageProvider,
-                              ),
-                              // FutureBuilder(
-                              //   future: _getProfilePic,
-                              //   builder: (context, snapshot) {
-                              //     if (snapshot.hasData) {
-                              //       return CircleAvatar(
-                              //         onForegroundImageError: (exception, stackTrace) =>
-                              //             Text('data'),
-                              //         child: Icon(
-                              //           Icons.account_circle,
-                              //           size: 100,
-                              //         ),
-                              //         radius: 50,
-                              //         foregroundImage:
-                              //             MemoryImage(snapshot.data as Uint8List),
-                              //       );
-                              //     } else {
-                              //       return Icon(Icons.error_outline_rounded);
-                              //     }
-                              //   },
-                              // ),
-                              title: Text(students[index]['fullName']),
+                            return InkWell(
                               onTap: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => EachStudentPage(
@@ -320,6 +364,98 @@ class _EachClassPageState extends State<EachClassPage> {
                                       });
                                     },
                                   ),
+                                ),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8),
+                                child: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    CircleAvatar(
+                                      radius: 45,
+                                      onForegroundImageError:
+                                          (exception, stackTrace) =>
+                                              CircleAvatar(
+                                        foregroundImage: AssetImage(
+                                            'assets/images/logoImg.jpg'),
+                                      ),
+                                      child: Icon(
+                                        Icons.account_circle,
+                                        size: 90,
+                                      ),
+                                      key: UniqueKey(),
+                                      foregroundImage: students[index]
+                                                      ['profilePic'] ==
+                                                  '' ||
+                                              !students[index]
+                                                  .containsKey('profilePic')
+                                          ? AssetImage(
+                                              'assets/images/logoImg.jpg')
+                                          : NetworkImage(
+                                                  "${Uri.parse('$ipv4/getProfilePicMid/${widget.schoolCode}/?admNo=${Uri.encodeQueryComponent(students[index]['admNo'])}')}")
+                                              as ImageProvider,
+                                    ),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    SizedBox(
+                                      width: 220,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            students[index]['fullName'],
+                                            overflow: TextOverflow.clip,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          ),
+                                          Text(
+                                            'Adm No.: ${students[index]['admNo']}',
+                                          ),
+                                          Text(
+                                            'Father Name: ${students[index]['fatherName']}',
+                                            overflow: TextOverflow.clip,
+                                            maxLines: 1,
+                                          ),
+                                          Text(
+                                            'Mother Name: ${students[index]['motherName']}',
+                                            overflow: TextOverflow.clip,
+                                            maxLines: 1,
+                                          ),
+                                          Text(
+                                              'DOB: ${students[index]['dob']}'),
+                                        ],
+                                      ),
+                                    ),
+                                    if (students[index]['check'])
+                                      Icon(Icons.check_circle_outline_rounded),
+                                  ],
+
+                                  //   future: _getProfilePic,
+                                  //   builder: (context, snapshot) {
+                                  //     if (snapshot.hasData) {
+                                  //       return CircleAvatar(
+                                  //         onForegroundImageError: (exception, stackTrace) =>
+                                  //             Text('data'),
+                                  //         child: Icon(
+                                  //           Icons.account_circle,
+                                  //           size: 100,
+                                  //         ),
+                                  //         radius: 50,
+                                  //         foregroundImage:
+                                  //             MemoryImage(snapshot.data as Uint8List),
+                                  //       );
+                                  //     } else {
+                                  //       return Icon(Icons.error_outline_rounded);
+                                  //     }
+                                  //   },
+                                  // ),
                                 ),
                               ),
                             );

@@ -163,6 +163,7 @@ class _EachStaffPageState extends State<EachStaffPage> {
         'dlNo': dlNo.text.trim(),
         'aadhaarNo': aadhaarNo.text.trim(),
         'schoolCode': widget.schoolCode,
+        'modified': DateTime.now().toString()
       });
       if (res.body == 'true') {
         _getProfilePic = getProfilePic();

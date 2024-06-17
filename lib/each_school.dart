@@ -161,7 +161,8 @@ class _EachSchoolState extends State<EachSchool> {
                     padding: const EdgeInsets.all(8.0),
                     child: Hero(
                       tag: 'profile-pic',
-                      child: FutureBuilder(
+                      child: 
+                      FutureBuilder(
                         future: _getSchoolLogo,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {

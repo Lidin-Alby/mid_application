@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 import 'ip_address.dart';
 import 'view_attendance.dart';
@@ -58,7 +59,11 @@ class _AttendanceMidState extends State<AttendanceMid> {
                     classTitle: classes[index]['title'],
                   ),
                 )),
-                title: Text(classes[index]['title']),
+                title: Text(
+                  classes[index]['title'],
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text('Total Students: ${classes[index]['count']}'),
               )),
             );
           } else {
@@ -88,16 +93,6 @@ class _EachClassPageState extends State<EachClassPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.classTitle),
-          actions: [
-            IconButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => QRScanner(
-                        schoolCode: widget.schoolCode,
-                        classTitle: widget.classTitle,
-                      ),
-                    )),
-                icon: Icon(Icons.qr_code_scanner))
-          ],
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -159,6 +154,7 @@ class _QRScannerState extends State<QRScanner> {
   late Future _getClassAttendance;
   List allStudents = [];
   List students = [];
+  final ScrollController _scrollController = ScrollController();
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
@@ -211,6 +207,8 @@ class _QRScannerState extends State<QRScanner> {
               students = allStudents
                   .where((element) => element['status'] == 'present')
                   .toList();
+              _scrollController
+                  .jumpTo(_scrollController.position.maxScrollExtent);
             });
             break;
           }
@@ -241,12 +239,14 @@ class _QRScannerState extends State<QRScanner> {
   @override
   void initState() {
     _getClassAttendance = getClassDetailsMid();
+    WakelockPlus.enable();
     super.initState();
   }
 
   @override
   void dispose() {
     controller?.dispose();
+    WakelockPlus.disable();
 
     super.dispose();
   }
@@ -262,6 +262,9 @@ class _QRScannerState extends State<QRScanner> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             allStudents = snapshot.data;
+            for (Map element in allStudents) {
+              element.putIfAbsent('status', () => 'absent');
+            }
             students = allStudents
                 .where((element) => element['status'] == 'present')
                 .toList();
@@ -342,6 +345,7 @@ class _QRScannerState extends State<QRScanner> {
                     // ),
                     Expanded(
                       child: ListView.builder(
+                        controller: _scrollController,
                         itemCount: students.length,
                         itemBuilder: (context, index) => Padding(
                           padding: EdgeInsets.only(

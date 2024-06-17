@@ -73,7 +73,9 @@ class _AddTeacherPageState extends State<AddTeacherPage> {
         'aadhaarNo': '',
         'ready': false.toString(),
         'check': false.toString(),
-        'profilePic': ''
+        'profilePic': '',
+        'modified': DateTime.now().toString(),
+        'printed': false.toString()
       });
 
       if (res.body == 'true') {

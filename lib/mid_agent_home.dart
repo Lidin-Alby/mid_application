@@ -3,10 +3,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 // import 'package:http/browser_client.dart';
 import 'package:http/http.dart' as http;
 import 'package:mid_application/each_school.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'all_list.dart';
@@ -185,8 +187,8 @@ class _MidAgentHomeState extends State<MidAgentHome> {
                                             'assets/images/logoImg.jpg'),
                                       ),
                                       child: Icon(
-                                        Icons.account_circle,
-                                        size: 50,
+                                        Icons.business_rounded,
+                                        size: 40,
                                       ),
                                       key: UniqueKey(),
                                       foregroundImage: schools[index]
@@ -430,10 +432,14 @@ class _RightMenuState extends State<RightMenu> {
   late String? schoolCode;
   late bool lastPage;
 
-  getSchoolDetails() async {
+  Future getSchoolDetails() async {
     // var client = BrowserClient()..withCredentials = true;
-    var url = Uri.parse('$ipv4/getmidSchoolDetails/$schoolCode');
-    var res = await http.get(url);
+    final prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    print(token);
+    var url =
+        Uri.parse('$ipv4/getmidSchoolDetails/$schoolCode/?user=${widget.user}');
+    var res = await http.get(url, headers: {'authorization': token!});
     Map data = jsonDecode(res.body);
 
     print(data);
@@ -483,177 +489,330 @@ class _RightMenuState extends State<RightMenu> {
                           ),
                         )),
                         icon: Icon(Icons.search),
-                      )
+                      ),
+                      IconButton(
+                          onPressed: () async {
+                            final bytes = await rootBundle
+                                .load('assets/images/logoImg.jpg');
+                            final img = Uint8List.view(bytes.buffer);
+
+                            Share.shareXFiles(
+                                [XFile.fromData(img, mimeType: 'image/jpeg')],
+                                text: 'Download https://www.youtube.com/');
+                          },
+                          icon: Icon(Icons.share_rounded))
                     ],
                   ),
                   drawer: lastPage ? MidDrawer() : null,
-                  body: SingleChildScrollView(
-                      child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: FutureBuilder(
-                      future: _getSchoolDetails,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          Map school = snapshot.data;
-                          schoolName = school['schoolName'];
-                          return Column(
-                            children: [
-                              Card.outlined(
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                      child: Icon(Icons.business_rounded)),
-                                  title: Text(
-                                    schoolName.toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Text(schoolCode.toString()),
-                                ),
-                              ),
-                              Row(
-                                children: [
-                                  MidTile(
-                                    icon: Icons.list_alt_rounded,
-                                    title: 'List',
-                                    color: Colors.orange.shade200,
-                                    callback: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) => ListAll(
-                                                schoolCode: widget.schoolCode,
-                                                user: widget.user,
-                                              )),
-                                    ),
-                                  ),
-                                  MidTile(
-                                    icon: Icons.school_rounded,
-                                    title: 'Unchecked Data',
-                                    color: Colors.indigo,
-                                    // count: (counts['staffNotReady'] +
-                                    //     counts['studentNotReady']),
-                                    callback: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => UncheckedDataPage(
-                                          schoolCode: widget.schoolCode,
-                                          user: widget.user,
+                  body: RefreshIndicator(
+                    onRefresh: () {
+                      setState(() {
+                        _getSchoolDetails = getSchoolDetails();
+                      });
+                      return Future(() => null);
+                    },
+                    child: SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        child: FutureBuilder(
+                          future: _getSchoolDetails,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              Map school = snapshot.data;
+                              schoolName = school['schoolName'];
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Card.outlined(
+                                      child: ListTile(
+                                        leading: CircleAvatar(
+                                          radius: 30,
+                                          onForegroundImageError:
+                                              (exception, stackTrace) =>
+                                                  CircleAvatar(
+                                            foregroundImage: AssetImage(
+                                                'assets/images/logoImg.jpg'),
+                                          ),
+                                          child: Icon(
+                                            Icons.business_rounded,
+                                            size: 50,
+                                          ),
+                                          key: UniqueKey(),
+                                          foregroundImage: school[
+                                                          'schoolLogo'] ==
+                                                      '' ||
+                                                  !school
+                                                      .containsKey('schoolLogo')
+                                              ? AssetImage(
+                                                  'assets/images/logoImg.jpg')
+                                              : NetworkImage(
+                                                      "${Uri.parse('$ipv4/getSchoolLogoMid/${widget.schoolCode}')}")
+                                                  as ImageProvider,
                                         ),
+                                        title: Text(
+                                          schoolName.toString(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        subtitle: Text(schoolCode.toString()),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  MidTile(
-                                      icon: Icons.no_photography_rounded,
-                                      title: 'Without Photos',
-                                      color: Colors.pink,
-                                      callback: () =>
-                                          Navigator.of(context).push(
+                                    Container(
+                                      padding: EdgeInsets.all(10),
+                                      margin: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .inversePrimary),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Column(
+                                            children: [
+                                              Text(
+                                                school['studentCount']
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ),
+                                              Text(
+                                                'Students',
+                                                style: TextStyle(fontSize: 16),
+                                              )
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                school['teacherCount']
+                                                    .toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ),
+                                              Text(
+                                                'Class Teachers',
+                                                style: TextStyle(fontSize: 16),
+                                              )
+                                            ],
+                                          ),
+                                          Column(
+                                            children: [
+                                              Text(
+                                                school['staffCount'].toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 20),
+                                              ),
+                                              Text(
+                                                'Total Staff',
+                                                style: TextStyle(fontSize: 16),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        MidTile(
+                                          icon: Icons.list_alt_rounded,
+                                          title: 'List',
+                                          color: Colors.orange.shade200,
+                                          callback: () =>
+                                              Navigator.of(context).push(
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  WithoutPhotosPage(
-                                                schoolCode: widget.schoolCode,
-                                                user: widget.user,
+                                                builder: (context) => ListAll(
+                                                      schoolCode:
+                                                          widget.schoolCode,
+                                                      user: widget.user,
+                                                    )),
+                                          ),
+                                        ),
+                                        Badge(
+                                          largeSize: 20,
+                                          offset: Offset(0, 0),
+                                          label: Text(
+                                              school["checkCount"].toString()),
+                                          child: MidTile(
+                                            icon: Icons.school_rounded,
+                                            title: 'Unchecked Data',
+                                            color: Colors.indigo,
+                                            // count: (counts['staffNotReady'] +
+                                            //     counts['studentNotReady']),
+                                            callback: () =>
+                                                Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UncheckedDataPage(
+                                                  schoolCode: widget.schoolCode,
+                                                  user: widget.user,
+                                                ),
                                               ),
                                             ),
-                                          )),
-                                  MidTile(
-                                    icon: Icons.print_rounded,
-                                    title: 'Ready to Print',
-                                    color: Colors.green,
-                                    // count: (counts['staffReady'] +
-                                    //     counts['studentReady']),
-                                    callback: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => ReadyPrintPage(
-                                          schoolCode: widget.schoolCode,
-                                          user: widget.user,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  MidTile(
-                                    icon: Icons.restart_alt_rounded,
-                                    title: 'Printing',
-                                    color: Colors.green,
-                                    // count: (counts['staffReady'] +
-                                    //     counts['studentReady']),
-                                    callback: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => PrintingPage(
-                                          schoolCode: widget.schoolCode,
-                                          user: widget.user,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  MidTile(
-                                    icon: Icons.done_all_rounded,
-                                    title: 'Printed',
-                                    color: Colors.green,
-                                    // count: (counts['staffReady'] +
-                                    //     counts['studentReady']),
-                                    callback: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => PrintedPage(
-                                          schoolCode: widget.schoolCode,
-                                          user: widget.user,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  MidTile(
-                                    icon: Icons.login_rounded,
-                                    title: 'Login Pending',
-                                    color: Colors.teal,
-                                    callback: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => Scaffold(
-                                          appBar: AppBar(
-                                            title: Text('Login Pending'),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  ),
-                                  MidTile(
-                                    icon: Icons.badge_rounded,
-                                    title: 'Card Designs',
-                                    color: Colors.cyan,
-                                    callback: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) => Scaffold(
-                                          appBar: AppBar(
-                                            title: Text('Card Designs'),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Badge(
+                                          offset: Offset(0, 0),
+                                          largeSize: 20,
+                                          // smallSize: 20,
+                                          // padding: EdgeInsets.all(8),
+
+                                          label: Text(
+                                              school['photoCount'].toString()),
+                                          child: MidTile(
+                                              icon:
+                                                  Icons.no_photography_rounded,
+                                              title: 'Without Photos',
+                                              color: Colors.pink,
+                                              callback: () =>
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          WithoutPhotosPage(
+                                                        schoolCode:
+                                                            widget.schoolCode,
+                                                        user: widget.user,
+                                                      ),
+                                                    ),
+                                                  )),
+                                        ),
+                                        Badge(
+                                          largeSize: 20,
+                                          offset: Offset(0, 0),
+                                          label: Text(
+                                              school['readyCount'].toString()),
+                                          child: MidTile(
+                                            icon: Icons.print_rounded,
+                                            title: 'Ready to Print',
+                                            color: Colors.green,
+                                            // count: (counts['staffReady'] +
+                                            //     counts['studentReady']),
+                                            callback: () =>
+                                                Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ReadyPrintPage(
+                                                  schoolCode: widget.schoolCode,
+                                                  user: widget.user,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                      ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                              // ElevatedButton(
-                              //     onPressed: () => Navigator.of(context)
-                              //             .push(MaterialPageRoute(
-                              //           builder: (context) => CameraModule(),
-                              //         )),
-                              //     child: Text('Camers'))
-                            ],
-                          );
-                        } else {
-                          return Center(child: CircularProgressIndicator());
-                        }
-                      },
-                    ),
-                  )),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Badge(
+                                          largeSize: 20,
+                                          offset: Offset(0, 0),
+                                          label: Text(school['printingCount']
+                                              .toString()),
+                                          child: MidTile(
+                                            icon: Icons.restart_alt_rounded,
+                                            title: 'Printing',
+                                            color: Colors.green,
+                                            // count: (counts['staffReady'] +
+                                            //     counts['studentReady']),
+                                            callback: () =>
+                                                Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PrintingPage(
+                                                  schoolCode: widget.schoolCode,
+                                                  user: widget.user,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Badge(
+                                          largeSize: 20,
+                                          offset: Offset(0, 0),
+                                          label: Text(school['printedCount']
+                                              .toString()),
+                                          child: MidTile(
+                                            icon: Icons.done_all_rounded,
+                                            title: 'Delivered',
+                                            color: Colors.green,
+                                            // count: (counts['staffReady'] +
+                                            //     counts['studentReady']),
+                                            callback: () =>
+                                                Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PrintedPage(
+                                                  schoolCode: widget.schoolCode,
+                                                  user: widget.user,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        MidTile(
+                                          icon: Icons.login_rounded,
+                                          title: 'Login Pending',
+                                          color: Colors.teal,
+                                          callback: () =>
+                                              Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => Scaffold(
+                                                appBar: AppBar(
+                                                  title: Text('Login Pending'),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        MidTile(
+                                          icon: Icons.badge_rounded,
+                                          title: 'Card Designs',
+                                          color: Colors.cyan,
+                                          callback: () =>
+                                              Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => Scaffold(
+                                                appBar: AppBar(
+                                                  title: Text('Card Designs'),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // ElevatedButton(
+                                    //     onPressed: () => Navigator.of(context)
+                                    //             .push(MaterialPageRoute(
+                                    //           builder: (context) => CameraModule(),
+                                    //         )),
+                                    //     child: Text('Camers'))
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                          },
+                        )),
+                  ),
                 )
               : AttendanceMid(schoolCode: widget.schoolCode),
           floatingActionButton: _currentPageIndex == 0

@@ -125,7 +125,10 @@ class _EachStudentPageState extends State<EachStudentPage> {
 
     Map data = jsonDecode(res.body);
 
-    print(data);
+    if (data["ready"] == null) {
+      data['ready'] = true;
+    }
+
     firstName.text = data['firstName'];
     lastName.text = data['lastName'].toString();
     fatherName.text = data['fatherName'];
@@ -203,6 +206,7 @@ class _EachStudentPageState extends State<EachStudentPage> {
         'bloodGroup': bloodGroup ?? '',
         'transportMode': transportMode ?? '',
         'schoolCode': widget.schoolCode,
+        'modified': DateTime.now().toString()
       });
       if (res.body == 'true') {
         setState(() {

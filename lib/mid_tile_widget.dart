@@ -16,12 +16,9 @@ class MidTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child:
-          // Stack(
-          //   fit: StackFit.passthrough,
-          //   children: [
-          Card.filled(
+    return SizedBox(
+      width: MediaQuery.of(context).size.width / 2 - 10,
+      child: Card.filled(
         child: ClipRRect(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(6)),
           child: InkWell(
@@ -58,27 +55,6 @@ class MidTile extends StatelessWidget {
           ),
         ),
       ),
-      //   if (count != null)
-      //     Positioned(
-      //       right: 2,
-      //       child: Card(
-      //         child: Container(
-      //             alignment: Alignment.center,
-      //             width: 35,
-      //             height: 35,
-      //             // padding: EdgeInsets.all(2),
-      //             decoration: BoxDecoration(
-      //                 color: Colors.white,
-      //                 border: Border.all(color: Colors.indigo, width: 2),
-      //                 borderRadius: BorderRadius.circular(20)),
-      //             child: Text(
-      //               count!,
-      //               style: TextStyle(fontSize: 12),
-      //             )),
-      //       ),
-      //     )
-      // ],
-      // ),
     );
   }
 }

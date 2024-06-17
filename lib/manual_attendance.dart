@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -192,59 +193,84 @@ class _ManualAttendanceState extends State<ManualAttendance> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    IconButton.outlined(
-                                                      onPressed: () =>
-                                                          showDialog(
-                                                        context: context,
-                                                        builder: (context) =>
-                                                            Dialog(
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              ListTile(
-                                                                onLongPress:
-                                                                    () async {
-                                                                  await Clipboard.setData(
-                                                                      ClipboardData(
-                                                                          text:
-                                                                              '${students[index]['fatherMobNo']}'));
-                                                                },
-                                                                onTap: () =>
-                                                                    launchUrl(Uri
-                                                                        .parse(
-                                                                            'tel:${students[index]['fatherMobNo']}')),
-                                                                title: Text(
-                                                                    'Father: ${students[index]['fatherMobNo']}'),
-                                                              ),
-                                                              ListTile(
-                                                                onLongPress:
-                                                                    () async {
-                                                                  await Clipboard.setData(
-                                                                      ClipboardData(
-                                                                          text:
-                                                                              '${students[index]['motherMobNo']}'));
-                                                                },
-                                                                onTap: () =>
-                                                                    launchUrl(Uri
-                                                                        .parse(
-                                                                            'tel:${students[index]['motherMobNo']}')),
-                                                                title: Text(
-                                                                    'Mother: ${students[index]['motherMobNo']}'),
-                                                              ),
-                                                              TextField()
-                                                            ],
+                                                    SizedBox(
+                                                      width: 35,
+                                                      height: 35,
+                                                      child:
+                                                          IconButton.outlined(
+                                                        iconSize: 20,
+                                                        onPressed: () =>
+                                                            showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              MobileNoDialog(
+                                                            fatherNo: students[
+                                                                    index]
+                                                                ['fatherMobNo'],
+                                                            motherNo: students[
+                                                                    index]
+                                                                ['motherMobNo'],
+                                                            type: 'tel',
                                                           ),
                                                         ),
+                                                        icon: Icon(Icons.phone),
                                                       ),
-                                                      icon: Icon(Icons.phone),
                                                     ),
-                                                    IconButton.filled(
-                                                      onPressed: () {},
-                                                      icon: Icon(
-                                                          Icons.chat_rounded),
+                                                    SizedBox(
+                                                      width: 4,
                                                     ),
+                                                    SizedBox(
+                                                      width: 35,
+                                                      height: 35,
+                                                      child:
+                                                          IconButton.outlined(
+                                                        iconSize: 20,
+                                                        onPressed: () =>
+                                                            showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              MobileNoDialog(
+                                                            fatherNo: students[
+                                                                    index]
+                                                                ['fatherMobNo'],
+                                                            motherNo: students[
+                                                                    index]
+                                                                ['motherMobNo'],
+                                                            type: 'sms',
+                                                          ),
+                                                        ),
+                                                        icon: Icon(
+                                                            Icons.chat_rounded),
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      width: 4,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 41,
+                                                      height: 41,
+                                                      child: IconButton.filled(
+                                                        iconSize: 25,
+                                                        onPressed: () =>
+                                                            showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              MobileNoDialog(
+                                                            fatherNo: students[
+                                                                    index][
+                                                                'fatherWhatsApp'],
+                                                            motherNo: students[
+                                                                    index][
+                                                                'motherWhatsApp'],
+                                                            type: 'whatsapp',
+                                                          ),
+                                                        ),
+                                                        icon: FaIcon(
+                                                          FontAwesomeIcons
+                                                              .whatsapp,
+                                                        ),
+                                                      ),
+                                                    )
                                                   ],
                                                 )
                                               ],
@@ -366,6 +392,49 @@ class _ManualAttendanceState extends State<ManualAttendance> {
             return CircularProgressIndicator();
           }
         },
+      ),
+    );
+  }
+}
+
+class MobileNoDialog extends StatelessWidget {
+  const MobileNoDialog(
+      {super.key,
+      required this.fatherNo,
+      required this.motherNo,
+      required this.type});
+
+  final String fatherNo;
+  final String motherNo;
+  final String type;
+
+  @override
+  Widget build(BuildContext context) {
+    String link = 'tel:';
+    if (type == 'sms') {
+      link = 'sms:';
+    } else if (type == 'whatsapp') {
+      link = 'whatsapp://send?phone=';
+    }
+    return Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            onLongPress: () async {
+              await Clipboard.setData(ClipboardData(text: fatherNo));
+            },
+            onTap: () => launchUrl(Uri.parse('$link$fatherNo')),
+            title: Text('Father: $fatherNo'),
+          ),
+          ListTile(
+            onLongPress: () async {
+              await Clipboard.setData(ClipboardData(text: motherNo));
+            },
+            onTap: () => launchUrl(Uri.parse('$link$motherNo')),
+            title: Text('Mother: $motherNo'),
+          ),
+        ],
       ),
     );
   }
