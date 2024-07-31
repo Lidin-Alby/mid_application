@@ -35,6 +35,7 @@ class _AddStaffPageState extends State<AddStaffPage> {
         'mob': mob.text.trim(),
         'password': mob.text.trim(),
         'role': role.text.trim(),
+        'designation': role.text.trim(),
         'myClasses': jsonEncode([]),
         'subCaste': '',
         'email': '',

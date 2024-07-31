@@ -1,6 +1,10 @@
 import 'dart:convert';
+import 'dart:ffi';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 import 'package:intl/intl.dart';
 
@@ -8,6 +12,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:http/http.dart' as http;
 import 'package:wakelock_plus/wakelock_plus.dart';
 
+import 'attendance_report.dart';
 import 'ip_address.dart';
 import 'view_attendance.dart';
 import 'manual_attendance.dart';
@@ -126,6 +131,15 @@ class _EachClassPageState extends State<EachClassPage> {
                 )),
                 label: Text('View Attendance'),
                 icon: Icon(Icons.view_list_rounded),
+              ),
+              FilledButton.tonalIcon(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => AttendanceReport(
+                          schoolCode: widget.schoolCode,
+                          classTitle: widget.classTitle,
+                        ))),
+                label: Text('Download Report'),
+                icon: Icon(Icons.download_rounded),
               )
             ],
           ),
@@ -153,8 +167,10 @@ class _QRScannerState extends State<QRScanner> {
   String _selectedDate = DateFormat('dd-MM-yyyy').format(DateTime.now());
   late Future _getClassAttendance;
   List allStudents = [];
-  List students = [];
+  List presentStudents = [];
   final ScrollController _scrollController = ScrollController();
+  bool sendSms = false;
+  bool sendCall = false;
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
@@ -204,7 +220,7 @@ class _QRScannerState extends State<QRScanner> {
             // info = '';
 
             setState(() {
-              students = allStudents
+              presentStudents = allStudents
                   .where((element) => element['status'] == 'present')
                   .toList();
               _scrollController
@@ -226,10 +242,47 @@ class _QRScannerState extends State<QRScanner> {
   }
 
   saveAttendance() async {
+    if (sendSms) {
+      for (Map student in allStudents) {
+        String message =
+            'Dear Parent of ${student['fullName']}\nToday\'s Attendance of your ward: ${student['status']}.\nFor more info use app.';
+        sendSMS(
+            message: message,
+            recipients: [student['fatherMobNo'].toString()],
+            sendDirect: true);
+      }
+    }
+    if (sendCall) {
+      List absentStudents = allStudents
+          .takeWhile((student) => student['status'] == 'absent')
+          .toList();
+      var res = await http.post(Uri.parse('$ipv4/midAttendanceCall'), body: {
+        'schoolCode': widget.schoolCode,
+        'presentStudents': jsonEncode(presentStudents),
+        'absentStudents': jsonEncode(absentStudents)
+      });
+      if (res.body == 'false') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red[600],
+            behavior: SnackBarBehavior.floating,
+            content: const Row(
+              children: [
+                Text('No Access to call API. Contact Admin.'),
+                Icon(
+                  Icons.error,
+                  color: Colors.white,
+                )
+              ],
+            ),
+          ),
+        );
+      }
+    }
     // var client = BrowserClient()..withCredentials = true;
     var url = Uri.parse('$ipv4/saveClassAttendanceMid');
     var res = await http.post(url, body: {
-      'students': jsonEncode(students),
+      'students': jsonEncode(allStudents),
       'date': _selectedDate,
       'schoolCode': widget.schoolCode
     });
@@ -265,12 +318,14 @@ class _QRScannerState extends State<QRScanner> {
             for (Map element in allStudents) {
               element.putIfAbsent('status', () => 'absent');
             }
-            students = allStudents
+
+            presentStudents = allStudents
                 .where((element) => element['status'] == 'present')
                 .toList();
-            int presentCount = students
-                .where((element) => element['status'] == 'present')
-                .length;
+            int presentCount = presentStudents.length;
+            // students
+            //     .where((element) => element['status'] == 'present')
+            //     .length;
             return Stack(
               children: [
                 Column(
@@ -339,25 +394,21 @@ class _QRScannerState extends State<QRScanner> {
                             cutOutSize: 250),
                       ),
                     ),
-                    // FilterChip(
-                    //   label: Text('Present'),
-                    //   onSelected: (value) {},
-                    // ),
                     Expanded(
                       child: ListView.builder(
                         controller: _scrollController,
-                        itemCount: students.length,
+                        itemCount: presentCount,
                         itemBuilder: (context, index) => Padding(
                           padding: EdgeInsets.only(
-                              bottom: index == students.length - 1 ? 50 : 0),
+                              bottom: index == presentCount - 1 ? 50 : 0),
                           child: Card(
-                            color: students[index]['status'] == 'present'
+                            color: presentStudents[index]['status'] == 'present'
                                 ? Colors.green[100]
                                 : Colors.red[200],
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 8),
-                              child: Text(students[index]['fullName']),
+                              child: Text(presentStudents[index]['fullName']),
                             ),
                           ),
                         ),
@@ -365,19 +416,51 @@ class _QRScannerState extends State<QRScanner> {
                     )
                   ],
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FilledButton(
-                      onPressed: saveAttendance,
-                      child: Text('Submit'),
-                      style: FilledButton.styleFrom(
-                        shape: LinearBorder(),
-                        padding: EdgeInsets.symmetric(vertical: 15),
-                      ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: FilledButton(
+                    onPressed: saveAttendance,
+                    style: FilledButton.styleFrom(
+                      shape: LinearBorder(),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                     ),
-                  ],
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Checkbox(
+                          fillColor: MaterialStateProperty.all(Colors.white),
+                          checkColor: Theme.of(context).colorScheme.primary,
+                          value: sendSms,
+                          onChanged: (value) {
+                            setState(() {
+                              sendSms = value!;
+                            });
+                          },
+                        ),
+                        Text('Send Sms'),
+                        Checkbox(
+                          fillColor: MaterialStateProperty.all(Colors.white),
+                          checkColor: Theme.of(context).colorScheme.primary,
+                          value: sendCall,
+                          onChanged: (value) {
+                            setState(() {
+                              sendCall = value!;
+                            });
+                          },
+                        ),
+                        Text('Send Call'),
+                        Flexible(
+                          child: SizedBox(
+                            width: 50,
+                          ),
+                        ),
+                        Text('Submit'),
+                      ],
+                    ),
+                  ),
                 )
               ],
             );

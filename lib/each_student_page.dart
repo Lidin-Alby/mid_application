@@ -360,7 +360,8 @@ class _EachStudentPageState extends State<EachStudentPage> {
         // elevation: 0,
       ),
       body: getAll
-          ? Column(
+          ? 
+          Column(
               children: [
                 // Container(
 

@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_sms/flutter_sms.dart';
 
 // import 'package:http/browser_client.dart';
 import 'package:http/http.dart' as http;
@@ -141,120 +141,91 @@ class _MidAgentHomeState extends State<MidAgentHome> {
         child: Row(
           children: [
             Expanded(
-              child: Column(
-                children: [
-                  // Align(
-                  //   alignment: Alignment.topRight,
-                  //   child: OutlinedButton(
-                  //       onPressed: () => showDialog(
-                  //             context: context,
-                  //             builder: (context) => Dialog(
-                  //               child: Padding(
-                  //                 padding: const EdgeInsets.all(20),
-                  //                 child:
+                child: FutureBuilder(
+              future: _myMidSchools,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  schools = snapshot.data;
 
-                  //               ),
-                  //             ),
-                  //           ),
-                  //       child: Text('Add School')),
-                  // ),
-                  // SizedBox(
-                  //   height: 5,
-                  // ),
-                  Expanded(
-                      child: FutureBuilder(
-                    future: _myMidSchools,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        schools = snapshot.data;
-
-                        return schools.isEmpty
-                            ? Center(child: Text('No schools Added'))
-                            : ListView.separated(
-                                separatorBuilder: (context, index) => Divider(),
-                                itemCount: schools.length,
-                                itemBuilder: (context, index) => Padding(
-                                  padding: index == schools.length - 1
-                                      ? EdgeInsets.only(bottom: 70)
-                                      : EdgeInsets.zero,
-                                  child: ListTile(
-                                    leading: CircleAvatar(
-                                      radius: 25,
-                                      onForegroundImageError:
-                                          (exception, stackTrace) =>
-                                              CircleAvatar(
-                                        foregroundImage: AssetImage(
-                                            'assets/images/logoImg.jpg'),
-                                      ),
-                                      child: Icon(
-                                        Icons.business_rounded,
-                                        size: 40,
-                                      ),
-                                      key: UniqueKey(),
-                                      foregroundImage: schools[index]
-                                                      ['schoolLogo'] ==
-                                                  '' ||
-                                              !schools[index]
-                                                  .containsKey('schoolLogo')
-                                          ? AssetImage(
-                                              'assets/images/logoImg.jpg')
-                                          : NetworkImage(
-                                                  "${Uri.parse('$ipv4/getSchoolLogoMid/${schools[index]['schoolCode']}')}")
-                                              as ImageProvider,
-                                    ),
-                                    selected: index == _selectedIndex,
-                                    selectedColor: Colors.white,
-                                    selectedTileColor: Colors.indigo,
-                                    onTap: width > 645
-                                        ? () {
-                                            setState(() {
-                                              _selectedIndex = index;
-                                            });
-                                          }
-                                        : () => Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                              builder: (context) => RightMenu(
-                                                schoolCode: schools[index]
-                                                    ['schoolCode'],
-                                                user: user!,
-                                                // schoolName: schools[index]
-                                                //     ['schoolName'],
-                                              ),
-                                            )),
-                                    title: Text(
-                                      schools[index]['schoolName'],
-                                    ),
-                                    visualDensity: VisualDensity(vertical: -1),
-                                    subtitle:
-                                        Text(schools[index]['schoolCode']),
-                                    trailing: IconButton(
-                                      icon: Icon(Icons.edit),
-                                      onPressed: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => EachSchool(
-                                              schoolCode: schools[index]
-                                                  ['schoolCode'],
-                                              listRefresh: () {
-                                                setState(() {
-                                                  _myMidSchools =
-                                                      getMyMidSchools();
-                                                });
-                                              },
-                                            ),
-                                          )),
-                                    ),
-                                  ),
+                  return schools.isEmpty
+                      ? Center(child: Text('No schools Added'))
+                      : ListView.separated(
+                          separatorBuilder: (context, index) => Divider(),
+                          itemCount: schools.length,
+                          itemBuilder: (context, index) => Padding(
+                            padding: index == schools.length - 1
+                                ? EdgeInsets.only(bottom: 70)
+                                : EdgeInsets.zero,
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                radius: 25,
+                                onForegroundImageError:
+                                    (exception, stackTrace) => CircleAvatar(
+                                  foregroundImage:
+                                      AssetImage('assets/images/logoImg.jpg'),
                                 ),
-                              );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    },
-                  )),
-                ],
-              ),
-            ),
+                                child: Icon(
+                                  Icons.business_rounded,
+                                  size: 40,
+                                ),
+                                key: UniqueKey(),
+                                foregroundImage: schools[index]['schoolLogo'] ==
+                                            '' ||
+                                        !schools[index]
+                                            .containsKey('schoolLogo')
+                                    ? AssetImage('assets/images/logoImg.jpg')
+                                    : NetworkImage(
+                                            "${Uri.parse('$ipv4/getSchoolLogoMid/${schools[index]['schoolCode']}')}")
+                                        as ImageProvider,
+                              ),
+                              selected: index == _selectedIndex,
+                              selectedColor: Colors.white,
+                              selectedTileColor: Colors.indigo,
+                              onTap: width > 645
+                                  ? () {
+                                      setState(() {
+                                        _selectedIndex = index;
+                                      });
+                                    }
+                                  : () => Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => RightMenu(
+                                          schoolCode: schools[index]
+                                              ['schoolCode'],
+                                          user: user!,
+                                          // schoolName: schools[index]
+                                          //     ['schoolName'],
+                                        ),
+                                      )),
+                              title: Text(
+                                schools[index]['schoolName'],
+                              ),
+                              visualDensity: VisualDensity(vertical: -1),
+                              subtitle: Text(schools[index]['schoolCode']),
+                              trailing: IconButton(
+                                icon: Icon(Icons.edit),
+                                onPressed: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EachSchool(
+                                        schoolCode: schools[index]
+                                            ['schoolCode'],
+                                        listRefresh: () {
+                                          setState(() {
+                                            _myMidSchools = getMyMidSchools();
+                                          });
+                                        },
+                                      ),
+                                    )),
+                              ),
+                            ),
+                          ),
+                        );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            )),
             if (width > 645) VerticalDivider(),
             if (width > 645)
               Expanded(
@@ -636,7 +607,7 @@ class _RightMenuState extends State<RightMenu> {
                                         ),
                                         Badge(
                                           largeSize: 20,
-                                          offset: Offset(0, 0),
+                                          offset: Offset(-2, 0),
                                           label: Text(
                                               school["checkCount"].toString()),
                                           child: MidTile(
@@ -663,7 +634,7 @@ class _RightMenuState extends State<RightMenu> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Badge(
-                                          offset: Offset(0, 0),
+                                          offset: Offset(-2, 0),
                                           largeSize: 20,
                                           // smallSize: 20,
                                           // padding: EdgeInsets.all(8),
@@ -689,7 +660,7 @@ class _RightMenuState extends State<RightMenu> {
                                         ),
                                         Badge(
                                           largeSize: 20,
-                                          offset: Offset(0, 0),
+                                          offset: Offset(-2, 0),
                                           label: Text(
                                               school['readyCount'].toString()),
                                           child: MidTile(
@@ -717,7 +688,7 @@ class _RightMenuState extends State<RightMenu> {
                                       children: [
                                         Badge(
                                           largeSize: 20,
-                                          offset: Offset(0, 0),
+                                          offset: Offset(-2, 0),
                                           label: Text(school['printingCount']
                                               .toString()),
                                           child: MidTile(
@@ -740,7 +711,7 @@ class _RightMenuState extends State<RightMenu> {
                                         ),
                                         Badge(
                                           largeSize: 20,
-                                          offset: Offset(0, 0),
+                                          offset: Offset(-2, 0),
                                           label: Text(school['printedCount']
                                               .toString()),
                                           child: MidTile(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mid_application/password_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -55,6 +57,8 @@ class _MidDrawerState extends State<MidDrawer> {
           label: Text('How to use'),
         ),
         NavigationDrawerDestination(
+            icon: FaIcon(FontAwesomeIcons.key), label: Text('Change Password')),
+        NavigationDrawerDestination(
           icon: Icon(Icons.logout),
           label: Text('Logout'),
         ),
@@ -69,6 +73,16 @@ class _MidDrawerState extends State<MidDrawer> {
           launchUrl(Uri.parse('https://www.youtube.com/@PrimeVideo/videos'));
         }
         if (_selectedDrawer == 2) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangePassword(
+                  schoolCode: '',
+                  userName: '',
+                ),
+              ));
+        }
+        if (_selectedDrawer == 3) {
           deleteAuth();
           Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => LoginPage(),

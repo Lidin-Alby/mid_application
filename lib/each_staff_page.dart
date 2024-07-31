@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
@@ -41,6 +42,7 @@ class _EachStaffPageState extends State<EachStaffPage> {
   TextEditingController dlNo = TextEditingController();
   TextEditingController rfid = TextEditingController();
   TextEditingController address = TextEditingController();
+  TextEditingController designation = TextEditingController();
   String? joiningDate;
   String? gender;
   String? dob;
@@ -48,6 +50,10 @@ class _EachStaffPageState extends State<EachStaffPage> {
   String? religion;
   String? caste;
   String? dlValidity;
+  List myClasses = [];
+  List classes = [];
+  late String oldMob;
+  bool showClasses = false;
 
   late Future _getProfilePic;
   List religionDropdownList = [
@@ -97,7 +103,8 @@ class _EachStaffPageState extends State<EachStaffPage> {
   }
 
   getOneStaff() async {
-    print('helllo');
+    getClass();
+
     // var client = BrowserClient()..withCredentials = true;
     var url = Uri.parse('$ipv4/getOneStaff/${widget.schoolCode}/${widget.mob}');
     var res = await http.get(url);
@@ -107,27 +114,43 @@ class _EachStaffPageState extends State<EachStaffPage> {
 
     firstName.text = data['firstName'];
     lastName.text = data['lastName'].toString();
-    mob.text = data['mob'];
-    subCaste.text = data['subCaste'];
-    email.text = data['email'];
-    rfid.text = data['rfid'];
-    address.text = data['address'];
-    fatherOrHusName.text = data['fatherOrHusName'];
+    mob.text = data['mob'].toString();
+    joiningDate = data['joiningDate'];
+    oldMob = data['mob'].toString();
+    designation.text = data['designation'].toString();
+    subCaste.text = data['subCaste'].toString();
+    email.text = data['email'].toString();
+    rfid.text = data['rfid'].toString();
+    address.text = data['address'].toString();
+    fatherOrHusName.text = data['fatherOrHusName'].toString();
     religion = data['religion'] == '' ? null : data['religion'];
     caste = data['caste'] == '' ? null : data['caste'];
     gender = data['gender'] == '' ? null : data['gender'];
     dob = data['dob'];
     bloodGroup = data['bloodGroup'] == '' ? null : data['bloodGroup'];
-    qualification.text = data['qualification'];
+    qualification.text = data['qualification'].toString();
     // panNo.text = data['panNo'];
-    dlValidity = data['dlValidity'];
+    dlValidity = data['dlValidity'].toString();
+    myClasses = data['myClasses'];
+    // myclasses = data['myclasses'];
+
     // aadhaarNo.text = data['aadhaarNo'];
 
     if (widget.isTeacher) {
       getFormAccessTeacher();
+      showClasses = true;
     } else {
       getFormAccessStaff();
     }
+  }
+
+  getClass() async {
+    // var client = BrowserClient()..withCredentials = true;
+    var url = Uri.parse('$ipv4/getMidClasses/${widget.schoolCode}');
+    var res = await http.get(url);
+    Map data = jsonDecode(res.body);
+
+    classes = data['classes'].map((e) => e['title']).toList();
   }
 
   getProfilePic() async {
@@ -147,6 +170,8 @@ class _EachStaffPageState extends State<EachStaffPage> {
         'firstName': firstName.text.trim(),
         'lastName': lastName.text.trim(),
         'mob': mob.text.trim(),
+        'joiningDate': joiningDate ?? '',
+        'designation': designation.text.trim(),
         'subCaste': subCaste.text.trim(),
         'email': email.text.trim(),
         'rfid': rfid.text.trim(),
@@ -163,12 +188,17 @@ class _EachStaffPageState extends State<EachStaffPage> {
         'dlNo': dlNo.text.trim(),
         'aadhaarNo': aadhaarNo.text.trim(),
         'schoolCode': widget.schoolCode,
-        'modified': DateTime.now().toString()
+        'modified': DateTime.now().toString(),
+        'oldMob': oldMob,
+        'myClasses': jsonEncode(myClasses)
       });
       if (res.body == 'true') {
         _getProfilePic = getProfilePic();
         if (mounted) {
-          isEdit = false;
+          setState(() {
+            isEdit = false;
+          });
+          widget.listRefresh();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.green[600],
@@ -348,6 +378,46 @@ class _EachStaffPageState extends State<EachStaffPage> {
                               label: 'Last Name',
                               controller: lastName,
                             ),
+                            if (showClasses)
+                              MidDropDownWidget(
+                                  items: classes,
+                                  title: 'Select Class',
+                                  isEdit: isEdit,
+                                  callBack: (p0) {
+                                    setState(() {
+                                      if (!myClasses.contains(p0)) {
+                                        myClasses.add(p0);
+                                      }
+                                    });
+                                  },
+                                  selected: null),
+                            if (showClasses)
+                              Wrap(
+                                spacing: 10,
+                                // runSpacing: 10,
+                                children: [
+                                  for (String i in myClasses)
+                                    OutlinedButton.icon(
+                                        style: OutlinedButton.styleFrom(
+                                          disabledForegroundColor: Colors.black,
+                                        ),
+                                        icon: Icon(Icons.close),
+                                        onPressed: isEdit
+                                            ? () {
+                                                setState(() {
+                                                  myClasses.remove(i);
+                                                });
+                                              }
+                                            : null,
+                                        label: Text(i))
+                                ],
+                              ),
+                            if (form['designation'] == 'true')
+                              MidTextField(
+                                isEdit: isEdit,
+                                label: 'Designation',
+                                controller: designation,
+                              ),
                             if (form['gender'] == 'true')
                               MidDropDownWidget(
                                 isEdit: isEdit,
@@ -583,28 +653,28 @@ class _EachStaffPageState extends State<EachStaffPage> {
                                                 'schoolCode': widget.schoolCode
                                               });
                                               if (res.body == 'true') {
-                                                // Navigator.of(context).pop();
+                                                Navigator.of(context).pop();
 
-                                                // ScaffoldMessenger.of(context)
-                                                //     .showSnackBar(
-                                                //   SnackBar(
-                                                //     backgroundColor:
-                                                //         Colors.red[600],
-                                                //     behavior: SnackBarBehavior
-                                                //         .floating,
-                                                //     content: const Row(
-                                                //       children: [
-                                                //         Text(
-                                                //           'Deleted Sucessfully',
-                                                //         ),
-                                                //         Icon(
-                                                //           Icons.check_circle,
-                                                //           color: Colors.white,
-                                                //         )
-                                                //       ],
-                                                //     ),
-                                                //   ),
-                                                // );
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  SnackBar(
+                                                    backgroundColor:
+                                                        Colors.red[600],
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    content: const Row(
+                                                      children: [
+                                                        Text(
+                                                          'Deleted Sucessfully',
+                                                        ),
+                                                        Icon(
+                                                          Icons.check_circle,
+                                                          color: Colors.white,
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
 
                                                 widget.listRefresh();
                                               }

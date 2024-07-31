@@ -121,7 +121,6 @@ class _TeacherTabState extends State<TeacherTab> {
                                   setState(() {
                                     _getTeachers = getTeachersMid();
                                   });
-                                  Navigator.of(context).pop();
                                 },
                               ),
                             )),

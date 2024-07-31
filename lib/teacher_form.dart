@@ -18,7 +18,7 @@ class _TeacherFormMidState extends State<TeacherFormMid> {
   bool joiningDate = false;
   // bool reportsTo = false;
   bool department = false;
-  bool designation = false;
+  // bool designation = false;
   bool rfid = false;
   bool gender = false;
   bool dob = false;
@@ -62,7 +62,7 @@ class _TeacherFormMidState extends State<TeacherFormMid> {
     joiningDate = data['joiningDate'];
 
     department = data['department'];
-    designation = data['designation'];
+    // designation = data['designation'];
     rfid = data['rfid'];
     gender = data['gender'];
     dob = data['dob'];
@@ -90,7 +90,7 @@ class _TeacherFormMidState extends State<TeacherFormMid> {
     var res = await http.post(url, body: {
       'joiningDate': joiningDate.toString(),
       'department': department.toString(),
-      'designation': designation.toString(),
+      // 'designation': designation.toString(),
       'rfid': rfid.toString(),
       'gender': gender.toString(),
       'dob': dob.toString(),
@@ -189,16 +189,16 @@ class _TeacherFormMidState extends State<TeacherFormMid> {
                         });
                       },
                     ),
-                    SwitchListTile(
-                      dense: true,
-                      title: Text('Designation'),
-                      value: designation,
-                      onChanged: (value) {
-                        setState(() {
-                          designation = value;
-                        });
-                      },
-                    ),
+                    // SwitchListTile(
+                    //   dense: true,
+                    //   title: Text('Designation'),
+                    //   value: designation,
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       designation = value;
+                    //     });
+                    //   },
+                    // ),
                     SwitchListTile(
                       dense: true,
                       title: Text('Date of Birth'),
