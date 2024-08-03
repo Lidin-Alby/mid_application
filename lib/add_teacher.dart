@@ -75,7 +75,7 @@ class _AddTeacherPageState extends State<AddTeacherPage> {
         'check': false.toString(),
         'profilePic': '',
         'modified': DateTime.now().toString(),
-        'printed': false.toString()
+        // 'printed': false.toString()
       });
 
       if (res.body == 'true') {

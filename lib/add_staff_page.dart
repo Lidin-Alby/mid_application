@@ -56,7 +56,6 @@ class _AddStaffPageState extends State<AddStaffPage> {
         'check': false.toString(),
         'profilePic': '',
         'modified': DateTime.now().toString(),
-        'printed': false.toString()
       });
 
       if (res.body == 'true') {

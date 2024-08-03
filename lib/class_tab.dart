@@ -326,7 +326,7 @@ class _EachClassPageState extends State<EachClassPage> {
                       child: ListView.builder(
                         itemCount: students.length,
                         itemBuilder: (context, index) {
-                          bool value = true;
+                          bool value = false;
 
                           // print(widget.menuName);
 
@@ -335,9 +335,12 @@ class _EachClassPageState extends State<EachClassPage> {
                               value = students[index]['ready'] ?? false;
                               break;
                             case 'unchecked':
-                              value = students[index]['ready'] == null
-                                  ? false
-                                  : !students[index]['ready'];
+                              {
+                                if (students[index]['ready'] == false &&
+                                    students[index]['printed'] == null) {
+                                  value = true;
+                                }
+                              }
                               break;
                             case 'noPhoto':
                               value = students[index]['profilePic'] == '';

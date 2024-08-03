@@ -95,7 +95,7 @@ class _AddStudentPageState extends State<AddStudentPage> {
         'check': false.toString(),
         'profilePic': '',
         'modified': DateTime.now().toString(),
-        'printed': false.toString()
+        // 'printed': null.toString()
       });
       if (res.body == 'true') {
         firstName.clear();

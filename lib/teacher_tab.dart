@@ -75,16 +75,19 @@ class _TeacherTabState extends State<TeacherTab> {
                 return ListView.builder(
                     itemCount: teachers.length,
                     itemBuilder: (context, index) {
-                      bool value = true;
+                      bool value = false;
                       switch (widget.menuName) {
                         case 'print':
                           value = teachers[index]['ready'] ?? false;
                           break;
                         case 'unchecked':
-                          value = teachers[index]['ready'] == null
-                              ? false
-                              : !teachers[index]['ready'];
-                          break;
+                          {
+                            if (teachers[index]['ready'] == false &&
+                                teachers[index]['printed'] == null) {
+                              value = true;
+                            }
+                          }
+
                         case 'noPhoto':
                           value = teachers[index]['profilePic'] == '';
                         case 'printing':
