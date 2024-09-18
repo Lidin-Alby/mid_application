@@ -85,6 +85,7 @@ class _EachStudentPageState extends State<EachStudentPage> {
   bool opacity = false;
   bool check = false;
   bool ready = false;
+  bool? printed = false;
   // Uint8List? _imagebytes;
   // PlatformFile? _image;
   Map oneStudent = {};
@@ -160,6 +161,7 @@ class _EachStudentPageState extends State<EachStudentPage> {
     check = data['check'];
 
     ready = data['ready'];
+    printed = data['printed'];
 
     address.text = data['address'].toString();
     session.text = data['session'].toString();
@@ -638,7 +640,7 @@ class _EachStudentPageState extends State<EachStudentPage> {
                     ),
                   ),
                 ),
-                if (!ready)
+                if (ready == false && printed == null)
                   Card.outlined(
                     // elevation: 8,
                     child: Padding(

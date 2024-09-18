@@ -22,7 +22,7 @@ class _StaffFormMidState extends State<StaffFormMid> {
   bool rfid = false;
   bool gender = false;
   bool dob = false;
-  bool bloodgroup = false;
+  bool bloodGroup = false;
   // bool wardInSchool = false;
   bool email = false;
   bool fatherorHusName = false;
@@ -66,7 +66,7 @@ class _StaffFormMidState extends State<StaffFormMid> {
     rfid = data['rfid'];
     gender = data['gender'];
     dob = data['dob'];
-    bloodgroup = data['bloodgroup'];
+    bloodGroup = data['bloodGroup'] ?? false;
 
     email = data['email'];
     fatherorHusName = data['fatherorHusName'];
@@ -94,7 +94,7 @@ class _StaffFormMidState extends State<StaffFormMid> {
       'rfid': rfid.toString(),
       'gender': gender.toString(),
       'dob': dob.toString(),
-      'bloodgroup': bloodgroup.toString(),
+      'bloodGroup': bloodGroup.toString(),
       'email': email.toString(),
       'fatherorHusName': fatherorHusName.toString(),
       'qualification': qualification.toString(),
@@ -212,10 +212,10 @@ class _StaffFormMidState extends State<StaffFormMid> {
                     SwitchListTile(
                       dense: true,
                       title: Text('Blood group'),
-                      value: bloodgroup,
+                      value: bloodGroup,
                       onChanged: (value) {
                         setState(() {
-                          bloodgroup = value;
+                          bloodGroup = value;
                         });
                       },
                     ),

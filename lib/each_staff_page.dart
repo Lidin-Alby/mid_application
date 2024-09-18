@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -43,6 +44,8 @@ class _EachStaffPageState extends State<EachStaffPage> {
   TextEditingController rfid = TextEditingController();
   TextEditingController address = TextEditingController();
   TextEditingController designation = TextEditingController();
+  TextEditingController department = TextEditingController();
+  TextEditingController uanNo = TextEditingController();
   String? joiningDate;
   String? gender;
   String? dob;
@@ -54,6 +57,8 @@ class _EachStaffPageState extends State<EachStaffPage> {
   List classes = [];
   late String oldMob;
   bool showClasses = false;
+  bool ready = false;
+  bool? printed = false;
 
   late Future _getProfilePic;
   List religionDropdownList = [
@@ -116,6 +121,7 @@ class _EachStaffPageState extends State<EachStaffPage> {
     lastName.text = data['lastName'].toString();
     mob.text = data['mob'].toString();
     joiningDate = data['joiningDate'];
+    department.text = data['department'] ?? '';
     oldMob = data['mob'].toString();
     designation.text = data['designation'].toString();
     subCaste.text = data['subCaste'].toString();
@@ -129,12 +135,16 @@ class _EachStaffPageState extends State<EachStaffPage> {
     dob = data['dob'];
     bloodGroup = data['bloodGroup'] == '' ? null : data['bloodGroup'];
     qualification.text = data['qualification'].toString();
-    // panNo.text = data['panNo'];
+    panNo.text = data['panNo'];
+    uanNo.text = data['uan'] ?? '';
+    dlNo.text = data['dlNo'];
     dlValidity = data['dlValidity'].toString();
     myClasses = data['myClasses'];
+    ready = data['ready'];
+    printed = data['printed'];
     // myclasses = data['myclasses'];
 
-    // aadhaarNo.text = data['aadhaarNo'];
+    aadhaarNo.text = data['aadhaarNo'];
 
     if (widget.isTeacher) {
       getFormAccessTeacher();
@@ -172,6 +182,7 @@ class _EachStaffPageState extends State<EachStaffPage> {
         'mob': mob.text.trim(),
         'joiningDate': joiningDate ?? '',
         'designation': designation.text.trim(),
+        'department': department.text.trim(),
         'subCaste': subCaste.text.trim(),
         'email': email.text.trim(),
         'rfid': rfid.text.trim(),
@@ -184,6 +195,7 @@ class _EachStaffPageState extends State<EachStaffPage> {
         'bloodGroup': bloodGroup ?? '',
         'qualification': qualification.text.trim(),
         'panNo': panNo.text.trim(),
+        'uan': uanNo.text.trim(),
         'dlValidity': dlValidity ?? '',
         'dlNo': dlNo.text.trim(),
         'aadhaarNo': aadhaarNo.text.trim(),
@@ -219,6 +231,27 @@ class _EachStaffPageState extends State<EachStaffPage> {
         }
       }
     }
+  }
+
+  showSnackBar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.red[600],
+        behavior: SnackBarBehavior.floating,
+        content: const Row(
+          children: [
+            Text(
+              'Deleted Sucessfully',
+            ),
+            Icon(
+              Icons.check_circle,
+              color: Colors.white,
+            )
+          ],
+        ),
+      ),
+    );
+    Navigator.of(context).pop();
   }
 
   @override
@@ -412,6 +445,12 @@ class _EachStaffPageState extends State<EachStaffPage> {
                                         label: Text(i))
                                 ],
                               ),
+                            if (form['department'] == 'true')
+                              MidTextField(
+                                isEdit: isEdit,
+                                label: 'Department',
+                                controller: department,
+                              ),
                             if (form['designation'] == 'true')
                               MidTextField(
                                 isEdit: isEdit,
@@ -544,12 +583,18 @@ class _EachStaffPageState extends State<EachStaffPage> {
                                   label: 'Address',
                                   controller: address,
                                   isEdit: isEdit),
-                            if (form['aadhaarNo'] == 'true')
+                            if (form['aadhaar'] == 'true')
                               MidTextField(
                                   label: 'Aadhaar No.',
                                   controller: aadhaarNo,
                                   isEdit: isEdit),
-                            if (form['panNo'] == 'true')
+                            if (form['uan'] == 'true')
+                              MidTextField(
+                                label: 'Uan No.',
+                                controller: uanNo,
+                                isEdit: isEdit,
+                              ),
+                            if (form['pan'] == 'true')
                               MidTextField(
                                 label: 'Pan No.',
                                 controller: panNo,
@@ -577,212 +622,197 @@ class _EachStaffPageState extends State<EachStaffPage> {
                     ),
                   ),
                 ),
-                Card.outlined(
-                  // elevation: 8,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        if (!isEdit)
+                if (ready == false && printed == null)
+                  Card.outlined(
+                    // elevation: 8,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          if (!isEdit)
+                            Column(
+                              children: [
+                                IconButton.filledTonal(
+                                  // color: Colors.teal[600],
+                                  onPressed: () {
+                                    setState(() {
+                                      isEdit = true;
+                                    });
+                                  },
+                                  icon: Icon(Icons.edit_rounded),
+                                ),
+                                Text(
+                                  'Edit',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.teal[700],
+                                  ),
+                                )
+                              ],
+                            ),
+                          if (isEdit)
+                            Column(
+                              children: [
+                                IconButton.filled(
+                                  // color: Colors.green[600],
+                                  onPressed: saveStaffInfo,
+                                  icon: Icon(Icons.save_outlined),
+                                ),
+                                Text(
+                                  'Save',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.teal[700],
+                                  ),
+                                )
+                              ],
+                            ),
                           Column(
                             children: [
                               IconButton.filledTonal(
-                                // color: Colors.teal[600],
-                                onPressed: () {
-                                  setState(() {
-                                    isEdit = true;
-                                  });
-                                },
-                                icon: Icon(Icons.edit_rounded),
-                              ),
-                              Text(
-                                'Edit',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.teal[700],
-                                ),
-                              )
-                            ],
-                          ),
-                        if (isEdit)
-                          Column(
-                            children: [
-                              IconButton.filled(
-                                // color: Colors.green[600],
-                                onPressed: saveStaffInfo,
-                                icon: Icon(Icons.save_outlined),
-                              ),
-                              Text(
-                                'Save',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.teal[700],
-                                ),
-                              )
-                            ],
-                          ),
-                        Column(
-                          children: [
-                            IconButton.filledTonal(
-                                // color: Colors.red[600],
-                                onPressed: () => showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: Text('Delete Permanently'),
-                                        content: Text(
-                                          'Are you sure you want to delete?',
-                                        ),
-                                        actions: [
-                                          OutlinedButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                            child: Text('Cancel'),
+                                  // color: Colors.red[600],
+                                  onPressed: () => showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text('Delete Permanently'),
+                                          content: Text(
+                                            'Are you sure you want to delete?',
                                           ),
-                                          FilledButton(
-                                            // style: ElevatedButton.styleFrom(
-                                            //     backgroundColor: Colors.red),
-                                            onPressed: () async {
-                                              Navigator.of(context).pop();
-
-                                              var url = Uri.parse(
-                                                  '$ipv4/deleteMidStaff');
-                                              var res = await http
-                                                  .post(url, body: {
-                                                'mob': widget.mob,
-                                                'schoolCode': widget.schoolCode
-                                              });
-                                              if (res.body == 'true') {
+                                          actions: [
+                                            OutlinedButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: Text('Cancel'),
+                                            ),
+                                            FilledButton(
+                                              // style: ElevatedButton.styleFrom(
+                                              //     backgroundColor: Colors.red),
+                                              onPressed: () async {
                                                 Navigator.of(context).pop();
 
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  SnackBar(
-                                                    backgroundColor:
-                                                        Colors.red[600],
-                                                    behavior: SnackBarBehavior
-                                                        .floating,
-                                                    content: const Row(
-                                                      children: [
-                                                        Text(
-                                                          'Deleted Sucessfully',
-                                                        ),
-                                                        Icon(
-                                                          Icons.check_circle,
-                                                          color: Colors.white,
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-
-                                                widget.listRefresh();
-                                              }
-                                            },
-                                            child: Text('Delete'),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                icon: Icon(Icons.delete)),
-                            Text(
-                              'Delete',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.teal[700],
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            IconButton.filledTonal(
-                                // color: Colors.teal[700],
-                                onPressed: () async {},
-                                icon: Icon(Icons.close)),
-                            Text(
-                              'Unchecked',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.teal[700],
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            IconButton.filledTonal(
-                                // color: Colors.teal[700],
-                                onPressed: () => showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: Text('Warning'),
-                                        content: Text(
-                                          'The data send to printing can\'t be edited further. Confirm before submiting.',
-                                        ),
-                                        actions: [
-                                          OutlinedButton(
-                                            onPressed: () =>
-                                                Navigator.of(context).pop(),
-                                            child: Text('Cancel'),
-                                          ),
-                                          FilledButton(
-                                            onPressed: () async {
-                                              Navigator.of(context).pop();
-
-                                              var url =
-                                                  Uri.parse('$ipv4/readyStaff');
-                                              var res = await http
-                                                  .post(url, body: {
-                                                'mob': widget.mob,
-                                                'schoolCode': widget.schoolCode
-                                              });
-                                              if (res.body == 'true') {
-                                                if (mounted) {
-                                                  Navigator.of(context).pop();
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(
-                                                    SnackBar(
-                                                      backgroundColor:
-                                                          Colors.green[600],
-                                                      behavior: SnackBarBehavior
-                                                          .floating,
-                                                      content: const Row(
-                                                        children: [
-                                                          Text(
-                                                            'Updated Sucessfully',
-                                                          ),
-                                                          Icon(
-                                                            Icons.check_circle,
-                                                            color: Colors.white,
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
+                                                var url = Uri.parse(
+                                                    '$ipv4/deleteMidStaff');
+                                                var res = await http.post(url,
+                                                    body: {
+                                                      'mob': widget.mob,
+                                                      'schoolCode':
+                                                          widget.schoolCode
+                                                    });
+                                                if (res.body == 'true') {
                                                   widget.listRefresh();
+                                                  showSnackBar();
                                                 }
-                                              }
-                                            },
-                                            child: Text('Submit'),
-                                          )
-                                        ],
+                                              },
+                                              child: Text('Delete'),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                icon: Icon(Icons.print)),
-                            Text(
-                              'Send print',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.teal[700],
-                              ),
-                            )
-                          ],
-                        )
-                      ],
+                                  icon: Icon(Icons.delete)),
+                              Text(
+                                'Delete',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.teal[700],
+                                ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              IconButton.filledTonal(
+                                  // color: Colors.teal[700],
+                                  onPressed: () async {},
+                                  icon: Icon(Icons.close)),
+                              Text(
+                                'Unchecked',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.teal[700],
+                                ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              IconButton.filledTonal(
+                                  // color: Colors.teal[700],
+                                  onPressed: () => showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: Text('Warning'),
+                                          content: Text(
+                                            'The data send to printing can\'t be edited further. Confirm before submiting.',
+                                          ),
+                                          actions: [
+                                            OutlinedButton(
+                                              onPressed: () =>
+                                                  Navigator.of(context).pop(),
+                                              child: Text('Cancel'),
+                                            ),
+                                            FilledButton(
+                                              onPressed: () async {
+                                                Navigator.of(context).pop();
+
+                                                var url = Uri.parse(
+                                                    '$ipv4/readyStaff');
+                                                var res = await http.post(url,
+                                                    body: {
+                                                      'mob': widget.mob,
+                                                      'schoolCode':
+                                                          widget.schoolCode
+                                                    });
+                                                if (res.body == 'true') {
+                                                  if (mounted) {
+                                                    Navigator.of(context).pop();
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      SnackBar(
+                                                        backgroundColor:
+                                                            Colors.green[600],
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        content: const Row(
+                                                          children: [
+                                                            Text(
+                                                              'Updated Sucessfully',
+                                                            ),
+                                                            Icon(
+                                                              Icons
+                                                                  .check_circle,
+                                                              color:
+                                                                  Colors.white,
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    );
+                                                    widget.listRefresh();
+                                                  }
+                                                }
+                                              },
+                                              child: Text('Submit'),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                  icon: Icon(Icons.print)),
+                              Text(
+                                'Send print',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.teal[700],
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                )
+                  )
               ],
             )
           : Center(child: CircularProgressIndicator()),

@@ -242,14 +242,23 @@ class _QRScannerState extends State<QRScanner> {
   }
 
   saveAttendance() async {
+    var url1 = Uri.parse('$ipv4/getApiSettings/${widget.schoolCode}');
+    var res1 = await http.get(url1);
+    var details = jsonDecode(res1.body);
+
     if (sendSms) {
+      String smsText = details['smsText'];
+      smsText = smsText.replaceAll("{schoolName}", details['schoolName']);
       for (Map student in allStudents) {
-        String message =
-            'Dear Parent of ${student['fullName']}\nToday\'s Attendance of your ward: ${student['status']}.\nFor more info use app.';
+        String message = smsText
+            .replaceAll("{studentName}", student['fullName'])
+            .replaceAll("{studentStatus}", student['status']);
+
         sendSMS(
-            message: message,
-            recipients: [student['fatherMobNo'].toString()],
-            sendDirect: true);
+          message: message,
+          recipients: [student['fatherMobNo'].toString()],
+          sendDirect: true,
+        );
       }
     }
     if (sendCall) {

@@ -328,9 +328,10 @@ class _EachClassPageState extends State<EachClassPage> {
                         itemBuilder: (context, index) {
                           bool value = false;
 
-                          // print(widget.menuName);
-
                           switch (widget.menuName) {
+                            case 'list':
+                              value = true;
+                              break;
                             case 'print':
                               value = students[index]['ready'] ?? false;
                               break;
@@ -345,12 +346,18 @@ class _EachClassPageState extends State<EachClassPage> {
                             case 'noPhoto':
                               value = students[index]['profilePic'] == '';
                             case 'printing':
-                              value = students[index]['printed'] == null
-                                  ? false
-                                  : !students[index]['printed'];
+                              {
+                                if (students[index]['printed'] == false) {
+                                  value = false;
+                                }
+                              }
                               break;
                             case 'printed':
-                              value = students[index]['printed'] ?? false;
+                              {
+                                if (students[index]['printed'] == true) {
+                                  value = true;
+                                }
+                              }
                               break;
                           }
 

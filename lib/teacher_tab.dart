@@ -76,7 +76,11 @@ class _TeacherTabState extends State<TeacherTab> {
                     itemCount: teachers.length,
                     itemBuilder: (context, index) {
                       bool value = false;
+
                       switch (widget.menuName) {
+                        case 'list':
+                          value = true;
+                          break;
                         case 'print':
                           value = teachers[index]['ready'] ?? false;
                           break;
@@ -87,16 +91,22 @@ class _TeacherTabState extends State<TeacherTab> {
                               value = true;
                             }
                           }
-
+                          break;
                         case 'noPhoto':
                           value = teachers[index]['profilePic'] == '';
                         case 'printing':
-                          value = teachers[index]['printed'] == null
-                              ? false
-                              : !teachers[index]['printed'];
+                          {
+                            if (teachers[index]['printed'] == false) {
+                              value = false;
+                            }
+                          }
                           break;
                         case 'printed':
-                          value = teachers[index]['printed'] ?? false;
+                          {
+                            if (teachers[index]['printed'] == true) {
+                              value = true;
+                            }
+                          }
                           break;
                       }
                       if (value) {
