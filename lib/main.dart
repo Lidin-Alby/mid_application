@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mid_application/Screens/login_screen.dart';
 import 'package:mid_application/login_page.dart';
 import 'package:mid_application/mid_agent_home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,11 +30,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        useMaterial3: true,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange),
+        useMaterial3: false,
       ),
       home: schoolCode == null
-          ? LoginPage()
+          ? LoginScreen()
           : schoolCode == 'mid'
               ? MidAgentHome()
               : RightMenu(schoolCode: schoolCode!, user: user),
