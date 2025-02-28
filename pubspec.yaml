@@ -54,6 +54,9 @@ dependencies:
       url: https://github.com/fluttercommunity/flutter_sms.git
       ref: master
   pdf: ^3.11.0
+  google_mlkit_face_detection: ^0.12.0
+  image: ^4.2.0
+  riverpod: ^2.6.1
 
 dev_dependencies:
   flutter_test:

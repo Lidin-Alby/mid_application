@@ -8,6 +8,7 @@ import 'package:flutter_sms/flutter_sms.dart';
 // import 'package:http/browser_client.dart';
 import 'package:http/http.dart' as http;
 import 'package:mid_application/each_school.dart';
+import 'package:mid_application/face_detection.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -134,6 +135,13 @@ class _MidAgentHomeState extends State<MidAgentHome> {
         //   onPressed: () {},
         // ),
         title: Text('Dashboard'),
+        actions: [
+          TextButton(
+              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => FaceDetection(),
+                  )),
+              child: Text('Face'))
+        ],
       ),
       drawer: MidDrawer(),
       body: Padding(

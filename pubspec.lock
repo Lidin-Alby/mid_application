@@ -337,6 +337,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.7.0"
+  google_mlkit_commons:
+    dependency: transitive
+    description:
+      name: google_mlkit_commons
+      sha256: "7e9a6d6e66b44aa8cfe944bda9bc3346c52486dd890ca49e5bc98845cda40d7f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.0"
+  google_mlkit_face_detection:
+    dependency: "direct main"
+    description:
+      name: google_mlkit_face_detection
+      sha256: "65988405c884fd84a4ccc8bded7b5e3e4c33362f6f4eaaa94818bdaaba7bab7d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.12.0"
   html:
     dependency: transitive
     description:
@@ -362,7 +378,7 @@ packages:
     source: hosted
     version: "4.0.2"
   image:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image
       sha256: "2237616a36c0d69aef7549ab439b833fb7f9fb9fc861af2cc9ac3eedddd69ca8"
@@ -657,6 +673,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  riverpod:
+    dependency: "direct main"
+    description:
+      name: riverpod
+      sha256: "59062512288d3056b2321804332a13ffdd1bf16df70dcc8e506e411280a72959"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.1"
   share_plus:
     dependency: "direct main"
     description:
@@ -758,6 +782,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.1"
+  state_notifier:
+    dependency: transitive
+    description:
+      name: state_notifier
+      sha256: b8677376aa54f2d7c58280d5a007f9e8774f1968d1fb1c096adcb4792fba29bb
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   stream_channel:
     dependency: transitive
     description:

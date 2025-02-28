@@ -253,6 +253,7 @@ class _QRScannerState extends State<QRScanner> {
         String message = smsText
             .replaceAll("{studentName}", student['fullName'])
             .replaceAll("{studentStatus}", student['status']);
+            
 
         sendSMS(
           message: message,
