@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mid_application/Screens/login_screen.dart';
 import 'package:mid_application/login_page.dart';
 import 'package:mid_application/mid_agent_home.dart';
@@ -6,39 +7,40 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  final loggedIn = prefs.containsKey('token');
-  final schoolCode = prefs.getString('schoolCode');
-  final user = prefs.getString('user');
+  // final prefs = await SharedPreferences.getInstance();
+  // final loggedIn = prefs.containsKey('token');
+  // final schoolCode = prefs.getString('schoolCode');
+  // final user = prefs.getString('user');
 
-  runApp(MyApp(
-      isLoggedIn: loggedIn, schoolCode: schoolCode, user: user.toString()));
+  runApp(ProviderScope(
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp(
-      {super.key,
-      required this.isLoggedIn,
-      required this.schoolCode,
-      required this.user});
-
-  final bool isLoggedIn;
-  final String? schoolCode;
-  final String user;
+  const MyApp({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange),
-        useMaterial3: false,
-      ),
-      home: schoolCode == null
-          ? LoginScreen()
-          : schoolCode == 'mid'
-              ? MidAgentHome()
-              : RightMenu(schoolCode: schoolCode!, user: user),
-    );
+        theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: const Color.fromARGB(255, 245, 243, 244),
+            foregroundColor: Colors.black,
+            elevation: 0,
+            shape: Border(
+              bottom: BorderSide(color: Colors.grey),
+            ),
+          ),
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.deepOrange,
+            accentColor: Colors.orangeAccent,
+          ),
+          useMaterial3: false,
+        ),
+        home: LoginScreen());
   }
 }
 
