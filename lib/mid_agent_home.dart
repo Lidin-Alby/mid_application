@@ -75,7 +75,7 @@ class _MidAgentHomeState extends State<MidAgentHome> {
         'schoolName': schoolName.text.trim(),
         'schoolPassword': schoolPassword.text.trim(),
         'agentMob': agentMob,
-        'email': email.text.trim()
+        'schoolMail': email.text.trim()
       });
 
       if (res.body == 'true') {

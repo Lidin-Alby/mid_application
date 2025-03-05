@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyTextfield extends StatelessWidget {
   const MyTextfield({super.key, required this.label, required this.onChanged});
   final String label;
-  final Function(String) onChanged;
+  final Function(String value) onChanged;
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mid_application/Screens/agent_home_screen.dart';
-import 'package:mid_application/models/login.dart';
+
 import 'package:mid_application/widgets/my_textfield.dart';
 
 import '../providers/login_provider.dart';
@@ -13,18 +12,6 @@ class LoginScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final loginState = ref.watch(loginProvider);
     final loginNotifier = ref.read(loginProvider.notifier);
-    ref.listen<Login>(loginProvider, (previous, current) {
-      if (current.token != null) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AgentHomeScreen(),
-            ));
-      }
-    });
-    if (loginState.token != null) {
-      return AgentHomeScreen();
-    }
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 252, 242),

@@ -8,9 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../ip_address.dart';
 
 class LoginNotifier extends StateNotifier<Login> {
-  LoginNotifier() : super(Login()) {
-    _loadToken();
-  }
+  LoginNotifier() : super(Login());
 
   void updateUserId(String userId) {
     state = state.copyWith(userId: userId);
@@ -26,7 +24,7 @@ class LoginNotifier extends StateNotifier<Login> {
 
   Future login() async {
     state = state.copyWith(isLoading: true, error: null);
-    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     try {
       var url = Uri.parse('$ipv4/loginMid');
@@ -39,14 +37,14 @@ class LoginNotifier extends StateNotifier<Login> {
       if (response.statusCode == 200) {
         final Map data = jsonDecode(response.body);
 
-        final SharedPreferences prefs = await _prefs;
         state = state.copyWith(token: data['token'], isLoading: false);
         prefs.setString('token', state.token!);
+
         prefs.setString('user', data['user']);
         prefs.setString('schoolCode', data['schoolCode']);
       } else {
         final Map errorData = jsonDecode(response.body);
-        print(errorData);
+
         state = state.copyWith(isLoading: false, error: errorData['message']);
       }
     } catch (e) {
@@ -54,12 +52,19 @@ class LoginNotifier extends StateNotifier<Login> {
     }
   }
 
-  Future _loadToken() async {
+  Future<void> checkAuth() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString('token');
     if (token != null) {
       state = state.copyWith(token: token);
     }
+  }
+
+  logout() async {
+    state = state.copyWith(token: null);
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
   }
 }
 
