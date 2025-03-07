@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MyTextfield extends StatelessWidget {
-  const MyTextfield({super.key, required this.label, required this.onChanged});
+  const MyTextfield({super.key, required this.label, required this.controller});
   final String label;
-  final Function(String value) onChanged;
+  final TextEditingController controller;
+  // final Function(String value) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class MyTextfield extends StatelessWidget {
         SizedBox(
           height: 34,
           child: TextField(
-            onChanged: onChanged,
+            controller: controller,
             decoration: InputDecoration(
               isDense: true,
               border: OutlineInputBorder(),

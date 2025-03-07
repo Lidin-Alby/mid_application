@@ -1,18 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:mid_application/Screens/edit_or_add_school.dart';
-import 'package:mid_application/Screens/login_screen.dart';
-import 'package:mid_application/models/school.dart';
-import 'package:mid_application/providers/login_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:mid_application/Blocs/login_bloc.dart';
+import 'package:mid_application/Blocs/login_event.dart';
+
+import 'package:mid_application/Blocs/school_bloc.dart';
+import 'package:mid_application/Blocs/school_event.dart';
+import 'package:mid_application/Blocs/school_state.dart';
+import 'package:mid_application/Screens/add_school_model.dart';
+
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class AgentHomeScreen extends ConsumerWidget {
+// class AgentHomeScreen extends ConsumerWidget {
+//   const AgentHomeScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final loginNotifier = ref.read(loginProvider.notifier);
+//     final schoolListAsyncValue = ref.read(schoolListProvider);
+
+//     return
+
+//   }
+// }
+
+// import 'package:flutter/material.dart';
+
+class AgentHomeScreen extends StatelessWidget {
   const AgentHomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final loginNotifier = ref.read(loginProvider.notifier);
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -31,72 +49,98 @@ class AgentHomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Slidable(
-              startActionPane: ActionPane(motion: ScrollMotion(), children: [
-                SlidableAction(
-                  icon: Icons.edit_outlined,
-                  borderRadius:
-                      BorderRadius.horizontal(left: Radius.circular(6)),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  onPressed: (context) => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditOrAddSchool(
-                        school: School(
-                          schoolCode: '108',
-                          schoolName: 'SVP',
-                          principalPhone: '9422',
+      body: BlocProvider(
+        create: (context) => SchoolBloc()..add(Loadschools()),
+        child: BlocBuilder<SchoolBloc, SchoolState>(builder: (context, state) {
+          if (state is SchoolError) {
+            return Center(
+              child: Text(state.error),
+            );
+          } else if (state is SchoolLoaded) {
+            return state.schools.isEmpty
+                ? Center(
+                    child: Text('No schools added'),
+                  )
+                : ListView.builder(
+                    itemCount: state.schools.length,
+                    itemBuilder: (context, index) => Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Slidable(
+                        startActionPane:
+                            ActionPane(motion: ScrollMotion(), children: [
+                          SlidableAction(
+                            icon: Icons.edit_outlined,
+                            borderRadius: BorderRadius.horizontal(
+                                left: Radius.circular(6)),
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            onPressed: (context) {},
+                            // (context) => Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //     builder: (context) => EditSchool(
+                            //       school: School(
+                            //         schoolCode: '108',
+                            //         schoolName: 'SVP',
+                            //         principalPhone: '9422',
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                          )
+                        ]),
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                          // margin: EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundImage:
+                                    AssetImage('assets/images/logoImg.jpg'),
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    state.schools[index].schoolName.toString(),
+                                  ),
+                                  Text(
+                                    state.schools[index].principalPhone
+                                        .toString(),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ]),
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-                // margin: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage('assets/images/logoImg.jpg'),
-                    ),
-                    Column(
-                      children: [
-                        Text('data'),
-                        Text('data'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          )
-        ],
+                  );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }),
       ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Icon(Icons.add),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditOrAddSchool(
-              school: School(
-                schoolCode: '108',
-                schoolName: 'SVPS',
-                principalPhone: 'Lidin Alby',
+        onPressed: () => showModalBottomSheet(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(16),
               ),
             ),
-          ),
-        ),
+            isScrollControlled: true,
+            showDragHandle: true,
+            context: context,
+            builder: (context) => AddSchoolModel()),
       ),
       drawer: Drawer(
         child: Column(
@@ -106,12 +150,13 @@ class AgentHomeScreen extends ConsumerWidget {
             ),
             TextButton(
               onPressed: () {
-                loginNotifier.logout();
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginScreen(),
-                    ));
+                BlocProvider.of<LoginBloc>(context).add(LogoutPressed());
+
+                // Navigator.pushReplacement(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => LoginScreen(),
+                //     ));
               },
               child: Text('Logout'),
             ),

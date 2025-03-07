@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mid_application/Blocs/login_bloc.dart';
+import 'package:mid_application/Blocs/login_state.dart';
 import 'package:mid_application/Screens/agent_home_screen.dart';
 
 import 'package:mid_application/Screens/login_screen.dart';
@@ -32,9 +35,7 @@ void main() {
   // final schoolCode = prefs.getString('schoolCode');
   // final user = prefs.getString('user');
 
-  runApp(ProviderScope(
-    child: MyApp(),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -60,7 +61,28 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: false,
       ),
-      home: AuthWrapper(),
+      home: BlocProvider(
+        create: (context) => LoginBloc(),
+        child: BlocBuilder<LoginBloc, LoginState>(
+          builder: (context, state) {
+            if (state is LoggedIn) {
+              return AgentHomeScreen();
+              // Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => AgentHomeScreen(),
+              //     ));
+            } else {
+              return LoginScreen();
+              // Navigator.pushReplacement(
+              //     context,
+              //     MaterialPageRoute(
+              //       builder: (context) => LoginScreen(),
+              //     ));
+            }
+          },
+        ),
+      ),
     );
   }
 }
