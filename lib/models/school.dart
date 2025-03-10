@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 class School {
   String schoolCode;
   String? schoolName;
@@ -12,8 +10,8 @@ class School {
   String? estCode;
   String? affNo;
   String? principalName;
-  Uint8List? schoolLogo;
-  Uint8List? principalSign;
+  String? schoolLogo;
+  String? principalSign;
 
   School({
     required this.schoolCode,

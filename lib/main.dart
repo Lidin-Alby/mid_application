@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mid_application/Blocs/Add%20school/add_school_bloc.dart';
 import 'package:mid_application/Blocs/login_bloc.dart';
 import 'package:mid_application/Blocs/login_state.dart';
+import 'package:mid_application/Blocs/school_bloc.dart';
+import 'package:mid_application/Blocs/school_event.dart';
 import 'package:mid_application/Screens/agent_home_screen.dart';
 
 import 'package:mid_application/Screens/login_screen.dart';
@@ -45,25 +48,35 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: AppBarTheme(
-          backgroundColor: const Color.fromARGB(255, 245, 243, 244),
-          foregroundColor: Colors.black,
-          elevation: 0,
-          shape: Border(
-            bottom: BorderSide(color: Colors.grey),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => LoginBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SchoolListBloc()..add(LoadschoolList()),
+        ),
+        BlocProvider(
+          create: (context) => AddSchoolBloc(context.read<SchoolListBloc>()),
+        )
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: AppBarTheme(
+            backgroundColor: const Color.fromARGB(255, 245, 243, 244),
+            foregroundColor: Colors.black,
+            elevation: 0,
+            shape: Border(
+              bottom: BorderSide(color: Colors.grey),
+            ),
           ),
+          colorScheme: ColorScheme.fromSwatch(
+            primarySwatch: Colors.deepOrange,
+          ),
+          useMaterial3: false,
         ),
-        colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: Colors.deepOrange,
-        ),
-        useMaterial3: false,
-      ),
-      home: BlocProvider(
-        create: (context) => LoginBloc(),
-        child: BlocBuilder<LoginBloc, LoginState>(
+        home: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
             if (state is LoggedIn) {
               return AgentHomeScreen();

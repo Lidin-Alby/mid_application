@@ -1,17 +1,17 @@
 import 'package:mid_application/models/school.dart';
 
-abstract class SchoolState {}
+abstract class SchoolListState {}
 
-class SchoolInitial extends SchoolState {}
+class SchoolListInitial extends SchoolListState {}
 
-class SchoolLoading extends SchoolState {}
+class SchoolListLoading extends SchoolListState {}
 
-class SchoolLoaded extends SchoolState {
+class SchoolListLoaded extends SchoolListState {
   final List<School> schools;
-  SchoolLoaded(this.schools);
+  SchoolListLoaded(this.schools);
 }
 
-class SchoolError extends SchoolState {
+class SchoolListError extends SchoolListState {
   final String error;
-  SchoolError(this.error);
+  SchoolListError(this.error);
 }

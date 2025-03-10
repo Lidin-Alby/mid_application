@@ -9,11 +9,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../ip_address.dart';
 
-class SchoolBloc extends Bloc<SchoolEvent, SchoolState> {
-  SchoolBloc() : super(SchoolInitial()) {
-    on<Loadschools>(
+class SchoolListBloc extends Bloc<SchoolListEvent, SchoolListState> {
+  SchoolListBloc() : super(SchoolListInitial()) {
+    on<LoadschoolList>(
       (event, emit) async {
-        emit(SchoolLoading());
+        emit(SchoolListLoading());
+        print("hello");
         try {
           final prefs = await SharedPreferences.getInstance();
           final token = prefs.getString('token');
@@ -23,18 +24,24 @@ class SchoolBloc extends Bloc<SchoolEvent, SchoolState> {
           if (res.statusCode == 200) {
             var data = jsonDecode(res.body);
             List d = data['schools'];
+
             final List<School> schools = d
                 .map(
                   (school) => School.fromJson(school),
                 )
                 .toList();
-            emit(SchoolLoaded(schools));
+            emit(SchoolListLoaded(schools));
           } else {
-            emit(SchoolError(res.statusCode.toString()));
+            emit(SchoolListError(res.statusCode.toString()));
           }
         } catch (e) {
-          emit(SchoolError(e.toString()));
+          emit(SchoolListError(e.toString()));
         }
+      },
+    );
+    on<SchoolListUpdated>(
+      (event, emit) {
+        emit(SchoolListLoaded(event.schools));
       },
     );
   }
