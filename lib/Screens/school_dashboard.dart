@@ -1,38 +1,75 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
+import 'package:mid_application/Screens/class_list.dart';
+import 'package:mid_application/widgets/counts_column.dart';
+import 'package:mid_application/widgets/menu_tile.dart';
 
 class SchoolDashboard extends StatelessWidget {
   const SchoolDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Expanded(flex: 1, child: Container()),
-              Expanded(
-                flex: 2,
+    return Stack(
+      children: [
+        Column(
+          children: [
+            Expanded(flex: 1, child: Container()),
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                    // borderRadius: BorderRadius.vertical(
+                    //   top: Radius.circular(10),
+                    // ),
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 25,
+                        spreadRadius: 2,
+                        color: const Color.fromARGB(60, 0, 0, 0),
+                      ),
+                    ]),
                 child: Container(
-                  color: const Color.fromARGB(255, 255, 252, 242),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 255, 252, 242),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(10),
+                    ),
+                  ),
                 ),
               ),
-            ],
-          ),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 10,
+            ),
+          ],
+        ),
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Details',
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 25,
+                      spreadRadius: 2,
+                      color: const Color.fromARGB(60, 0, 0, 0),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                Text('Details', style: Theme.of(context).textTheme.titleLarge),
-                SizedBox(
-                  height: 10,
-                ),
-                Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  elevation: 10,
+                margin: const EdgeInsets.symmetric(horizontal: 25),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                  ),
                   child: Column(
                     children: [
                       Container(
@@ -53,7 +90,7 @@ class SchoolDashboard extends StatelessWidget {
                               'JKT Convent School',
                               style: TextStyle(
                                 fontSize: 20,
-                                fontWeight: FontWeight.w400,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                             SizedBox(
@@ -68,87 +105,176 @@ class SchoolDashboard extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        // padding: EdgeInsets.symmetric(vertical: ),
-                        height: 150,
-                        color: const Color.fromARGB(255, 245, 243, 244),
+                        padding: EdgeInsets.symmetric(vertical: 30),
+                        // height: 150,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromARGB(255, 245, 243, 244),
+                        ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  '728',
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Container(
-                                  color:
-                                      const Color.fromARGB(255, 255, 252, 242),
-                                  child: Icon(
-                                    Icons.person_outline_rounded,
-                                    size: 24,
-                                  ),
-                                ),
-                                Text('Students'),
-                              ],
+                            CountsColumn(
+                              count: '728',
+                              icon: Icons.person_outline_rounded,
+                              label: 'Students',
                             ),
-                            Column(
-                              children: [
-                                Text('728'),
-                                Icon(Icons.person_outline_rounded),
-                                Text('Students'),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                Text('728'),
-                                Icon(Icons.person_outline_rounded),
-                                Text('Students'),
-                              ],
-                            ),
+                            CountsColumn(
+                                count: '16',
+                                icon: Symbols.person_edit,
+                                label: 'Class Teachers'),
+                            CountsColumn(
+                                count: '16',
+                                icon: Icons.groups_outlined,
+                                label: 'Total Staff')
                           ],
                         ),
                       )
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 40,
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: Column(
+                  spacing: 20,
+                  children: [
+                    Row(
+                      spacing: 20,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 25,
+                                  spreadRadius: 2,
+                                  color: const Color.fromARGB(60, 0, 0, 0),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Material(
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(6),
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ClassList(),
+                                    )),
+                                child: Ink(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  height: 130,
+                                  width: 130,
+                                  // alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    spacing: 8,
+                                    children: [
+                                      Icon(
+                                        Icons.list_alt,
+                                        size: 28,
+                                      ),
+                                      Text(
+                                        'List',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        MenuTile(
+                          icon: Icons.cancel_outlined,
+                          label: 'Unchecked',
+                          cardColor: Colors.black87,
+                          color: Colors.white,
+                          count: '16',
+                          onTap: () {},
+                        )
+                      ],
+                    ),
+                    Row(
+                      spacing: 20,
+                      children: [
+                        MenuTile(
+                          icon: Icons.no_photography_outlined,
+                          label: 'No Photos',
+                          cardColor: Colors.black87,
+                          color: Colors.white,
+                          count: '10',
+                          onTap: () {},
+                        ),
+                        MenuTile(
+                          icon: Icons.print_outlined,
+                          label: 'Ready to Print',
+                          cardColor: Colors.white,
+                          count: '10',
+                          onTap: () {},
+                        )
+                      ],
+                    ),
+                    Row(
+                      spacing: 20,
+                      children: [
+                        MenuTile(
+                          icon: Icons.restart_alt,
+                          label: 'Printing',
+                          cardColor: Colors.white,
+                          count: '10',
+                          onTap: () {},
+                        ),
+                        MenuTile(
+                          icon: Icons.done_all_rounded,
+                          label: 'Delivered',
+                          cardColor: Colors.black87,
+                          color: Colors.white,
+                          count: '10',
+                          onTap: () {},
+                        )
+                      ],
+                    ),
+                    Row(
+                      spacing: 20,
+                      children: [
+                        MenuTile(
+                          icon: Icons.login_rounded,
+                          label: 'Login Pending',
+                          cardColor: Colors.black87,
+                          color: Colors.white,
+                          count: '10',
+                          onTap: () {},
+                        ),
+                        MenuTile(
+                          icon: Icons.badge_outlined,
+                          label: 'Card Designs',
+                          cardColor: Colors.white,
+                          count: '10',
+                          onTap: () {},
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Row(
-                    spacing: 15,
-                    children: [
-                      Expanded(
-                        child: Card(
-                          elevation: 5,
-                          child: Container(
-                            height: 130,
-                            width: 130,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Card(
-                          color: Colors.black,
-                          child: Container(
-                            height: 130,
-                            width: 130,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 40,
+              )
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

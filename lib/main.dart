@@ -71,6 +71,7 @@ class MyApp extends StatelessWidget {
               bottom: BorderSide(color: Colors.grey),
             ),
           ),
+          fontFamily: 'Inter',
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.deepOrange,
           ),

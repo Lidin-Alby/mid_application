@@ -56,6 +56,7 @@ dependencies:
   flutter_slidable: ^4.0.0
   swipe_to: ^1.0.6
   flutter_bloc: ^9.1.0
+  material_symbols_icons: ^4.2808.1
   # flutter_sms: 
     # path: C:/Users/lidin/Documents/flutter_sms
 
@@ -108,6 +109,9 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: assets/fonts/OpenSans.ttf
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf
         # - asset: fonts/Schyler-Italic.ttf
         #   style: italic
   #   - family: Trajan Pro

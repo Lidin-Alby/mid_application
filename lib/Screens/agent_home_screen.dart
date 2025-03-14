@@ -10,7 +10,8 @@ import 'package:mid_application/Blocs/school_state.dart';
 import 'package:mid_application/Screens/add_school_model.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:mid_application/Screens/school_dashboard.dart';
+
+import 'package:mid_application/Screens/school_home_screen.dart';
 
 // class AgentHomeScreen extends ConsumerWidget {
 //   const AgentHomeScreen({super.key});
@@ -119,7 +120,7 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                             onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SchoolDashboard(),
+                                  builder: (context) => SchoolHomeScreen(),
                                 )),
                             child: Ink(
                               padding: EdgeInsets.symmetric(
