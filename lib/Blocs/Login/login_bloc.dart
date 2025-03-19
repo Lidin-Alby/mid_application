@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mid_application/Blocs/login_event.dart';
-import 'package:mid_application/Blocs/login_state.dart';
+import 'package:mid_application/Blocs/Login/login_event.dart';
+import 'package:mid_application/Blocs/Login/login_state.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../ip_address.dart';
+import '../../ip_address.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial()) {

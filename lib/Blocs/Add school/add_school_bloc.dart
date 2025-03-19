@@ -2,9 +2,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mid_application/Blocs/Add%20school/add_school_event.dart';
 import 'package:mid_application/Blocs/Add%20school/add_school_state.dart';
 import 'package:http/http.dart' as http;
-import 'package:mid_application/Blocs/school_bloc.dart';
-import 'package:mid_application/Blocs/school_event.dart';
-import 'package:mid_application/Blocs/school_state.dart';
+import 'package:mid_application/Blocs/School%20List/school_bloc.dart';
+import 'package:mid_application/Blocs/School%20List/school_event.dart';
+import 'package:mid_application/Blocs/School%20List/school_state.dart';
 import 'package:mid_application/models/school.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

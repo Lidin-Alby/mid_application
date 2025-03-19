@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mid_application/Blocs/login_bloc.dart';
-import 'package:mid_application/Blocs/login_event.dart';
-import 'package:mid_application/Blocs/login_state.dart';
+import 'package:mid_application/Blocs/Login/login_bloc.dart';
+import 'package:mid_application/Blocs/Login/login_event.dart';
+import 'package:mid_application/Blocs/Login/login_state.dart';
 
 import 'package:mid_application/widgets/my_textfield.dart';
 

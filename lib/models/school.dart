@@ -12,6 +12,15 @@ class School {
   String? principalName;
   String? schoolLogo;
   String? principalSign;
+  int? studentCount;
+  int? teacherCount;
+  int? totalStaffCount;
+  int? uncheckedCount;
+  int? noPhotosCount;
+  int? readyPrintCount;
+  int? printingCount;
+  int? deliveredCount;
+  int? loginPendingCount;
 
   School({
     required this.schoolCode,
@@ -27,6 +36,15 @@ class School {
     this.principalName,
     this.schoolLogo,
     this.principalSign,
+    this.studentCount,
+    this.teacherCount,
+    this.totalStaffCount,
+    this.uncheckedCount,
+    this.noPhotosCount,
+    this.readyPrintCount,
+    this.printingCount,
+    this.deliveredCount,
+    this.loginPendingCount,
   });
   factory School.fromJson(json) {
     return School(
@@ -42,6 +60,15 @@ class School {
       affNo: json['principalName'] ?? '',
       schoolLogo: json['schoolLogo'] ?? '',
       principalSign: json['principalSign'] ?? '',
+      studentCount: json['studentCount'] ?? 0,
+      teacherCount: json['teacherCount'] ?? 0,
+      totalStaffCount: json['totalStaffCount'] ?? 0,
+      uncheckedCount: json['uncheckedCount'] ?? 0,
+      noPhotosCount: json['noPhotosCount'] ?? 0,
+      readyPrintCount: json['readyPrintCount'] ?? 0,
+      printingCount: json['printingCount'] ?? 0,
+      deliveredCount: json['deliveredCount'] ?? 0,
+      loginPendingCount: json['loginPendingCount'] ?? 0,
     );
   }
 }

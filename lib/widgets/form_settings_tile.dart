@@ -1,0 +1,76 @@
+import 'package:flutter/material.dart';
+
+class FormSettingsTile extends StatelessWidget {
+  const FormSettingsTile(
+      {super.key,
+      required this.title,
+      required this.icon,
+      required this.description});
+  final String title;
+  final IconData icon;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+      child: Row(
+        children: [
+          Icon(icon),
+          SizedBox(
+            width: 10,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                description,
+                style: TextStyle(fontSize: 10),
+              ),
+              // Spacer(),
+            ],
+          ),
+          Spacer(),
+          Ink(
+            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+              BoxShadow(
+                blurRadius: 6.4,
+                color: Color.fromARGB(61, 0, 0, 0),
+              ),
+            ]),
+            child: InkWell(
+              onTap: () {},
+              child: Ink(
+                width: 32,
+                height: 16,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 12,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}

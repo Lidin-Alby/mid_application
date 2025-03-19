@@ -1,35 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mid_application/Blocs/Add%20class/add_class_bloc.dart';
+
 import 'package:mid_application/Blocs/Add%20school/add_school_bloc.dart';
-import 'package:mid_application/Blocs/login_bloc.dart';
-import 'package:mid_application/Blocs/login_state.dart';
-import 'package:mid_application/Blocs/school_bloc.dart';
-import 'package:mid_application/Blocs/school_event.dart';
+import 'package:mid_application/Blocs/Login/login_bloc.dart';
+import 'package:mid_application/Blocs/Login/login_state.dart';
+import 'package:mid_application/Blocs/School%20List/school_bloc.dart';
+import 'package:mid_application/Blocs/School%20List/school_event.dart';
+import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
 import 'package:mid_application/Screens/agent_home_screen.dart';
 
 import 'package:mid_application/Screens/login_screen.dart';
 import 'package:mid_application/login_page.dart';
-
-import 'package:mid_application/providers/login_provider.dart';
-
-class AuthWrapper extends ConsumerWidget {
-  const AuthWrapper({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final loginState = ref.watch(loginProvider);
-    final loginNotifier = ref.read(loginProvider.notifier);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      loginNotifier.checkAuth();
-    });
-    if (loginState.token != null) {
-      return AgentHomeScreen();
-    } else {
-      return LoginScreen();
-    }
-  }
-}
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,6 +40,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AddSchoolBloc(context.read<SchoolListBloc>()),
+        ),
+        BlocProvider(
+          create: (context) => SchoolDetailsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ClassBloc(),
         )
       ],
       child: MaterialApp(

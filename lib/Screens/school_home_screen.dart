@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
+import 'package:mid_application/Screens/add_class_screen.dart';
+import 'package:mid_application/Screens/form_settings_screen.dart';
 import 'package:mid_application/Screens/school_dashboard.dart';
+import 'package:mid_application/Screens/student_details_screen.dart';
 import 'package:mid_application/widgets/dialog_button.dart';
 import 'package:mid_application/widgets/my_navigation_button.dart';
 
 class SchoolHomeScreen extends StatefulWidget {
-  const SchoolHomeScreen({super.key});
+  const SchoolHomeScreen({super.key, required this.schoolCode});
+  final String schoolCode;
 
   @override
   State<SchoolHomeScreen> createState() => _SchoolHomeScreenState();
@@ -44,7 +50,11 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
         ],
         actionsPadding: EdgeInsets.only(right: 15),
       ),
-      body: _selectedIndex == 0 ? SchoolDashboard() : Text('data'),
+      body: _selectedIndex == 0
+          ? SchoolDashboard(
+              schoolCode: widget.schoolCode,
+            )
+          : Text('data'),
       bottomNavigationBar: Container(
         height: 100,
         decoration: BoxDecoration(
@@ -120,22 +130,54 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                       icon: Icons.settings_outlined,
                       label: 'Form Settings',
                       color: Theme.of(context).colorScheme.primary,
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FormSettingsScreen(),
+                        ),
+                      ),
                     ),
                     DialogButton(
                       icon: Icons.badge_outlined,
                       label: 'Add Class',
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddClassScreen(
+                            schoolCode: widget.schoolCode,
+                          ),
+                        ),
+                      ),
                     ),
                     DialogButton(
                       icon: Icons.person_outline,
                       label: 'Add Student',
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentDetailsScreen(),
+                        ),
+                      ),
                     ),
                     DialogButton(
                       icon: Symbols.person_edit,
                       label: 'Add Teacher',
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentDetailsScreen(),
+                        ),
+                      ),
                     ),
                     DialogButton(
                       icon: Icons.manage_accounts_outlined,
                       label: 'Add Staff',
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentDetailsScreen(),
+                        ),
+                      ),
                     ),
                   ],
                 ),

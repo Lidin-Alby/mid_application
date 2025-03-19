@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:mid_application/Blocs/login_bloc.dart';
-import 'package:mid_application/Blocs/login_event.dart';
+import 'package:mid_application/Blocs/Login/login_bloc.dart';
+import 'package:mid_application/Blocs/Login/login_event.dart';
 
-import 'package:mid_application/Blocs/school_bloc.dart';
-import 'package:mid_application/Blocs/school_event.dart';
-import 'package:mid_application/Blocs/school_state.dart';
+import 'package:mid_application/Blocs/School%20List/school_bloc.dart';
+import 'package:mid_application/Blocs/School%20List/school_event.dart';
+import 'package:mid_application/Blocs/School%20List/school_state.dart';
 import 'package:mid_application/Screens/add_school_model.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -120,7 +120,9 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                             onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => SchoolHomeScreen(),
+                                  builder: (context) => SchoolHomeScreen(
+                                    schoolCode: state.schools[index].schoolCode,
+                                  ),
                                 )),
                             child: Ink(
                               padding: EdgeInsets.symmetric(

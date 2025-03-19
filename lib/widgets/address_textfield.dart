@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:mid_application/widgets/my_filled_button.dart';
 
-class MyTextfield extends StatelessWidget {
-  const MyTextfield({super.key, required this.label, required this.controller});
+class AddressTextfield extends StatelessWidget {
+  const AddressTextfield(
+      {super.key, required this.label, required this.controller});
   final String label;
   final TextEditingController controller;
-  // final Function(String value) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +12,9 @@ class MyTextfield extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
+          'Address',
           style: TextStyle(
-            fontWeight: FontWeight.w700,
+            fontWeight: FontWeight.w500,
             color: Colors.grey[800],
           ),
         ),
@@ -23,8 +22,9 @@ class MyTextfield extends StatelessWidget {
           height: 4,
         ),
         SizedBox(
-          height: 34,
           child: TextField(
+            minLines: 3,
+            maxLines: null,
             controller: controller,
             decoration: InputDecoration(
               isDense: true,

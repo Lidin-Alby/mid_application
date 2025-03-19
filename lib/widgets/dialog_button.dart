@@ -6,17 +6,19 @@ class DialogButton extends StatelessWidget {
     required this.icon,
     required this.label,
     this.color = const Color.fromARGB(255, 255, 252, 242),
+    required this.onPressed,
   });
   final IconData icon;
   final String label;
   final Color color;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         FilledButton(
-          onPressed: () {},
+          onPressed: onPressed,
           style: FilledButton.styleFrom(
             padding: EdgeInsets.all(30),
             shape: CircleBorder(),
