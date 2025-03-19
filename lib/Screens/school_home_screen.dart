@@ -155,7 +155,9 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StudentDetailsScreen(),
+                          builder: (context) => StudentDetailsScreen(
+                            schoolCode: widget.schoolCode,
+                          ),
                         ),
                       ),
                     ),
@@ -165,7 +167,9 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StudentDetailsScreen(),
+                          builder: (context) => StudentDetailsScreen(
+                            schoolCode: widget.schoolCode,
+                          ),
                         ),
                       ),
                     ),
@@ -175,7 +179,9 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StudentDetailsScreen(),
+                          builder: (context) => StudentDetailsScreen(
+                            schoolCode: widget.schoolCode,
+                          ),
                         ),
                       ),
                     ),

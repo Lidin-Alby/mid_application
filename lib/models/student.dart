@@ -1,5 +1,6 @@
 class Student {
   final String admNo;
+  final String schoolCode;
   final String fullName;
   final String? classTitle;
   final String? gender;
@@ -28,6 +29,7 @@ class Student {
 
   Student(
       {required this.admNo,
+      required this.schoolCode,
       required this.fullName,
       this.classTitle,
       this.gender,
@@ -56,6 +58,7 @@ class Student {
   factory Student.fromJson(json) {
     return Student(
       admNo: json['admNo'],
+      schoolCode: json['schoolCode'],
       fullName: json['firstName'],
       classTitle: json['classTitle'],
       gender: json['gender'],
@@ -84,31 +87,32 @@ class Student {
   }
   Map toJson() {
     return {
-      'admNo': admNo,
-      'firstName': fullName,
-      'classTitle': classTitle,
-      'gender': gender,
-      'dob': dob,
-      'bloodGroup': bloodGroup,
-      'religion': religion,
-      'caste': caste,
-      'subCaste': subCaste,
-      'email': email,
-      'aadhaarNo': aadhaarNo,
-      'address': address,
-      'rfid': rfid,
-      'transportMode': transportMode,
-      'session': session,
-      'boardingType': boardingType,
-      'schoolHouse': schoolHouse,
-      'vehicleNo': vehicleNo,
-      'fatherName': fatherName,
-      'motherName': motherName,
-      'fatherMobNo': fatherMobNo,
-      'motherMobNo': motherMobNo,
-      'fatherWhatsApp': fatherWhatsApp,
-      'motherWhatsApp': motherWhatsApp,
-      'profilePic': profilePic,
+      'admNo': admNo.toString(),
+      'schoolCode': schoolCode.toString(),
+      'firstName': fullName.toString(),
+      'classTitle': classTitle.toString(),
+      'gender': gender.toString(),
+      'dob': dob.toString(),
+      'bloodGroup': bloodGroup.toString(),
+      'religion': religion.toString(),
+      'caste': caste.toString(),
+      'subCaste': subCaste.toString(),
+      'email': email.toString(),
+      'aadhaarNo': aadhaarNo.toString(),
+      'address': address.toString(),
+      'rfid': rfid.toString(),
+      'transportMode': transportMode.toString(),
+      'session': session.toString(),
+      'boardingType': boardingType.toString(),
+      'schoolHouse': schoolHouse.toString(),
+      'vehicleNo': vehicleNo.toString(),
+      'fatherName': fatherName.toString(),
+      'motherName': motherName.toString(),
+      'fatherMobNo': fatherMobNo.toString(),
+      'motherMobNo': motherMobNo.toString(),
+      'fatherWhatsApp': fatherWhatsApp.toString(),
+      'motherWhatsApp': motherWhatsApp.toString(),
+      'profilePic': profilePic.toString(),
     };
   }
 }

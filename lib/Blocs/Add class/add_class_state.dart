@@ -18,7 +18,7 @@ class ClassError extends ClassState {
   ClassError(this.error);
 }
 
-class AddClassInitial extends ClassState {}
+// class AddClassInitial extends ClassState {}
 
 class AddClassLoading extends ClassState {}
 

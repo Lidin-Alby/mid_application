@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:mid_application/Blocs/Student/student_bloc.dart';
+import 'package:mid_application/Blocs/Student/student_event.dart';
+import 'package:mid_application/Blocs/Student/student_state.dart';
+import 'package:mid_application/models/student.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
 import 'package:mid_application/widgets/my_dropdown_button.dart';
 import 'package:mid_application/widgets/my_filled_button.dart';
@@ -7,7 +12,8 @@ import 'package:mid_application/widgets/my_textfield.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
 
 class StudentDetailsScreen extends StatefulWidget {
-  const StudentDetailsScreen({super.key});
+  const StudentDetailsScreen({super.key, required this.schoolCode});
+  final String schoolCode;
 
   @override
   State<StudentDetailsScreen> createState() => _StudentDetailsScreenState();
@@ -32,6 +38,12 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   TextEditingController fatherWhatsApp = TextEditingController();
   TextEditingController motherWhatsApp = TextEditingController();
   TextEditingController aadhaarNo = TextEditingController();
+  String? bloodGroup;
+  String? boardingType;
+  String? caste;
+  String? classTitle;
+  String? religion;
+  String? transportMode;
 
   double spacing = 12;
 
@@ -49,9 +61,9 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
               spacing: 10,
               children: [
                 SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
-                ProfilePic(),
+                // ProfilePic(),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text.rich(
@@ -339,18 +351,56 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MyFilledButton(
-                      label: 'Cancel',
-                      onPressed: () {},
-                    ),
-                    MyFilledButton(
-                      label: 'Save',
-                      onPressed: () {},
-                    ),
-                  ],
+                BlocBuilder<StudentBloc, StudentState>(
+                  builder: (context, state) => state is StudentSaveLoading
+                      ? CircularProgressIndicator()
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            MyFilledButton(
+                              label: 'Cancel',
+                              onPressed: () => Navigator.pop(context),
+                            ),
+                            MyFilledButton(
+                              label: 'Save',
+                              onPressed: () {
+                                BlocProvider.of<StudentBloc>(context).add(
+                                  SaveStudentPressed(
+                                    Student(
+                                      admNo: admNo.text.trim(),
+                                      fullName: fullName.text.trim(),
+                                      schoolCode: widget.schoolCode,
+                                      aadhaarNo: aadhaarNo.text.trim(),
+                                      address: address.text.trim(),
+                                      bloodGroup: bloodGroup,
+                                      boardingType: boardingType,
+                                      caste: caste,
+                                      classTitle: classTitle,
+                                      dob: dob,
+                                      email: email.text.trim(),
+                                      fatherMobNo: fatherMobNo.text.trim(),
+                                      fatherName: fatherName.text.trim(),
+                                      fatherWhatsApp:
+                                          fatherWhatsApp.text.trim(),
+                                      gender: gender,
+                                      motherMobNo: motherMobNo.text.trim(),
+                                      motherName: motherName.text.trim(),
+                                      motherWhatsApp:
+                                          motherWhatsApp.text.trim(),
+                                      religion: religion,
+                                      rfid: rfid.text.trim(),
+                                      schoolHouse: schoolHouse.text.trim(),
+                                      session: session.text.trim(),
+                                      subCaste: subCaste.text.trim(),
+                                      transportMode: transportMode,
+                                      vehicleNo: vehicleNo.text.trim(),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                 ),
                 SizedBox(
                   height: 30,

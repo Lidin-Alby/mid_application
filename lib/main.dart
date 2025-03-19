@@ -8,6 +8,7 @@ import 'package:mid_application/Blocs/Login/login_state.dart';
 import 'package:mid_application/Blocs/School%20List/school_bloc.dart';
 import 'package:mid_application/Blocs/School%20List/school_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
+import 'package:mid_application/Blocs/Student/student_bloc.dart';
 import 'package:mid_application/Screens/agent_home_screen.dart';
 
 import 'package:mid_application/Screens/login_screen.dart';
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ClassBloc(),
+        ),
+        BlocProvider(
+          create: (context) => StudentBloc(),
         )
       ],
       child: MaterialApp(
