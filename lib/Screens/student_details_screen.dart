@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
 import 'package:mid_application/widgets/my_dropdown_button.dart';
+import 'package:mid_application/widgets/my_filled_button.dart';
 import 'package:mid_application/widgets/my_textfield.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
 
@@ -30,6 +31,8 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   TextEditingController motherMobNo = TextEditingController();
   TextEditingController fatherWhatsApp = TextEditingController();
   TextEditingController motherWhatsApp = TextEditingController();
+  TextEditingController aadhaarNo = TextEditingController();
+
   double spacing = 12;
 
   @override
@@ -45,7 +48,30 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
             child: Column(
               spacing: 10,
               children: [
+                SizedBox(
+                  height: 5,
+                ),
                 ProfilePic(),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text.rich(
+                    TextSpan(
+                      text: 'Last : ',
+                      children: [
+                        TextSpan(
+                          text: '12487',
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 3,
+                ),
+                MyTextfield(label: 'Admission No.', controller: admNo),
                 MyTextfield(label: 'Full Name', controller: fullName),
                 MyDropdownButton(
                   label: 'Class',
@@ -201,6 +227,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                   label: 'Email',
                   controller: email,
                 ),
+                MyTextfield(label: 'Aadhaar No.', controller: aadhaarNo),
                 AddressTextfield(
                   label: 'Address',
                   controller: address,
@@ -307,6 +334,22 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                         controller: motherWhatsApp,
                       ),
                     )
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    MyFilledButton(
+                      label: 'Cancel',
+                      onPressed: () {},
+                    ),
+                    MyFilledButton(
+                      label: 'Save',
+                      onPressed: () {},
+                    ),
                   ],
                 ),
                 SizedBox(
