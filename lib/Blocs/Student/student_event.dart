@@ -7,3 +7,10 @@ class SaveStudentPressed extends StudentEvent {
 
   SaveStudentPressed(this.student);
 }
+
+class LoadStudents extends StudentEvent {
+  final String schoolCode;
+  final String classTitle;
+
+  LoadStudents(this.classTitle, this.schoolCode);
+}

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:mid_application/Blocs/Class/class_bloc.dart';
+import 'package:mid_application/Blocs/Class/class_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_state.dart';
@@ -15,8 +17,10 @@ class SchoolDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<ClassBloc>().add(LoadClasses(schoolCode));
     BlocProvider.of<SchoolDetailsBloc>(context)
         .add(GetSchoolDetails(schoolCode));
+
     return Stack(
       children: [
         Column(
@@ -182,11 +186,13 @@ class SchoolDashboard extends StatelessWidget {
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(6),
                                     onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              DetailsInfoScreen(),
-                                        )),
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetailsInfoScreen(
+                                          schoolCode: schoolCode,
+                                        ),
+                                      ),
+                                    ),
                                     child: Ink(
                                       decoration: BoxDecoration(
                                         color: Colors.white,

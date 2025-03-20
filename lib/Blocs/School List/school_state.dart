@@ -13,5 +13,7 @@ class SchoolListLoaded extends SchoolListState {
 
 class SchoolListError extends SchoolListState {
   final String error;
-  SchoolListError(this.error);
+  SchoolListError(
+    this.error,
+  );
 }

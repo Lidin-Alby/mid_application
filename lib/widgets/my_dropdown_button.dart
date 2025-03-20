@@ -5,8 +5,10 @@ class MyDropdownButton extends StatelessWidget {
       {super.key,
       required this.label,
       required this.onChanged,
-      required this.items});
+      required this.items,
+      required this.value});
   final String label;
+  final dynamic value;
   final Function(dynamic value) onChanged;
   final List<DropdownMenuItem> items;
 
@@ -34,6 +36,7 @@ class MyDropdownButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
           ),
           child: DropdownButton(
+            value: value,
             padding: EdgeInsets.symmetric(horizontal: 5),
             underline: Text(''),
             isExpanded: true,

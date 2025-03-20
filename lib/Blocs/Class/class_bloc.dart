@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mid_application/Blocs/Add%20class/add_class_event.dart';
-import 'package:mid_application/Blocs/Add%20class/add_class_state.dart';
+import 'package:mid_application/Blocs/Class/class_event.dart';
+import 'package:mid_application/Blocs/Class/class_state.dart';
 import 'package:mid_application/ip_address.dart';
 
 import 'package:http/http.dart' as http;
@@ -19,11 +19,11 @@ class ClassBloc extends Bloc<ClassEvent, ClassState> {
           var res = await http.get(url);
           if (res.statusCode == 200) {
             Map data = jsonDecode(res.body);
-            print(data);
+
             List classList = data['classes'];
             List<ClassModel> classes =
                 classList.map((e) => ClassModel.fromJson(e)).toList();
-            emit(ClassLoaded(classes));
+            emit(ClassLoaded(classes, data['lastNo']));
           } else {
             emit(ClassError(res.body));
           }
@@ -48,10 +48,10 @@ class ClassBloc extends Bloc<ClassEvent, ClassState> {
           final updatedClasses = List<ClassModel>.from(currentState.classes)
             ..add(newClass);
           emit(ClassAdded());
-          emit(ClassLoaded(updatedClasses));
+          emit(ClassLoaded(updatedClasses, currentState.lastNo));
         } else {
           emit(AddClassError(res.body));
-          emit(ClassLoaded(currentState.classes));
+          emit(ClassLoaded(currentState.classes, currentState.lastNo));
         }
       },
     );

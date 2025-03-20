@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mid_application/Blocs/Add%20class/add_class_bloc.dart';
+import 'package:mid_application/Blocs/Class/class_bloc.dart';
 
 import 'package:mid_application/Blocs/Add%20school/add_school_bloc.dart';
 import 'package:mid_application/Blocs/Login/login_bloc.dart';

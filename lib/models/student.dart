@@ -24,6 +24,7 @@ class Student {
   final String? motherMobNo;
   final String? fatherWhatsApp;
   final String? motherWhatsApp;
+  final bool? check;
 
   final String? profilePic;
 
@@ -53,6 +54,7 @@ class Student {
       this.motherMobNo,
       this.fatherWhatsApp,
       this.motherWhatsApp,
+      this.check,
       this.profilePic});
 
   factory Student.fromJson(json) {
@@ -82,7 +84,8 @@ class Student {
       motherMobNo: json['motherMobNo'],
       fatherWhatsApp: json['fatherWhatsApp'],
       motherWhatsApp: json['motherWhatsApp'],
-      profilePic: json['profilePic'],
+      check: json['check'],
+      // profilePic: json['profilePic'],
     );
   }
   Map toJson() {

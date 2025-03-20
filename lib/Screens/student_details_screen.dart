@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:mid_application/Blocs/Class/class_bloc.dart';
+import 'package:mid_application/Blocs/Class/class_event.dart';
+import 'package:mid_application/Blocs/Class/class_state.dart';
 import 'package:mid_application/Blocs/Student/student_bloc.dart';
 import 'package:mid_application/Blocs/Student/student_event.dart';
 import 'package:mid_application/Blocs/Student/student_state.dart';
+import 'package:mid_application/models/class_model.dart';
 import 'package:mid_application/models/student.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
 import 'package:mid_application/widgets/my_dropdown_button.dart';
 import 'package:mid_application/widgets/my_filled_button.dart';
 import 'package:mid_application/widgets/my_textfield.dart';
-import 'package:mid_application/widgets/profile_pic.dart';
 
 class StudentDetailsScreen extends StatefulWidget {
   const StudentDetailsScreen({super.key, required this.schoolCode});
@@ -44,8 +47,68 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   String? classTitle;
   String? religion;
   String? transportMode;
+  List<ClassModel> classList = [];
+  List boardingTypeList = ['Day Scholer', 'Hostel'];
+  List religionList = [
+    'Hindu',
+    'Islam',
+    'Christian',
+    'Sikh',
+    'Budh',
+    'Jain',
+    'Parsi',
+    'Yahudi',
+    'Other'
+  ];
+  List bloodGroupList = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
+  List casteList = ['General', 'OBC', 'SC', 'ST'];
+
+  List transportList = [
+    'Pedistrian',
+    'Parent',
+    'School Transport',
+    'Cycle',
+    'Other'
+  ];
+  late ClassLoaded s;
 
   double spacing = 12;
+  @override
+  void initState() {
+    ClassBloc classBloc = context.read<ClassBloc>();
+    if (classBloc.state is ClassLoaded) {
+      s = classBloc.state as ClassLoaded;
+      classList = s.classes;
+    }
+    super.initState();
+  }
+
+  clearFields() {
+    admNo.clear();
+    fullName.clear();
+    classTitle = null;
+    gender = null;
+    dob = null;
+    bloodGroup = null;
+    religion = null;
+    caste = null;
+    subCaste.clear();
+    email.clear();
+    aadhaarNo.clear();
+    address.clear();
+    rfid.clear();
+    transportMode = null;
+    session.clear();
+    boardingType = null;
+    schoolHouse.clear();
+    vehicleNo.clear();
+    fatherName.clear();
+    motherName.clear();
+    fatherMobNo.clear();
+    motherMobNo.clear();
+    fatherWhatsApp.clear();
+    motherWhatsApp.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,302 +120,401 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SafeArea(
-            child: Column(
-              spacing: 10,
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                // ProfilePic(),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text.rich(
-                    TextSpan(
-                      text: 'Last : ',
-                      children: [
+            child: BlocConsumer<StudentBloc, StudentState>(
+              listener: (context, state) {
+                if (state is StudentSaved) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Added SuccessFully'),
+                    ),
+                  );
+                  clearFields();
+                  context.read<ClassBloc>().add(LoadClasses(widget.schoolCode));
+                } else if (state is StudentSaveError) {
+                  if (state.error != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.error!),
+                      ),
+                    );
+                  }
+                }
+              },
+              builder: (context, state) => Column(
+                spacing: 10,
+                children: [
+                  SizedBox(
+                    height: 10,
+                  ),
+                  // ProfilePic(),
+                  BlocBuilder<ClassBloc, ClassState>(
+                    builder: (context, state) => Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text.rich(
                         TextSpan(
-                          text: '12487',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.error,
-                          ),
+                          text: 'Last : ',
+                          children: [
+                            TextSpan(
+                              text:
+                                  state is ClassLoaded ? state.lastNo : 'error',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.error,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 3,
-                ),
-                MyTextfield(label: 'Admission No.', controller: admNo),
-                MyTextfield(label: 'Full Name', controller: fullName),
-                MyDropdownButton(
-                  label: 'Class',
-                  onChanged: (value) {},
-                  items: [DropdownMenuItem(child: Text('data'))],
-                ),
-                Row(
-                  spacing: spacing,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Gender',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 25,
-                                child: Radio(
-                                  value: 'Male',
-                                  groupValue: gender,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      gender = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Text('Male'),
-                              SizedBox(
-                                width: 15,
-                              ),
-                              SizedBox(
-                                width: 25,
-                                child: Radio(
-                                  // visualDensity: VisualDensity(horizontal: 0),
-                                  value: 'Female',
-                                  groupValue: gender,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      gender = value;
-                                    });
-                                  },
-                                ),
-                              ),
-                              Text('Female')
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'DOB',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Colors.grey[800],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              DateTime? date = await showDatePicker(
-                                context: context,
-                                firstDate: DateTime(1990),
-                                lastDate: DateTime.now(),
-                              );
-                              if (date != null) {
-                                setState(() {
-                                  dob = DateFormat('dd-MM-yyyy').format(date);
-                                });
-                              }
-                            },
-                            child: Container(
-                              height: 34,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black38,
-                                ),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(dob ?? ''),
-                                    Icon(
-                                      Icons.calendar_month_outlined,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ],
-                                ),
+                  SizedBox(
+                    height: 3,
+                  ),
+                  MyTextfield(
+                    label: 'Admission No.',
+                    controller: admNo,
+                    error: state is StudentSaveError ? state.admNoError : null,
+                  ),
+                  MyTextfield(label: 'Full Name', controller: fullName),
+                  MyDropdownButton(
+                    value: classTitle,
+                    label: 'Class',
+                    onChanged: (value) {
+                      setState(() {
+                        classTitle = value;
+                      });
+                    },
+                    items: classList
+                        .map(
+                          (e) => DropdownMenuItem(
+                              value: e.classTitle, child: Text(e.classTitle)),
+                        )
+                        .toList(),
+                  ),
+                  Row(
+                    spacing: spacing,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Gender',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.grey[800],
                               ),
                             ),
-                          ),
-                        ],
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: 25,
+                                  child: Radio(
+                                    value: 'Male',
+                                    groupValue: gender,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        gender = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Text('Male'),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                SizedBox(
+                                  width: 25,
+                                  child: Radio(
+                                    // visualDensity: VisualDensity(horizontal: 0),
+                                    value: 'Female',
+                                    groupValue: gender,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        gender = value;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                Text('Female')
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    )
-                  ],
-                ),
-                Row(
-                  spacing: spacing,
-                  children: [
-                    Expanded(
-                      child: MyDropdownButton(
-                        label: 'Blood Group',
-                        onChanged: (value) {},
-                        items: [],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'DOB',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.grey[800],
+                              ),
+                            ),
+                            SizedBox(
+                              height: 4,
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                DateTime? date = await showDatePicker(
+                                  context: context,
+                                  firstDate: DateTime(1990),
+                                  lastDate: DateTime.now(),
+                                );
+                                if (date != null) {
+                                  setState(() {
+                                    dob = DateFormat('dd-MM-yyyy').format(date);
+                                  });
+                                }
+                              },
+                              child: Container(
+                                height: 34,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black38,
+                                  ),
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(dob ?? ''),
+                                      Icon(
+                                        Icons.calendar_month_outlined,
+                                        color: Colors.grey[600],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    spacing: spacing,
+                    children: [
+                      Expanded(
+                        child: MyDropdownButton(
+                          value: bloodGroup,
+                          label: 'Blood Group',
+                          onChanged: (value) {
+                            setState(() {
+                              bloodGroup = value;
+                            });
+                          },
+                          items: bloodGroupList
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  child: Text(e),
+                                  value: e,
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: MyDropdownButton(
-                        label: 'Religion',
-                        onChanged: (value) {},
-                        items: [],
+                      Expanded(
+                        child: MyDropdownButton(
+                          value: religion,
+                          label: 'Religion',
+                          onChanged: (value) {
+                            setState(() {
+                              religion = value;
+                            });
+                          },
+                          items: religionList
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  child: Text(e),
+                                  value: e,
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  spacing: spacing,
-                  children: [
-                    Expanded(
-                      child: MyDropdownButton(
-                        label: 'Caste',
-                        onChanged: (value) {},
-                        items: [],
+                    ],
+                  ),
+                  Row(
+                    spacing: spacing,
+                    children: [
+                      Expanded(
+                        child: MyDropdownButton(
+                          value: caste,
+                          label: 'Caste',
+                          onChanged: (value) {
+                            setState(() {
+                              caste = value;
+                            });
+                          },
+                          items: casteList
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  child: Text(e),
+                                  value: e,
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'Sub-Caste',
-                        controller: subCaste,
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'Sub-Caste',
+                          controller: subCaste,
+                        ),
+                      )
+                    ],
+                  ),
+                  MyTextfield(
+                    label: 'Email',
+                    controller: email,
+                  ),
+                  MyTextfield(label: 'Aadhaar No.', controller: aadhaarNo),
+                  AddressTextfield(
+                    label: 'Address',
+                    controller: address,
+                  ),
+                  Row(
+                    spacing: spacing,
+                    children: [
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'RFID',
+                          controller: rfid,
+                        ),
                       ),
-                    )
-                  ],
-                ),
-                MyTextfield(
-                  label: 'Email',
-                  controller: email,
-                ),
-                MyTextfield(label: 'Aadhaar No.', controller: aadhaarNo),
-                AddressTextfield(
-                  label: 'Address',
-                  controller: address,
-                ),
-                Row(
-                  spacing: spacing,
-                  children: [
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'RFID',
-                        controller: rfid,
+                      Expanded(
+                        child: MyDropdownButton(
+                          value: transportMode,
+                          label: 'Transport Mode',
+                          onChanged: (value) {
+                            setState(() {
+                              transportMode = value;
+                            });
+                          },
+                          items: transportList
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  child: Text(e),
+                                  value: e,
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: MyDropdownButton(
-                        label: 'Transport Mode',
-                        onChanged: (value) {},
-                        items: [],
+                    ],
+                  ),
+                  Row(
+                    spacing: spacing,
+                    children: [
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'Session',
+                          controller: session,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  spacing: spacing,
-                  children: [
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'Session',
-                        controller: session,
+                      Expanded(
+                        child: MyDropdownButton(
+                          value: boardingType,
+                          label: 'Boarding Type',
+                          onChanged: (value) {
+                            setState(() {
+                              boardingType = value;
+                            });
+                          },
+                          items: boardingTypeList
+                              .map(
+                                (e) => DropdownMenuItem(
+                                  child: Text(e),
+                                  value: e,
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: MyDropdownButton(
-                        label: 'Boarding Type',
-                        onChanged: (value) {},
-                        items: [],
+                    ],
+                  ),
+                  Row(
+                    spacing: spacing,
+                    children: [
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'School House',
+                          controller: schoolHouse,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  spacing: spacing,
-                  children: [
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'School House',
-                        controller: schoolHouse,
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'Vehicle No.',
+                          controller: vehicleNo,
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    spacing: spacing,
+                    children: [
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'Father Name',
+                          controller: fatherName,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'Vehicle No.',
-                        controller: vehicleNo,
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'Mother Name',
+                          controller: motherName,
+                        ),
                       ),
-                    )
-                  ],
-                ),
-                Row(
-                  spacing: spacing,
-                  children: [
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'Father Name',
-                        controller: fatherName,
+                    ],
+                  ),
+                  Row(
+                    spacing: spacing,
+                    children: [
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'Father Phone',
+                          controller: fatherMobNo,
+                          error: state is StudentSaveError
+                              ? state.fatherMobError
+                              : null,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'Mother Name',
-                        controller: motherName,
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'Mother Phone',
+                          controller: motherMobNo,
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    spacing: spacing,
+                    children: [
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'Father WhatsApp',
+                          controller: fatherWhatsApp,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Row(
-                  spacing: spacing,
-                  children: [
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'Father Phone',
-                        controller: fatherMobNo,
-                      ),
-                    ),
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'Mother Phone',
-                        controller: motherMobNo,
-                      ),
-                    )
-                  ],
-                ),
-                Row(
-                  spacing: spacing,
-                  children: [
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'Father WhatsApp',
-                        controller: fatherWhatsApp,
-                      ),
-                    ),
-                    Expanded(
-                      child: MyTextfield(
-                        label: 'Mother WhatsApp',
-                        controller: motherWhatsApp,
-                      ),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                BlocBuilder<StudentBloc, StudentState>(
-                  builder: (context, state) => state is StudentSaveLoading
+                      Expanded(
+                        child: MyTextfield(
+                          label: 'Mother WhatsApp',
+                          controller: motherWhatsApp,
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  state is StudentSaveLoading
                       ? CircularProgressIndicator()
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -401,11 +563,12 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                             ),
                           ],
                         ),
-                ),
-                SizedBox(
-                  height: 30,
-                )
-              ],
+
+                  SizedBox(
+                    height: 30,
+                  )
+                ],
+              ),
             ),
           ),
         ),

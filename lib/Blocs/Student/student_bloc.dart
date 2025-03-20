@@ -6,11 +6,46 @@ import 'package:mid_application/Blocs/Student/student_state.dart';
 import 'package:mid_application/ip_address.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:mid_application/models/student.dart';
 
 class StudentBloc extends Bloc<StudentEvent, StudentState> {
   StudentBloc() : super(StudentInitial()) {
+    on<LoadStudents>(
+      (event, emit) async {
+        emit(StudentsLoading());
+        try {
+          var url = Uri.parse(
+              '$ipv4/v2/getStudentsMid/${Uri.encodeComponent(event.schoolCode)}/${Uri.encodeComponent(event.classTitle)}');
+          var res = await http.get(url);
+          if (res.statusCode == 200) {
+            List data = jsonDecode(res.body);
+            List<Student> students = data
+                .map(
+                  (e) => Student.fromJson(e),
+                )
+                .toList();
+
+            emit(StudentsLoaded(students));
+          } else {
+            emit(StudentSaveError(error: res.body));
+          }
+        } catch (e) {
+          emit(StudentLoadError(e.toString()));
+        }
+      },
+    );
     on<SaveStudentPressed>(
       (event, emit) async {
+        if (event.student.admNo.isEmpty) {
+          emit(StudentSaveError(admNoError: 'This field cannot be empty.'));
+          return;
+        }
+        if (event.student.fatherMobNo!.length != 10) {
+          emit(
+            StudentSaveError(fatherMobError: '10 digits Mobile No.'),
+          );
+          return;
+        }
         emit(StudentSaveLoading());
         try {
           var url = Uri.parse('$ipv4/v2/addStudentMid');
@@ -18,11 +53,11 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
           if (res.statusCode == 201) {
             emit(StudentSaved());
           } else {
-            emit(StudentSaveError(res.body));
+            emit(StudentSaveError(error: res.body));
           }
         } catch (e) {
           print(e);
-          emit(StudentSaveError(e.toString()));
+          emit(StudentSaveError(error: e.toString()));
         }
       },
     );

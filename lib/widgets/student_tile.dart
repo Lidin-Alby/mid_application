@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mid_application/models/student.dart';
 
 class StudentTile extends StatelessWidget {
-  const StudentTile({super.key});
+  const StudentTile({super.key, required this.student});
+  final Student student;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class StudentTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ajay Kumar',
+                            student.fullName.toString(),
                             style: TextStyle(fontWeight: FontWeight.w600),
                           ),
                           Text(
@@ -56,17 +58,29 @@ class StudentTile extends StatelessWidget {
                     height: 20,
                   ),
                   Row(
-                    spacing: 10,
                     children: [
-                      Text(
-                        'Father :',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
+                      SizedBox(
+                        width: 37,
+                        child: Text(
+                          'Father',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                        child: Text(
+                          ':',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                       Text(
-                        '17-05-2012',
+                        student.fatherName.toString(),
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -75,17 +89,29 @@ class StudentTile extends StatelessWidget {
                     ],
                   ),
                   Row(
-                    spacing: 10,
                     children: [
-                      Text(
-                        'Mother :',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
+                      SizedBox(
+                        width: 37,
+                        child: Text(
+                          'Mother',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                        child: Text(
+                          ':',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                       Text(
-                        '17-05-2012',
+                        student.motherName.toString(),
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -94,34 +120,46 @@ class StudentTile extends StatelessWidget {
                     ],
                   ),
                   Row(
-                    spacing: 10,
                     children: [
-                      Text(
-                        'Mobile :',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
+                      SizedBox(
+                        width: 37,
+                        child: Text(
+                          'Mobile',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                        child: Text(
+                          ':',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                       Text(
-                        '17-05-2012',
+                        student.fatherMobNo.toString(),
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 20,
                       ),
                       Text(
-                        'DOB :',
+                        'DOB : ',
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
-                        '17-05-2012',
+                        student.dob.toString(),
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -136,7 +174,7 @@ class StudentTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '1245',
+                    student.admNo,
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.grey[800],
@@ -154,17 +192,18 @@ class StudentTile extends StatelessWidget {
                 ],
               ),
               Spacer(),
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(3),
-                  child: Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                    size: 20,
+              if (student.check ?? false)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.green,
+                      size: 20,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

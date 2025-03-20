@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:mid_application/Screens/student_details_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mid_application/Blocs/Class/class_bloc.dart';
+import 'package:mid_application/Blocs/Class/class_state.dart';
+
 import 'package:mid_application/Screens/student_list_screen.dart';
+import 'package:mid_application/models/class_model.dart';
 import 'package:mid_application/widgets/class_tile.dart';
 import 'package:mid_application/widgets/tab_button.dart';
 import 'package:mid_application/widgets/teacher_or_staff_tile.dart';
 
 class DetailsInfoScreen extends StatefulWidget {
-  const DetailsInfoScreen({super.key});
+  const DetailsInfoScreen({super.key, required this.schoolCode});
+
+  final String schoolCode;
 
   @override
   State<DetailsInfoScreen> createState() => _DetailsInfoScreenState();
@@ -14,6 +20,12 @@ class DetailsInfoScreen extends StatefulWidget {
 
 class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,12 +67,13 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                     },
                   ),
                   Spacer(),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Icon(Icons.sort),
-                    style: ElevatedButton.styleFrom(
-                        shape: CircleBorder(), elevation: 0),
-                  )
+                  if (_currentIndex != 0)
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: Icon(Icons.sort),
+                      style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(), elevation: 0),
+                    )
                 ],
               ),
             ),
@@ -68,30 +81,44 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
               height: 5,
             ),
             if (_currentIndex == 0)
-              Expanded(
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: InkWell(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StudentListScreen(),
+              BlocBuilder<ClassBloc, ClassState>(builder: (context, state) {
+                if (state is ClassError) {
+                  return Center(
+                    child: Text(state.error),
+                  );
+                } else if (state is ClassLoaded) {
+                  List<ClassModel> classes = state.classes;
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: classes.length,
+                      itemBuilder: (context, index) => Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25, vertical: 5),
+                        child: InkWell(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => StudentListScreen(
+                                schoolCode: widget.schoolCode,
+                                classTitle: classes[index].classTitle,
+                              ),
+                            ),
+                          ),
+                          child: ClassTile(
+                            classTitle: classes[index].classTitle,
+                            totalStudents:
+                                classes[index].totalStudents.toString(),
                           ),
                         ),
-                        child: ClassTile(
-                          classTitle: '10th-H',
-                          totalStudents: '52',
-                        ),
                       ),
-                    )
-                  ],
-                ),
-              ),
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+              }),
             if (_currentIndex == 1)
               Expanded(
                 child: ListView(

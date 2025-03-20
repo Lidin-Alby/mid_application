@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
 import 'package:mid_application/Screens/add_class_screen.dart';
 import 'package:mid_application/Screens/form_settings_screen.dart';
 import 'package:mid_application/Screens/school_dashboard.dart';
+import 'package:mid_application/Screens/staff_details_screen.dart';
 import 'package:mid_application/Screens/student_details_screen.dart';
 import 'package:mid_application/widgets/dialog_button.dart';
 import 'package:mid_application/widgets/my_navigation_button.dart';
@@ -179,10 +177,7 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StudentDetailsScreen(
-                            schoolCode: widget.schoolCode,
-                          ),
-                        ),
+                            builder: (context) => StaffDetailsScreen()),
                       ),
                     ),
                   ],

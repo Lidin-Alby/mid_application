@@ -8,8 +8,9 @@ class ClassLoading extends ClassState {}
 
 class ClassLoaded extends ClassState {
   final List<ClassModel> classes;
+  final String lastNo;
 
-  ClassLoaded(this.classes);
+  ClassLoaded(this.classes, this.lastNo);
 }
 
 class ClassError extends ClassState {
