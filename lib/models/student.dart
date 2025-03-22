@@ -25,6 +25,7 @@ class Student {
   final String? fatherWhatsApp;
   final String? motherWhatsApp;
   final bool? check;
+  final DateTime? modified;
 
   final String? profilePic;
 
@@ -32,6 +33,7 @@ class Student {
       {required this.admNo,
       required this.schoolCode,
       required this.fullName,
+      this.modified,
       this.classTitle,
       this.gender,
       this.dob,
@@ -85,7 +87,8 @@ class Student {
       fatherWhatsApp: json['fatherWhatsApp'],
       motherWhatsApp: json['motherWhatsApp'],
       check: json['check'],
-      // profilePic: json['profilePic'],
+      modified: json['modified'],
+      profilePic: json['profilePic'],
     );
   }
   Map toJson() {
@@ -116,6 +119,7 @@ class Student {
       'fatherWhatsApp': fatherWhatsApp.toString(),
       'motherWhatsApp': motherWhatsApp.toString(),
       'profilePic': profilePic.toString(),
+      'modified': DateTime.now().toString()
     };
   }
 }

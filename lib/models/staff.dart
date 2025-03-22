@@ -22,12 +22,14 @@ class Staff {
   final String? qualification;
   final String? profilePic;
   final bool? check;
+  final DateTime? modified;
 
   Staff(
       {required this.schoolCode,
       required this.fullName,
       required this.mob,
       required this.designation,
+      this.modified,
       this.gender,
       this.dob,
       this.bloodGroup,
@@ -50,30 +52,30 @@ class Staff {
 
   factory Staff.fromJson(json) {
     return Staff(
-      schoolCode: json['schoolCode'],
-      fullName: json['fullName'].toString(),
-      mob: json['mob'],
-      aadhaarNo: json['aadhaarNo'],
-      address: json['address'],
-      bloodGroup: json['bloodGroup'],
-      caste: json['caste'],
-      department: json['department'],
-      designation: json['designation'],
-      dlNo: json['dlNo'],
-      dlValidity: json['dlValidity'],
-      dob: json['dob'],
-      fatherOrHusName: json['fatherOrHusName'],
-      gender: json['gender'],
-      joiningDate: json['joiningDate'],
-      panNo: json['panNo'],
-      profilePic: json['profilePic'],
-      qualification: json['qualification'],
-      religion: json['religion'],
-      rfid: json['rfid'],
-      subCaste: json['subCaste'],
-      uan: json['uan'],
-      check: json['check'],
-    );
+        schoolCode: json['schoolCode'],
+        fullName: json['fullName'].toString(),
+        mob: json['mob'],
+        aadhaarNo: json['aadhaarNo'],
+        address: json['address'],
+        bloodGroup: json['bloodGroup'],
+        caste: json['caste'],
+        department: json['department'],
+        designation: json['designation'],
+        dlNo: json['dlNo'],
+        dlValidity: json['dlValidity'],
+        dob: json['dob'],
+        fatherOrHusName: json['fatherOrHusName'],
+        gender: json['gender'],
+        joiningDate: json['joiningDate'],
+        panNo: json['panNo'],
+        profilePic: json['profilePic'],
+        qualification: json['qualification'],
+        religion: json['religion'],
+        rfid: json['rfid'],
+        subCaste: json['subCaste'],
+        uan: json['uan'],
+        check: json['check'],
+        modified: json['modified']);
   }
 
   Map toJson() {
@@ -100,6 +102,7 @@ class Staff {
       'rfid': rfid,
       'subCaste': subCaste,
       'uan': uan,
+      'modified': DateTime.now().toString()
     };
   }
 }

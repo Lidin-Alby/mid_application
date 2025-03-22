@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:mid_application/Blocs/Class/class_bloc.dart';
 import 'package:mid_application/Blocs/Class/class_event.dart';
 import 'package:mid_application/Blocs/Class/class_state.dart';

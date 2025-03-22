@@ -6,6 +6,7 @@ import 'package:mid_application/Screens/school_dashboard.dart';
 import 'package:mid_application/Screens/staff_details_screen.dart';
 import 'package:mid_application/Screens/student_details_screen.dart';
 import 'package:mid_application/widgets/dialog_button.dart';
+import 'package:mid_application/widgets/my_app_bar.dart';
 import 'package:mid_application/widgets/my_navigation_button.dart';
 
 class SchoolHomeScreen extends StatefulWidget {
@@ -18,35 +19,12 @@ class SchoolHomeScreen extends StatefulWidget {
 
 class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
   int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: SizedBox(
-          height: 34,
-          child: TextField(
-            // controller: controller,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              isDense: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide.none,
-              ),
-              prefixIcon: Icon(Icons.search),
-              prefixIconColor: Theme.of(context).colorScheme.primary,
-              contentPadding: EdgeInsets.all(8),
-            ),
-          ),
-        ),
-        actions: [
-          CircleAvatar(
-            radius: 20,
-            backgroundImage: AssetImage('assets/images/logoImg.jpg'),
-          ),
-        ],
-        actionsPadding: EdgeInsets.only(right: 15),
+      appBar: MyAppBar(
+        onChanged: (value) {},
       ),
       body: _selectedIndex == 0
           ? SchoolDashboard(

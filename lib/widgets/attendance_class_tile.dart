@@ -102,58 +102,59 @@ class AttendanceClassTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: PopupMenuButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(4),
-                        topRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(4),
-                        bottomRight: Radius.circular(4),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(4),
+                      bottomRight: Radius.circular(4),
+                    ),
+                  ),
+                  color: Theme.of(context).colorScheme.primary,
+                  itemBuilder: (context) => [
+                    PopupMenuItem(
+                      child: MyPopupMenuButton(
+                        label: 'Mark Attendance',
+                        icon: Icons.check,
                       ),
                     ),
-                    color: Theme.of(context).colorScheme.primary,
-                    itemBuilder: (context) => [
-                          PopupMenuItem(
-                            child: MyPopupMenuButton(
-                              label: 'Mark Attendance',
-                              icon: Icons.check,
-                            ),
-                          ),
-                          PopupMenuItem(
-                            child: MyPopupMenuButton(
-                              label: 'Manual Attendance',
-                              icon: Icons.book_outlined,
-                            ),
-                          ),
-                          PopupMenuItem(
-                            child: MyPopupMenuButton(
-                              label: 'View Attendance',
-                              icon: Icons.view_column,
-                            ),
-                          ),
-                          PopupMenuItem(
-                            child: MyPopupMenuButton(
-                              label: 'Download Report',
-                              icon: Icons.download_outlined,
-                            ),
-                          ),
-                        ],
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(20),
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(7),
-                        ),
+                    PopupMenuItem(
+                      child: MyPopupMenuButton(
+                        label: 'Manual Attendance',
+                        icon: Icons.book_outlined,
                       ),
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
+                    ),
+                    PopupMenuItem(
+                      child: MyPopupMenuButton(
+                        label: 'View Attendance',
+                        icon: Icons.view_column,
                       ),
-                    )),
+                    ),
+                    PopupMenuItem(
+                      child: MyPopupMenuButton(
+                        label: 'Download Report',
+                        icon: Icons.download_outlined,
+                      ),
+                    ),
+                  ],
+                  child: Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(7),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               )
             ],
           ),
