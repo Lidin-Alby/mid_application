@@ -10,6 +10,8 @@ import 'package:mid_application/Blocs/Student/student_state.dart';
 import 'package:mid_application/models/class_model.dart';
 import 'package:mid_application/models/student.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
+import 'package:mid_application/widgets/gender_radio.dart';
+import 'package:mid_application/widgets/my_date_picker.dart';
 import 'package:mid_application/widgets/my_dropdown_button.dart';
 import 'package:mid_application/widgets/my_filled_button.dart';
 import 'package:mid_application/widgets/my_textfield.dart';
@@ -194,106 +196,22 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                     spacing: spacing,
                     children: [
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Gender',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey[800],
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: 25,
-                                  child: Radio(
-                                    value: 'Male',
-                                    groupValue: gender,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        gender = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Text('Male'),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                SizedBox(
-                                  width: 25,
-                                  child: Radio(
-                                    // visualDensity: VisualDensity(horizontal: 0),
-                                    value: 'Female',
-                                    groupValue: gender,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        gender = value;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                Text('Female')
-                              ],
-                            ),
-                          ],
+                        child: GenderRadio(
+                          gender: gender,
+                          onChanged: (value) {
+                            setState(() {
+                              gender = value;
+                            });
+                          },
                         ),
                       ),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'DOB',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.grey[800],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                DateTime? date = await showDatePicker(
-                                  context: context,
-                                  firstDate: DateTime(1990),
-                                  lastDate: DateTime.now(),
-                                );
-                                if (date != null) {
-                                  setState(() {
-                                    dob = DateFormat('dd-MM-yyyy').format(date);
-                                  });
-                                }
-                              },
-                              child: Container(
-                                height: 34,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black38,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(dob ?? ''),
-                                      Icon(
-                                        Icons.calendar_month_outlined,
-                                        color: Colors.grey[600],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                        child: MyDatePicker(
+                          label: 'DOB',
+                          onSelected: (value) {
+                            dob = value;
+                          },
+                          value: dob,
                         ),
                       )
                     ],
@@ -537,7 +455,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                       bloodGroup: bloodGroup,
                                       boardingType: boardingType,
                                       caste: caste,
-                                      classTitle: classTitle,
+                                      classTitle: classTitle!,
                                       dob: dob,
                                       email: email.text.trim(),
                                       fatherMobNo: fatherMobNo.text.trim(),

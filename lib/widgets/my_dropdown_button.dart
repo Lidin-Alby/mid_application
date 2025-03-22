@@ -21,18 +21,16 @@ class MyDropdownButton extends StatelessWidget {
           label,
           style: TextStyle(
             fontWeight: FontWeight.w700,
-            color: Colors.grey[800],
+            color: const Color.fromARGB(255, 96, 96, 96),
           ),
         ),
         SizedBox(
-          height: 4,
+          height: 8,
         ),
         Container(
           height: 34,
           decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.black38,
-            ),
+            border: Border.all(color: Colors.black26, width: .5),
             borderRadius: BorderRadius.circular(4),
           ),
           child: DropdownButton(

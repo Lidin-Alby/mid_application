@@ -61,7 +61,7 @@ class Student {
     return Student(
       admNo: json['admNo'],
       schoolCode: json['schoolCode'],
-      fullName: json['firstName'],
+      fullName: json['fullName'].toString(),
       classTitle: json['classTitle'],
       gender: json['gender'],
       dob: json['dob'],

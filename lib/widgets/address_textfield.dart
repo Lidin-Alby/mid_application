@@ -14,12 +14,12 @@ class AddressTextfield extends StatelessWidget {
         Text(
           'Address',
           style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: Colors.grey[800],
+            fontWeight: FontWeight.w700,
+            color: const Color.fromARGB(255, 96, 96, 96),
           ),
         ),
         SizedBox(
-          height: 4,
+          height: 8,
         ),
         SizedBox(
           child: TextField(
@@ -27,6 +27,8 @@ class AddressTextfield extends StatelessWidget {
             maxLines: null,
             controller: controller,
             decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black26, width: .5)),
               isDense: true,
               border: OutlineInputBorder(),
               contentPadding: EdgeInsets.all(8),

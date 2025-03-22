@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:mid_application/models/staff.dart';
+import 'package:mid_application/models/teacher.dart';
 
 class TeacherOrStaffTile extends StatelessWidget {
-  const TeacherOrStaffTile({super.key, required this.isTeacher});
-  final bool isTeacher;
+  const TeacherOrStaffTile({super.key, required this.staffUser});
+  // final bool isTeacher;
+  final Staff staffUser;
 
   @override
   Widget build(BuildContext context) {
+    dynamic staff = staffUser;
+    if (staffUser is Teacher) {
+      staff = staffUser as Teacher;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: InkWell(
@@ -34,7 +42,7 @@ class TeacherOrStaffTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Ajay Kumar',
+                    staff.fullName,
                     style: TextStyle(fontWeight: FontWeight.w600),
                   ),
                   Row(
@@ -48,7 +56,7 @@ class TeacherOrStaffTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '17-05-2012',
+                        staff.joiningDate.toString(),
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -67,7 +75,7 @@ class TeacherOrStaffTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '9522587456',
+                        staff.mob,
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -78,13 +86,13 @@ class TeacherOrStaffTile extends StatelessWidget {
                 ],
               ),
               Spacer(),
-              isTeacher
+              staff is Teacher
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       spacing: 5,
                       children: [
                         Text(
-                          '4',
+                          staff.classes!.length.toString(),
                           style: TextStyle(
                               fontSize: 15,
                               color: Colors.black87,
@@ -106,7 +114,7 @@ class TeacherOrStaffTile extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          'Pune',
+                          staff.designation,
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
@@ -117,17 +125,21 @@ class TeacherOrStaffTile extends StatelessWidget {
               SizedBox(
                 width: 10,
               ),
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(3),
-                  child: Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                    size: 20,
-                  ),
-                ),
-              )
+              staff.check ?? false
+                  ? Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(3),
+                        child: Icon(
+                          Icons.check_circle_outline,
+                          color: Colors.green,
+                          size: 20,
+                        ),
+                      ),
+                    )
+                  : SizedBox(
+                      width: 26,
+                    )
             ],
           ),
         ),

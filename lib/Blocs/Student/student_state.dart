@@ -11,9 +11,11 @@ class StudentSaved extends StudentState {}
 class StudentSaveError extends StudentState {
   final String? admNoError;
   final String? fatherMobError;
+  final String? fullNameError;
   final String? error;
 
   StudentSaveError({
+    this.fullNameError,
     this.admNoError,
     this.fatherMobError,
     this.error,

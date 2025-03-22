@@ -18,17 +18,19 @@ class MyTextfield extends StatelessWidget {
           label,
           style: TextStyle(
             fontWeight: FontWeight.w700,
-            color: Colors.grey[800],
+            color: const Color.fromARGB(255, 96, 96, 96),
           ),
         ),
         SizedBox(
-          height: 4,
+          height: 8,
         ),
         SizedBox(
           // height: 34,
           child: TextField(
             controller: controller,
             decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black38, width: .5)),
               errorText: error,
               errorStyle: TextStyle(fontSize: 8),
               // constraints: BoxConstraints(maxHeight: 34),

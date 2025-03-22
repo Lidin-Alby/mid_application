@@ -40,10 +40,18 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
           emit(StudentSaveError(admNoError: 'This field cannot be empty.'));
           return;
         }
+        if (event.student.fullName.isEmpty) {
+          emit(StudentSaveError(admNoError: 'This field cannot be empty.'));
+          return;
+        }
         if (event.student.fatherMobNo!.length != 10) {
           emit(
             StudentSaveError(fatherMobError: '10 digits Mobile No.'),
           );
+          return;
+        }
+        if (event.student.classTitle == null) {
+          emit(StudentSaveError(error: 'Please select the class'));
           return;
         }
         emit(StudentSaveLoading());
@@ -56,7 +64,6 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
             emit(StudentSaveError(error: res.body));
           }
         } catch (e) {
-          print(e);
           emit(StudentSaveError(error: e.toString()));
         }
       },

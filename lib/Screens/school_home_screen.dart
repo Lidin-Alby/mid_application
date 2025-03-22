@@ -165,8 +165,9 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => StudentDetailsScreen(
+                          builder: (context) => StaffDetailsScreen(
                             schoolCode: widget.schoolCode,
+                            isTeacher: true,
                           ),
                         ),
                       ),
@@ -177,7 +178,11 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => StaffDetailsScreen()),
+                          builder: (context) => StaffDetailsScreen(
+                            schoolCode: widget.schoolCode,
+                            isTeacher: false,
+                          ),
+                        ),
                       ),
                     ),
                   ],

@@ -2,6 +2,7 @@ class Staff {
   final String schoolCode;
   final String fullName;
   final String mob;
+  final String designation;
   final String? gender;
   final String? dob;
   final String? bloodGroup;
@@ -14,20 +15,19 @@ class Staff {
   final String? dlNo;
   final String? address;
   final String? rfid;
-  final String? designation;
   final String? fatherOrHusName;
   final String? uan;
   final String? aadhaarNo;
   final String? panNo;
   final String? qualification;
   final String? profilePic;
-  final String role;
+  final bool? check;
 
   Staff(
       {required this.schoolCode,
       required this.fullName,
       required this.mob,
-      required this.role,
+      required this.designation,
       this.gender,
       this.dob,
       this.bloodGroup,
@@ -40,20 +40,19 @@ class Staff {
       this.dlNo,
       this.address,
       this.rfid,
-      this.designation,
       this.fatherOrHusName,
       this.uan,
       this.aadhaarNo,
       this.panNo,
       this.qualification,
+      this.check,
       this.profilePic});
 
   factory Staff.fromJson(json) {
     return Staff(
       schoolCode: json['schoolCode'],
-      fullName: json['firstName'],
+      fullName: json['fullName'].toString(),
       mob: json['mob'],
-      role: json['role'],
       aadhaarNo: json['aadhaarNo'],
       address: json['address'],
       bloodGroup: json['bloodGroup'],
@@ -73,6 +72,7 @@ class Staff {
       rfid: json['rfid'],
       subCaste: json['subCaste'],
       uan: json['uan'],
+      check: json['check'],
     );
   }
 
@@ -81,23 +81,22 @@ class Staff {
       'schoolCode': schoolCode,
       'firstName': fullName,
       'mob': mob,
-      'role': role,
       'aadhaarNo': aadhaarNo,
       'address': address,
-      'bloodGroup': bloodGroup,
-      'caste': caste,
+      'bloodGroup': bloodGroup.toString(),
+      'caste': caste.toString(),
       'department': department,
       'designation': designation,
-      'dlNo': dlNo,
-      'dlValidity': dlValidity,
-      'dob': dob,
+      'dlNo': dlNo.toString(),
+      'dlValidity': dlValidity.toString(),
+      'dob': dob.toString(),
       'fatherOrHusName': fatherOrHusName,
-      'gender': gender,
-      'joiningDate': joiningDate,
+      'gender': gender.toString(),
+      'joiningDate': joiningDate.toString(),
       'panNo': panNo,
-      'profilePic': profilePic,
+      'profilePic': profilePic.toString(),
       'qualification': qualification,
-      'religion': religion,
+      'religion': religion.toString(),
       'rfid': rfid,
       'subCaste': subCaste,
       'uan': uan,

@@ -67,40 +67,40 @@ class _StaffTabState extends State<StaffTab> {
                 return ListView.builder(
                   itemCount: staffs.length,
                   itemBuilder: (context, index) {
-                     bool value = false;
+                    bool value = false;
 
-                          switch (widget.menuName) {
-                            case 'list':
-                              value = true;
-                              break;
-                            case 'print':
-                              value = staffs[index]['ready'] ?? false;
-                              break;
-                            case 'unchecked':
-                              {
-                                if (staffs[index]['ready'] == false &&
-                                    staffs[index]['printed'] == null) {
-                                  value = true;
-                                }
-                              }
-                              break;
-                            case 'noPhoto':
-                              value = staffs[index]['profilePic'] == '';
-                            case 'printing':
-                              {
-                                if (staffs[index]['printed'] == false) {
-                                  value = false;
-                                }
-                              }
-                              break;
-                            case 'printed':
-                              {
-                                if (staffs[index]['printed'] == true) {
-                                  value = true;
-                                }
-                              }
-                              break;
+                    switch (widget.menuName) {
+                      case 'list':
+                        value = true;
+                        break;
+                      case 'print':
+                        value = staffs[index]['ready'] ?? false;
+                        break;
+                      case 'unchecked':
+                        {
+                          if (staffs[index]['ready'] == false &&
+                              staffs[index]['printed'] == null) {
+                            value = true;
                           }
+                        }
+                        break;
+                      case 'noPhoto':
+                        value = staffs[index]['profilePic'] == '';
+                      case 'printing':
+                        {
+                          if (staffs[index]['printed'] == false) {
+                            value = false;
+                          }
+                        }
+                        break;
+                      case 'printed':
+                        {
+                          if (staffs[index]['printed'] == true) {
+                            value = true;
+                          }
+                        }
+                        break;
+                    }
                     if (value) {
                       return Card(
                         child: ListTile(
