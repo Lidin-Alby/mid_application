@@ -5,6 +5,8 @@ import 'package:mid_application/Screens/form_settings_screen.dart';
 import 'package:mid_application/Screens/school_dashboard.dart';
 import 'package:mid_application/Screens/staff_details_screen.dart';
 import 'package:mid_application/Screens/student_details_screen.dart';
+import 'package:mid_application/models/staff.dart';
+import 'package:mid_application/models/teacher.dart';
 import 'package:mid_application/widgets/dialog_button.dart';
 import 'package:mid_application/widgets/my_app_bar.dart';
 import 'package:mid_application/widgets/my_navigation_button.dart';
@@ -19,6 +21,7 @@ class SchoolHomeScreen extends StatefulWidget {
 
 class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
   int _selectedIndex = 0;
+  var staff;
 
   @override
   Widget build(BuildContext context) {
@@ -133,6 +136,7 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                         MaterialPageRoute(
                           builder: (context) => StudentDetailsScreen(
                             schoolCode: widget.schoolCode,
+                            student: null,
                           ),
                         ),
                       ),
@@ -145,7 +149,11 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                         MaterialPageRoute(
                           builder: (context) => StaffDetailsScreen(
                             schoolCode: widget.schoolCode,
-                            isTeacher: true,
+                            staff: Teacher(
+                                schoolCode: '',
+                                fullName: '',
+                                mob: '',
+                                designation: ''),
                           ),
                         ),
                       ),
@@ -158,7 +166,11 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                         MaterialPageRoute(
                           builder: (context) => StaffDetailsScreen(
                             schoolCode: widget.schoolCode,
-                            isTeacher: false,
+                            staff: Staff(
+                                schoolCode: '',
+                                fullName: '',
+                                mob: '',
+                                designation: ''),
                           ),
                         ),
                       ),

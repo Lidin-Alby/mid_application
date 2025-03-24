@@ -31,7 +31,6 @@ class _ChangePicDialogState extends State<ChangePicDialog> {
   File? _image;
   final ImagePicker _picker = ImagePicker();
   saveStudentPic() async {
-    print('object');
     var url = Uri.parse('$ipv4/saveStudentPicMid');
 
     var req = http.MultipartRequest(
@@ -82,8 +81,6 @@ class _ChangePicDialogState extends State<ChangePicDialog> {
         maxHeight: 1000,
         requestFullMetadata: true,
         maxWidth: 1000);
-
-    _image = await FlutterExifRotation.rotateImage(path: _imgXFile!.path);
 
     if (mounted) {
       showDialog(

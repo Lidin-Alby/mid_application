@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mid_application/Screens/staff_details_screen.dart';
 import 'package:mid_application/models/staff.dart';
 import 'package:mid_application/models/teacher.dart';
 
 class TeacherOrStaffTile extends StatelessWidget {
-  const TeacherOrStaffTile({super.key, required this.staffUser});
-  // final bool isTeacher;
+  const TeacherOrStaffTile(
+      {super.key, required this.staffUser, required this.schoolCode});
+  final String schoolCode;
   final Staff staffUser;
 
   @override
@@ -17,7 +19,13 @@ class TeacherOrStaffTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: InkWell(
-        onTap: () {},
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => StaffDetailsScreen(
+                      schoolCode: schoolCode,
+                      staff: staff,
+                    ))),
         child: Container(
           height: 75,
           decoration: BoxDecoration(

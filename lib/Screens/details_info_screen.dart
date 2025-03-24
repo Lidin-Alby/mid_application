@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:mid_application/Blocs/Class/class_bloc.dart';
-import 'package:mid_application/Blocs/Class/class_state.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
 import 'package:mid_application/Blocs/Staff/staff_bloc.dart';
 import 'package:mid_application/Blocs/Staff/staff_event.dart';
 import 'package:mid_application/Blocs/Staff/staff_state.dart';
@@ -180,19 +180,21 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                           );
                         } else if (state is StaffsLoaded) {
                           List<Teacher> teachers = state.teachers;
-                          if (sort == 'name') {
-                            teachers.sort(
-                                (a, b) => a.fullName.compareTo(b.fullName));
-                          } else if (sort == 'joining') {
-                            teachers.sort(
-                              (a, b) => DateFormat('dd-MM-yyyy')
-                                  .parse(a.joiningDate ?? '01-01-2024')
-                                  .compareTo(
-                                    DateFormat('dd-MM-yyyy')
-                                        .parse(b.joiningDate ?? '01-01-2024'),
-                                  ),
-                            );
-                          }
+                          teachers.sort(
+                            (a, b) {
+                              if (sort == 'name') {
+                                return a.fullName.compareTo(b.fullName);
+                              } else {
+                                return DateFormat('dd-MM-yyyy')
+                                    .parse(a.joiningDate ?? '01-01-2024')
+                                    .compareTo(
+                                      DateFormat('dd-MM-yyyy')
+                                          .parse(b.joiningDate ?? '01-01-2024'),
+                                    );
+                              }
+                            },
+                          );
+
                           teachers = teachers
                               .where(
                                 (element) => element.fullName
@@ -212,7 +214,9 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 4.0),
                               child: TeacherOrStaffTile(
-                                  staffUser: teachers[index]),
+                                staffUser: teachers[index],
+                                schoolCode: widget.schoolCode,
+                              ),
                             ),
                           );
                         } else {
@@ -257,8 +261,10 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                             itemBuilder: (context, index) => Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 4.0),
-                              child:
-                                  TeacherOrStaffTile(staffUser: staffs[index]),
+                              child: TeacherOrStaffTile(
+                                staffUser: staffs[index],
+                                schoolCode: widget.schoolCode,
+                              ),
                             ),
                           );
                         } else {

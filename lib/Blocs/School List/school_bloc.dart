@@ -14,11 +14,10 @@ class SchoolListBloc extends Bloc<SchoolListEvent, SchoolListState> {
     on<LoadschoolList>(
       (event, emit) async {
         emit(SchoolListLoading());
-
         try {
           final prefs = await SharedPreferences.getInstance();
           final token = prefs.getString('token');
-          var url = Uri.parse('$ipv4/getMyMidSchools');
+          var url = Uri.parse('$ipv4/v2/getMyMidSchools');
 
           var res = await http.get(url, headers: {'authorization': token!});
           if (res.statusCode == 200) {

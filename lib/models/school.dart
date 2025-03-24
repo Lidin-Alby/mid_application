@@ -1,7 +1,7 @@
 class School {
   String schoolCode;
-  String? schoolName;
-  String? principalPhone;
+  String schoolName;
+  String principalPhone;
   String? schoolPhone;
   String? schoolMail;
   String? schoolWebsite;
@@ -24,8 +24,8 @@ class School {
 
   School({
     required this.schoolCode,
-    this.schoolName,
-    this.principalPhone,
+    required this.schoolName,
+    required this.principalPhone,
     this.schoolPhone,
     this.schoolMail,
     this.schoolWebsite,

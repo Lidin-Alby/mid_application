@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mid_application/Blocs/Class/class_event.dart';
-import 'package:mid_application/Blocs/Class/class_state.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_event.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
 import 'package:mid_application/ip_address.dart';
 
 import 'package:http/http.dart' as http;

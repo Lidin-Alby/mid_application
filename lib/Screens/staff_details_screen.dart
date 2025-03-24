@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mid_application/Blocs/Class/class_bloc.dart';
-import 'package:mid_application/Blocs/Class/class_state.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
 import 'package:mid_application/Blocs/Staff/staff_bloc.dart';
 import 'package:mid_application/Blocs/Staff/staff_event.dart';
 import 'package:mid_application/Blocs/Staff/staff_state.dart';
@@ -17,10 +17,13 @@ import 'package:mid_application/widgets/my_filled_button.dart';
 import 'package:mid_application/widgets/my_textfield.dart';
 
 class StaffDetailsScreen extends StatefulWidget {
-  const StaffDetailsScreen(
-      {super.key, required this.schoolCode, required this.isTeacher});
+  const StaffDetailsScreen({
+    super.key,
+    required this.schoolCode,
+    required this.staff,
+  });
   final String schoolCode;
-  final bool isTeacher;
+  final Staff staff;
 
   @override
   State<StaffDetailsScreen> createState() => _StaffDetailsScreenState();
@@ -64,6 +67,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
   List bloodGroupList = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
   List casteList = ['General', 'OBC', 'SC', 'ST'];
   List<ClassModel> classList = [];
+  late Staff staff;
 
   @override
   void initState() {
@@ -71,6 +75,11 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
     if (classBloc.state is ClassLoaded) {
       final s = classBloc.state as ClassLoaded;
       classList = s.classes;
+    }
+    staff = widget.staff;
+
+    if (staff.schoolCode.isNotEmpty) {
+      assignValues();
     }
     super.initState();
   }
@@ -98,11 +107,37 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
     qualification.clear();
   }
 
+  assignValues() {
+    if (staff is Teacher) {
+      classes = (staff as Teacher).classes!.toSet();
+    }
+    fullName.text = staff.fullName;
+    mob.text = staff.mob;
+    designation.text = staff.designation;
+    gender = staff.gender;
+    dob = staff.dob;
+    bloodGroup = staff.bloodGroup;
+    religion = staff.religion;
+    caste = staff.caste;
+    subCaste.text = staff.subCaste.toString();
+    department.text = staff.department.toString();
+    joiningDate = staff.joiningDate;
+    dlValidity = staff.dlValidity;
+    dlNo.text = staff.dlNo.toString();
+    address.text = staff.address.toString();
+    rfid.text = staff.rfid.toString();
+    fatherOrHusName.text = staff.fatherOrHusName.toString();
+    uan.text = staff.uan.toString();
+    aadhaarNo.text = staff.aadhaarNo.toString();
+    panNo.text = staff.panNo.toString();
+    qualification.text = staff.qualification.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.isTeacher ? 'New Teacher' : 'New Staff'),
+        title: Text(widget.staff is Teacher ? 'New Teacher' : 'New Staff'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -164,7 +199,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                       ),
                     ],
                   ),
-                  if (widget.isTeacher)
+                  if (widget.staff is Teacher)
                     MultiClassSelector(
                       classList: classList,
                       onSelected: (value) {
@@ -314,7 +349,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                       Expanded(
                         child: MyTextfield(label: 'RFID', controller: rfid),
                       ),
-                      if (!widget.isTeacher)
+                      if (widget.staff is! Teacher)
                         Expanded(
                           child: MyTextfield(
                             label: 'Designation',
@@ -356,7 +391,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                               onPressed: () {
                                 BlocProvider.of<StaffBloc>(context).add(
                                   SaveStaffPressed(
-                                    widget.isTeacher
+                                    widget.staff is Teacher
                                         ? Teacher(
                                             schoolCode: widget.schoolCode,
                                             fullName: fullName.text.trim(),

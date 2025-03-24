@@ -20,7 +20,7 @@ class AddSchoolBloc extends Bloc<AddSchoolEvent, AddSchoolState> {
         final token = prefs.getString('token');
         print(token);
         try {
-          var url = Uri.parse('$ipv4/addNewSchoolMid');
+          var url = Uri.parse('$ipv4/v2/addNewSchoolMid');
           var res = await http.post(url, body: {
             'schoolCode': event.schoolCode,
             'principalPhone': event.principalPhone,

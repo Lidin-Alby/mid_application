@@ -68,5 +68,10 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         }
       },
     );
+    on<UpdateStudent>(
+      (event, emit) {
+        emit(StudentsLoaded(event.students));
+      },
+    );
   }
 }

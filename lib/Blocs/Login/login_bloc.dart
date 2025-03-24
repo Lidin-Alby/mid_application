@@ -24,7 +24,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginPressed>((event, emit) async {
       emit(LoginLoading());
       try {
-        var url = Uri.parse('$ipv4/loginMid');
+        var url = Uri.parse('$ipv4/v2/loginMid');
         var response = await http.post(url, body: {
           'userName': event.userId,
           'password': event.password,

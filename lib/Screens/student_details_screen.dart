@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mid_application/Blocs/Class/class_bloc.dart';
-import 'package:mid_application/Blocs/Class/class_event.dart';
-import 'package:mid_application/Blocs/Class/class_state.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_event.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
 import 'package:mid_application/Blocs/Student/student_bloc.dart';
 import 'package:mid_application/Blocs/Student/student_event.dart';
 import 'package:mid_application/Blocs/Student/student_state.dart';
+import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/class_model.dart';
 import 'package:mid_application/models/student.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
@@ -14,10 +15,13 @@ import 'package:mid_application/widgets/my_date_picker.dart';
 import 'package:mid_application/widgets/my_dropdown_button.dart';
 import 'package:mid_application/widgets/my_filled_button.dart';
 import 'package:mid_application/widgets/my_textfield.dart';
+import 'package:mid_application/widgets/profile_pic_widget.dart';
 
 class StudentDetailsScreen extends StatefulWidget {
-  const StudentDetailsScreen({super.key, required this.schoolCode});
+  const StudentDetailsScreen(
+      {super.key, required this.schoolCode, required this.student});
   final String schoolCode;
+  final Student? student;
 
   @override
   State<StudentDetailsScreen> createState() => _StudentDetailsScreenState();
@@ -73,6 +77,8 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   ];
   late ClassLoaded s;
 
+  late Student student;
+
   double spacing = 12;
   @override
   void initState() {
@@ -80,6 +86,10 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     if (classBloc.state is ClassLoaded) {
       s = classBloc.state as ClassLoaded;
       classList = s.classes;
+    }
+    if (widget.student != null) {
+      student = widget.student!;
+      assignValues();
     }
     super.initState();
   }
@@ -111,11 +121,39 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     motherWhatsApp.clear();
   }
 
+  assignValues() {
+    admNo.text = student.admNo;
+    fullName.text = student.fullName;
+    classTitle = student.classTitle;
+    gender = student.gender;
+    dob = student.dob;
+    bloodGroup = student.bloodGroup;
+    religion = student.religion;
+    caste = student.caste;
+    subCaste.text = student.subCaste.toString();
+    email.text = student.email.toString();
+    aadhaarNo.text = student.aadhaarNo.toString();
+    address.text = student.address.toString();
+    rfid.text = student.rfid.toString();
+    transportMode = student.transportMode;
+    session.text = student.session.toString();
+    boardingType = student.boardingType;
+    schoolHouse.text = student.schoolHouse.toString();
+    vehicleNo.text = student.vehicleNo.toString();
+    fatherName.text = student.fatherName.toString();
+    motherName.text = student.motherName.toString();
+    fatherMobNo.text = student.fatherMobNo.toString();
+    motherMobNo.text = student.motherName.toString();
+    fatherWhatsApp.text = student.fatherWhatsApp.toString();
+    motherWhatsApp.text = student.motherWhatsApp.toString();
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(student.caste);
     return Scaffold(
       appBar: AppBar(
-        title: Text('New Student'),
+        title: Text(widget.student == null ? 'New Student' : 'Details'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -145,28 +183,38 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                 spacing: 10,
                 children: [
                   SizedBox(
-                    height: 10,
+                    height: 5,
                   ),
-                  // ProfilePic(),
-                  BlocBuilder<ClassBloc, ClassState>(
-                    builder: (context, state) => Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text.rich(
-                        TextSpan(
-                          text: 'Last : ',
-                          children: [
-                            TextSpan(
-                              text:
-                                  state is ClassLoaded ? state.lastNo : 'error',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.error,
+                  ProfilePicWidget(
+                    userType: 'student',
+                    userId: student.admNo,
+                    imageUrl:
+                        '$ipv4/getPic/${widget.schoolCode}/${student.profilePic}',
+                    schoolCode: widget.schoolCode,
+                    fullName: student.fullName,
+                    oldProfilePic: student.profilePic!,
+                  ),
+                  if (widget.student == null)
+                    BlocBuilder<ClassBloc, ClassState>(
+                      builder: (context, state) => Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text.rich(
+                          TextSpan(
+                            text: 'Last : ',
+                            children: [
+                              TextSpan(
+                                text: state is ClassLoaded
+                                    ? state.lastNo
+                                    : 'error',
+                                style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
                   SizedBox(
                     height: 3,
                   ),
@@ -480,7 +528,6 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                             ),
                           ],
                         ),
-
                   SizedBox(
                     height: 30,
                   )

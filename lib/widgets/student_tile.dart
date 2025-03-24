@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mid_application/Screens/student_details_screen.dart';
+import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/student.dart';
 
 class StudentTile extends StatelessWidget {
@@ -8,7 +10,17 @@ class StudentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StudentDetailsScreen(
+              schoolCode: student.schoolCode,
+              student: student,
+            ),
+          ),
+        );
+      },
       child: Container(
         height: 128,
         decoration: BoxDecoration(
@@ -28,10 +40,9 @@ class StudentTile extends StatelessWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                        radius: 25,
-                        backgroundImage:
-                            AssetImage('assets/images/logoImg.jpg'),
-                      ),
+                          radius: 25,
+                          backgroundImage: NetworkImage(
+                              '$ipv4/getPic/${student.schoolCode}/${student.profilePic}')),
                       SizedBox(
                         width: 15,
                       ),

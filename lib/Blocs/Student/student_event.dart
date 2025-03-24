@@ -14,3 +14,9 @@ class LoadStudents extends StudentEvent {
 
   LoadStudents(this.classTitle, this.schoolCode);
 }
+
+class UpdateStudent extends StudentEvent {
+  final List<Student> students;
+
+  UpdateStudent(this.students);
+}

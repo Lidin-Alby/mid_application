@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mid_application/Blocs/Class/class_bloc.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 
 import 'package:mid_application/Blocs/Add%20school/add_school_bloc.dart';
 import 'package:mid_application/Blocs/Login/login_bloc.dart';
 import 'package:mid_application/Blocs/Login/login_state.dart';
+import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_bloc.dart';
 import 'package:mid_application/Blocs/School%20List/school_bloc.dart';
 import 'package:mid_application/Blocs/School%20List/school_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
@@ -54,6 +55,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => StaffBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ProfilePicBloc(context.read<StudentBloc>()),
         )
       ],
       child: MaterialApp(
