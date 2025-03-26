@@ -35,7 +35,7 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
             )
           : Text('data'),
       bottomNavigationBar: Container(
-        height: 100,
+        height: 75,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -50,34 +50,32 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(15),
           ),
-          child: SafeArea(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MyNavigationButton(
-                  selectedIcon: Icons.dashboard,
-                  icon: Icons.dashboard_outlined,
-                  label: 'Dashboard',
-                  selected: _selectedIndex == 0,
-                  onPressed: () {
-                    setState(() {
-                      _selectedIndex = 0;
-                    });
-                  },
-                ),
-                MyNavigationButton(
-                  icon: Icons.event_note_outlined,
-                  selectedIcon: Icons.event_note,
-                  label: 'Attendance',
-                  selected: _selectedIndex == 1,
-                  onPressed: () {
-                    setState(() {
-                      _selectedIndex = 1;
-                    });
-                  },
-                )
-              ],
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              MyNavigationButton(
+                selectedIcon: Icons.dashboard,
+                icon: Icons.dashboard_outlined,
+                label: 'Dashboard',
+                selected: _selectedIndex == 0,
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 0;
+                  });
+                },
+              ),
+              MyNavigationButton(
+                icon: Icons.event_note_outlined,
+                selectedIcon: Icons.event_note,
+                label: 'Attendance',
+                selected: _selectedIndex == 1,
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 1;
+                  });
+                },
+              )
+            ],
           ),
         ),
       ),

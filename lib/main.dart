@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 
@@ -64,6 +65,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(
+            systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
+              statusBarColor: Colors.transparent,
+              systemNavigationBarColor: Theme.of(context).colorScheme.onPrimary,
+            ),
             backgroundColor: const Color.fromARGB(255, 245, 243, 244),
             foregroundColor: Colors.black,
             elevation: 0,

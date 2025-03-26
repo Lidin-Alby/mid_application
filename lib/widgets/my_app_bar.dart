@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSize {
   const MyAppBar({super.key, required this.onChanged});
@@ -8,6 +9,9 @@ class MyAppBar extends StatelessWidget implements PreferredSize {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        systemNavigationBarColor: const Color.fromARGB(255, 255, 252, 242),
+      ),
       title: Padding(
         padding: const EdgeInsets.only(top: 5),
         child: SizedBox(

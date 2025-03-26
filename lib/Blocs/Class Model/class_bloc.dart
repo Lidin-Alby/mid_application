@@ -23,7 +23,8 @@ class ClassBloc extends Bloc<ClassEvent, ClassState> {
             List classList = data['classes'];
             List<ClassModel> classes =
                 classList.map((e) => ClassModel.fromJson(e)).toList();
-            emit(ClassLoaded(classes, data['lastNo']));
+
+            emit(ClassLoaded(classes, data['lastNo'].toString()));
           } else {
             emit(ClassError(res.body));
           }

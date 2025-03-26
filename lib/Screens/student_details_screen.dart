@@ -77,7 +77,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   ];
   late ClassLoaded s;
 
-  late Student student;
+  Student? student;
 
   double spacing = 12;
   @override
@@ -122,35 +122,34 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   }
 
   assignValues() {
-    admNo.text = student.admNo;
-    fullName.text = student.fullName;
-    classTitle = student.classTitle;
-    gender = student.gender;
-    dob = student.dob;
-    bloodGroup = student.bloodGroup;
-    religion = student.religion;
-    caste = student.caste;
-    subCaste.text = student.subCaste.toString();
-    email.text = student.email.toString();
-    aadhaarNo.text = student.aadhaarNo.toString();
-    address.text = student.address.toString();
-    rfid.text = student.rfid.toString();
-    transportMode = student.transportMode;
-    session.text = student.session.toString();
-    boardingType = student.boardingType;
-    schoolHouse.text = student.schoolHouse.toString();
-    vehicleNo.text = student.vehicleNo.toString();
-    fatherName.text = student.fatherName.toString();
-    motherName.text = student.motherName.toString();
-    fatherMobNo.text = student.fatherMobNo.toString();
-    motherMobNo.text = student.motherName.toString();
-    fatherWhatsApp.text = student.fatherWhatsApp.toString();
-    motherWhatsApp.text = student.motherWhatsApp.toString();
+    admNo.text = student!.admNo;
+    fullName.text = student!.fullName;
+    classTitle = student!.classTitle;
+    gender = student!.gender;
+    dob = student!.dob;
+    bloodGroup = student!.bloodGroup;
+    religion = student!.religion;
+    caste = student!.caste;
+    subCaste.text = student!.subCaste.toString();
+    email.text = student!.email.toString();
+    aadhaarNo.text = student!.aadhaarNo.toString();
+    address.text = student!.address.toString();
+    rfid.text = student!.rfid.toString();
+    transportMode = student!.transportMode;
+    session.text = student!.session.toString();
+    boardingType = student!.boardingType;
+    schoolHouse.text = student!.schoolHouse.toString();
+    vehicleNo.text = student!.vehicleNo.toString();
+    fatherName.text = student!.fatherName.toString();
+    motherName.text = student!.motherName.toString();
+    fatherMobNo.text = student!.fatherMobNo.toString();
+    motherMobNo.text = student!.motherName.toString();
+    fatherWhatsApp.text = student!.fatherWhatsApp.toString();
+    motherWhatsApp.text = student!.motherWhatsApp.toString();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(student.caste);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.student == null ? 'New Student' : 'Details'),
@@ -185,15 +184,16 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                   SizedBox(
                     height: 5,
                   ),
-                  ProfilePicWidget(
-                    userType: 'student',
-                    userId: student.admNo,
-                    imageUrl:
-                        '$ipv4/getPic/${widget.schoolCode}/${student.profilePic}',
-                    schoolCode: widget.schoolCode,
-                    fullName: student.fullName,
-                    oldProfilePic: student.profilePic!,
-                  ),
+                  if (widget.student != null)
+                    ProfilePicWidget(
+                      userType: 'student',
+                      userId: student!.admNo,
+                      imageUrl:
+                          '$ipv4/getPic/${widget.schoolCode}/${student!.profilePic}',
+                      schoolCode: widget.schoolCode,
+                      fullName: student!.fullName,
+                      oldProfilePic: student!.profilePic!,
+                    ),
                   if (widget.student == null)
                     BlocBuilder<ClassBloc, ClassState>(
                       builder: (context, state) => Align(
@@ -502,7 +502,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                       bloodGroup: bloodGroup,
                                       boardingType: boardingType,
                                       caste: caste,
-                                      classTitle: classTitle!,
+                                      classTitle: classTitle,
                                       dob: dob,
                                       email: email.text.trim(),
                                       fatherMobNo: fatherMobNo.text.trim(),

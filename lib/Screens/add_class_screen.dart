@@ -109,8 +109,9 @@ class _AddClassScreenState extends State<AddClassScreen> {
                   );
                 } else if (state is ClassLoaded) {
                   List<ClassModel> classes = state.classes;
+
                   return classes.isEmpty
-                      ? Text('No class added')
+                      ? Center(child: Text('No class added'))
                       : ListView.builder(
                           padding: const EdgeInsets.fromLTRB(25, 20, 25, 40),
                           itemCount: classes.length,
