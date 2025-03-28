@@ -11,6 +11,7 @@ import 'package:mid_application/Blocs/School%20List/school_bloc.dart';
 import 'package:mid_application/Blocs/School%20List/school_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
 import 'package:mid_application/Blocs/Staff/staff_bloc.dart';
+import 'package:mid_application/Blocs/Student%20Details/student_details_bloc.dart';
 import 'package:mid_application/Blocs/Student/student_bloc.dart';
 import 'package:mid_application/Screens/agent_home_screen.dart';
 
@@ -52,14 +53,18 @@ class MyApp extends StatelessWidget {
           create: (context) => ClassBloc(),
         ),
         BlocProvider(
-          create: (context) => StudentBloc(),
-        ),
-        BlocProvider(
           create: (context) => StaffBloc(),
         ),
         BlocProvider(
-          create: (context) => ProfilePicBloc(context.read<StudentBloc>()),
-        )
+          create: (context) => StudentDetailsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => StudentBloc(context.read<StudentDetailsBloc>()),
+        ),
+        BlocProvider(
+          create: (context) => ProfilePicBloc(
+              context.read<StudentBloc>(), context.read<StudentDetailsBloc>()),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(

@@ -4,10 +4,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_bloc.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_event.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_state.dart';
-import 'package:mid_application/ip_address.dart';
+import 'package:mid_application/widgets/profile_pic.dart';
 
-class ProfilePicWidget extends StatelessWidget {
-  const ProfilePicWidget(
+class ProfilePicWithEdit extends StatelessWidget {
+  const ProfilePicWithEdit(
       {super.key,
       required this.userType,
       required this.userId,
@@ -24,6 +24,7 @@ class ProfilePicWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String url = imageUrl;
     return BlocConsumer<ProfilePicBloc, ProfilePicState>(
       listener: (context, state) {
         if (state is ProfilePicUploadError) {
@@ -37,19 +38,16 @@ class ProfilePicWidget extends StatelessWidget {
       builder: (context, state) => Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-            child: CircleAvatar(
-                radius: 40,
-                backgroundImage: NetworkImage(state is ProfilePicUploaded
-                    ? '$ipv4/getPic/$schoolCode/${state.imageUrl}'
-                    : imageUrl)
-                // AssetImage('assets/images/logoImg.jpg'),
-                ),
+            padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+            child: ProfilePicWidget(
+              size: 80,
+              imageUrl: url,
+            ),
           ),
           if (state is ProfilePicUploading)
             Positioned(
-              top: 35,
-              left: 32,
+              top: 42,
+              left: 43,
               child: SizedBox(
                 width: 25,
                 height: 25,

@@ -4,7 +4,7 @@ import 'package:mid_application/models/school.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
 import 'package:mid_application/widgets/my_filled_button.dart';
 import 'package:mid_application/widgets/my_textfield.dart';
-import 'package:mid_application/widgets/profile_pic_widget.dart';
+import 'package:mid_application/widgets/profile_pic_with_edit.dart';
 
 class EditSchoolScreen extends StatefulWidget {
   const EditSchoolScreen({super.key, required this.school});
@@ -41,7 +41,7 @@ class _EditSchoolScreenState extends State<EditSchoolScreen> {
             spacing: 15,
             children: [
               Center(
-                child: ProfilePicWidget(
+                child: ProfilePicWithEdit(
                   userId: widget.school.principalPhone,
                   userType: 'school',
                   fullName: school.schoolName,

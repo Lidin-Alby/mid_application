@@ -134,7 +134,7 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                         MaterialPageRoute(
                           builder: (context) => StudentDetailsScreen(
                             schoolCode: widget.schoolCode,
-                            student: null,
+                            admNo: null,
                           ),
                         ),
                       ),

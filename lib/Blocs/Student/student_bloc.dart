@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mid_application/Blocs/Student%20Details/student_details_bloc.dart';
+import 'package:mid_application/Blocs/Student%20Details/student_details_event.dart';
 import 'package:mid_application/Blocs/Student/student_event.dart';
 import 'package:mid_application/Blocs/Student/student_state.dart';
 import 'package:mid_application/ip_address.dart';
@@ -9,7 +11,8 @@ import 'package:http/http.dart' as http;
 import 'package:mid_application/models/student.dart';
 
 class StudentBloc extends Bloc<StudentEvent, StudentState> {
-  StudentBloc() : super(StudentInitial()) {
+  StudentDetailsBloc studentDetailsBloc;
+  StudentBloc(this.studentDetailsBloc) : super(StudentInitial()) {
     on<LoadStudents>(
       (event, emit) async {
         emit(StudentsLoading());
@@ -56,9 +59,16 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         }
         emit(StudentSaveLoading());
         try {
-          var url = Uri.parse('$ipv4/v2/addStudentMid');
+          var url = Uri.parse('$ipv4/v2/updateStudentInfoMid');
+          if (event.checkAdmNo) {
+            url = Uri.parse('$ipv4/v2/addStudentMid');
+          }
+          Student student = event.student;
           var res = await http.post(url, body: event.student.toJson());
           if (res.statusCode == 201) {
+            if (!event.checkAdmNo) {
+              studentDetailsBloc.add(UpdateStudentDetails(student));
+            }
             emit(StudentSaved());
           } else {
             emit(StudentSaveError(error: res.body));
@@ -68,7 +78,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         }
       },
     );
-    on<UpdateStudent>(
+    on<UpdateStudentsList>(
       (event, emit) {
         emit(StudentsLoaded(event.students));
       },

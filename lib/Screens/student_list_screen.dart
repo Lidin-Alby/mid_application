@@ -75,7 +75,8 @@ class _StudentListScreenState extends State<StudentListScreen> {
                       : ListView.builder(
                           itemCount: students.length,
                           itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 5),
                             child: StudentTile(
                               student: students[index],
                             ),

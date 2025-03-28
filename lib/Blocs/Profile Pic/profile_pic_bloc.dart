@@ -7,6 +7,8 @@ import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_event.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_state.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:mid_application/Blocs/Student%20Details/student_details_bloc.dart';
+import 'package:mid_application/Blocs/Student%20Details/student_details_event.dart';
 import 'package:mid_application/Blocs/Student/student_bloc.dart';
 import 'package:mid_application/Blocs/Student/student_event.dart';
 import 'package:mid_application/Blocs/Student/student_state.dart';
@@ -15,8 +17,10 @@ import 'package:mid_application/models/student.dart';
 
 class ProfilePicBloc extends Bloc<ProfilePicEvent, ProfilePicState> {
   final StudentBloc studentBloc;
+  final StudentDetailsBloc studentDetailsBloc;
   final ImagePicker _picker = ImagePicker();
-  ProfilePicBloc(this.studentBloc) : super(ProfilePicInitial()) {
+  ProfilePicBloc(this.studentBloc, this.studentDetailsBloc)
+      : super(ProfilePicInitial()) {
     on<PickAndUploadProfilePicEvent>(
       (event, emit) async {
         final XFile? imgFile =
@@ -62,9 +66,10 @@ class ProfilePicBloc extends Bloc<ProfilePicEvent, ProfilePicState> {
                 },
               ).toList();
 
-              studentBloc.add(UpdateStudent(updateStudents));
+              studentBloc.add(UpdateStudentsList(updateStudents));
+              studentDetailsBloc.add(UpdateStudentDetails(update));
 
-              emit(ProfilePicUploaded(update.profilePic!));
+              emit(ProfilePicUploaded());
             } else {
               emit(ProfilePicUploadError(responded.body));
             }

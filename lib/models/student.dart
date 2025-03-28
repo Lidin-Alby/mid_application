@@ -60,6 +60,7 @@ class Student {
       this.profilePic});
 
   factory Student.fromJson(json) {
+    
     return Student(
       admNo: json['admNo'],
       schoolCode: json['schoolCode'],
@@ -89,7 +90,7 @@ class Student {
       fatherWhatsApp: json['fatherWhatsApp'],
       motherWhatsApp: json['motherWhatsApp'],
       check: json['check'],
-      modified: json['modified'],
+      modified: DateTime.parse(json['modified']),
       profilePic: json['profilePic'],
     );
   }

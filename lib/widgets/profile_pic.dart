@@ -1,33 +1,40 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-class ProfilePic extends StatelessWidget {
-  const ProfilePic({super.key});
+class ProfilePicWidget extends StatelessWidget {
+  const ProfilePicWidget({super.key, required this.imageUrl, this.size = 45});
+  final String imageUrl;
+  final double size;
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-            child: CircleAvatar(
-              radius: 40,
-              backgroundImage: AssetImage('assets/images/logoImg.jpg'),
-            ),
+    return CachedNetworkImage(
+      placeholder: (context, imageUrl) => SizedBox(
+        width: size,
+        height: size,
+      ),
+      imageUrl: imageUrl,
+      imageBuilder: (context, imageProvider) => Container(
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(imageUrl),
           ),
-          Positioned(
-            bottom: 3,
-            right: -15,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(shape: CircleBorder()),
-              child: Icon(
-                Icons.add_a_photo_outlined,
-                size: 18,
-              ),
-            ),
-          )
-        ],
+        ),
+      ),
+      errorWidget: (context, imageUrl, error) => Container(
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage('assets/images/logoImg.jpg'),
+          ),
+        ),
       ),
     );
   }

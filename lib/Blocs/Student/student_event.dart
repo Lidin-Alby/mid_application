@@ -3,9 +3,10 @@ import 'package:mid_application/models/student.dart';
 abstract class StudentEvent {}
 
 class SaveStudentPressed extends StudentEvent {
+  final bool checkAdmNo;
   final Student student;
 
-  SaveStudentPressed(this.student);
+  SaveStudentPressed({required this.student, required this.checkAdmNo});
 }
 
 class LoadStudents extends StudentEvent {
@@ -15,8 +16,8 @@ class LoadStudents extends StudentEvent {
   LoadStudents(this.classTitle, this.schoolCode);
 }
 
-class UpdateStudent extends StudentEvent {
+class UpdateStudentsList extends StudentEvent {
   final List<Student> students;
 
-  UpdateStudent(this.students);
+  UpdateStudentsList(this.students);
 }

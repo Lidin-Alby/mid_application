@@ -57,6 +57,7 @@ dependencies:
   swipe_to: ^1.0.6
   flutter_bloc: ^9.1.0
   material_symbols_icons: ^4.2808.1
+  cached_network_image: ^3.4.1
   # flutter_sms: 
     # path: C:/Users/lidin/Documents/flutter_sms
 
