@@ -84,6 +84,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   ];
   late ClassLoaded s;
   bool isEdit = false;
+  String? profilePic;
 
   double spacing = 12;
   @override
@@ -160,6 +161,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     motherMobNo.text = student.motherName.toString();
     fatherWhatsApp.text = student.fatherWhatsApp.toString();
     motherWhatsApp.text = student.motherWhatsApp.toString();
+    profilePic = student.profilePic;
   }
 
   Student newStudentValues() {
@@ -189,6 +191,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
       subCaste: subCaste.text.trim(),
       transportMode: transportMode,
       vehicleNo: vehicleNo.text.trim(),
+      profilePic: profilePic,
     );
   }
 
@@ -247,7 +250,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
             : null,
       ),
       body: PopScope(
-        canPop: !isEdit,
+        canPop: widget.admNo == null ? isEdit : !isEdit,
         onPopInvokedWithResult: (didPop, result) {
           setState(() {
             isEdit = false;
@@ -265,6 +268,11 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                         content: Text('Added SuccessFully'),
                       ),
                     );
+                    if (widget.admNo != null) {
+                      setState(() {
+                        isEdit = false;
+                      });
+                    }
                     clearFields();
                     context
                         .read<ClassBloc>()
@@ -315,10 +323,10 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                               userType: 'student',
                               userId: student.admNo,
                               imageUrl:
-                                  '$ipv4/getPic/${widget.schoolCode}/${student.profilePic}',
+                                  '$ipv4/getPic/${widget.schoolCode}/$profilePic',
                               schoolCode: widget.schoolCode,
                               fullName: student.fullName,
-                              oldProfilePic: student.profilePic!,
+                              oldProfilePic: profilePic,
                             ),
                           if (widget.admNo == null)
                             BlocBuilder<ClassBloc, ClassState>(
@@ -387,7 +395,9 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                 child: MyDatePicker(
                                   label: 'DOB',
                                   onSelected: (value) {
-                                    dob = value;
+                                    setState(() {
+                                      dob = value;
+                                    });
                                   },
                                   value: dob,
                                 ),

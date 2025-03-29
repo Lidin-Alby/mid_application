@@ -63,11 +63,26 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
           if (event.checkAdmNo) {
             url = Uri.parse('$ipv4/v2/addStudentMid');
           }
-          Student student = event.student;
+
           var res = await http.post(url, body: event.student.toJson());
           if (res.statusCode == 201) {
             if (!event.checkAdmNo) {
-              studentDetailsBloc.add(UpdateStudentDetails(student));
+              print(event.student);
+              studentDetailsBloc.add(UpdateStudentDetails(event.student));
+              add(LoadStudents(
+                  event.student.classTitle!, event.student.schoolCode));
+
+              // List<Student> oldStudents = (state as StudentsLoaded).students;
+              // final updatedStudents = oldStudents.map(
+              //   (e) {
+              //     if (e.admNo == event.student.admNo) {
+              //       return event.student;
+              //     }
+              //     return e;
+              //   },
+              // ).toList();
+              // print(updatedStudents);
+              // add(UpdateStudentsList(updatedStudents));
             }
             emit(StudentSaved());
           } else {

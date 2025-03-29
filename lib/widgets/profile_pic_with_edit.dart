@@ -20,7 +20,7 @@ class ProfilePicWithEdit extends StatelessWidget {
   final String imageUrl;
   final String fullName;
   final String schoolCode;
-  final String oldProfilePic;
+  final String? oldProfilePic;
 
   @override
   Widget build(BuildContext context) {

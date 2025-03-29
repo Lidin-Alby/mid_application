@@ -8,7 +8,7 @@ class PickAndUploadProfilePicEvent extends ProfilePicEvent {
   final String userId;
   final String schoolCode;
   final String fullName;
-  final String oldProfilePic;
+  final String? oldProfilePic;
   PickAndUploadProfilePicEvent({
     required this.oldProfilePic,
     required this.schoolCode,

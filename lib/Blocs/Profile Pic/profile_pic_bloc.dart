@@ -44,7 +44,7 @@ class ProfilePicBloc extends Bloc<ProfilePicEvent, ProfilePicState> {
             request.fields['schoolCode'] = schoolCode;
             request.fields['userId'] = event.userId;
             request.fields['user'] = event.userType;
-            request.fields['oldProfilePic'] = event.oldProfilePic;
+            request.fields['oldProfilePic'] = event.oldProfilePic!;
 
             var response = await request.send();
             var responded = await http.Response.fromStream(response);
