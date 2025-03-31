@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mid_application/Screens/staff_details_screen.dart';
+import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/staff.dart';
 import 'package:mid_application/models/teacher.dart';
+import 'package:mid_application/widgets/profile_pic.dart';
 
 class TeacherOrStaffTile extends StatelessWidget {
   const TeacherOrStaffTile(
@@ -11,7 +13,7 @@ class TeacherOrStaffTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    dynamic staff = staffUser;
+    Staff staff = staffUser;
     if (staffUser is Teacher) {
       staff = staffUser as Teacher;
     }
@@ -24,7 +26,8 @@ class TeacherOrStaffTile extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => StaffDetailsScreen(
               schoolCode: schoolCode,
-              staff: staff,
+              isTeacher: staff is Teacher,
+              mob: staff.mob,
             ),
           ),
         ),
@@ -39,9 +42,8 @@ class TeacherOrStaffTile extends StatelessWidget {
               SizedBox(
                 width: 15,
               ),
-              CircleAvatar(
-                radius: 25,
-                backgroundImage: AssetImage('assets/images/logoImg.jpg'),
+              ProfilePicWidget(
+                imageUrl: '$ipv4/getPic/$schoolCode/${staff.profilePic}',
               ),
               SizedBox(
                 width: 15,
@@ -124,7 +126,7 @@ class TeacherOrStaffTile extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          staff.designation,
+                          staff.designation!,
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,

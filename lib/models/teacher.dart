@@ -8,7 +8,7 @@ class Teacher extends Staff {
     required super.schoolCode,
     required super.fullName,
     required super.mob,
-    required super.designation,
+    super.designation,
     super.aadhaarNo,
     super.address,
     super.bloodGroup,
@@ -28,6 +28,9 @@ class Teacher extends Staff {
     super.rfid,
     super.subCaste,
     super.uan,
+    super.oldMob,
+    super.status,
+    super.modified,
     this.classes,
   });
 
@@ -58,6 +61,9 @@ class Teacher extends Staff {
       rfid: staff.rfid,
       subCaste: staff.subCaste,
       uan: staff.uan,
+      oldMob: staff.oldMob,
+      status: staff.status,
+      modified: staff.modified,
       classes: json['myClasses'],
     );
   }

@@ -54,7 +54,10 @@ class MyApp extends StatelessWidget {
           create: (context) => ClassBloc(),
         ),
         BlocProvider(
-          create: (context) => StaffBloc(),
+          create: (context) => StaffDetailsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => StaffBloc(context.read<StaffDetailsBloc>()),
         ),
         BlocProvider(
           create: (context) => StudentDetailsBloc(),
@@ -64,11 +67,11 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ProfilePicBloc(
-              context.read<StudentBloc>(), context.read<StudentDetailsBloc>()),
+              context.read<StudentBloc>(),
+              context.read<StudentDetailsBloc>(),
+              context.read<StaffBloc>(),
+              context.read<StaffDetailsBloc>()),
         ),
-        BlocProvider(
-          create: (context) => StaffDetailsBloc(),
-        )
       ],
       child: MaterialApp(
         theme: ThemeData(

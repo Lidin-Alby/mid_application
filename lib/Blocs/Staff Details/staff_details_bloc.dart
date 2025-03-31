@@ -1,14 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mid_application/Blocs/Staff%20Details/satff_details_event.dart';
+import 'package:mid_application/Blocs/Staff%20Details/staff_details_event.dart';
 import 'package:mid_application/Blocs/Staff%20Details/staff_details_state.dart';
 import 'package:mid_application/ip_address.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:mid_application/models/staff.dart';
+import 'package:mid_application/models/teacher.dart';
 
-class StaffDetailsBloc extends Bloc<SatffDetailsEvent, StaffDetailsState> {
+class StaffDetailsBloc extends Bloc<StaffDetailsEvent, StaffDetailsState> {
   StaffDetailsBloc() : super(StaffDetailsInitial()) {
     on<LoadStaffDetails>(
       (event, emit) async {
@@ -20,7 +21,13 @@ class StaffDetailsBloc extends Bloc<SatffDetailsEvent, StaffDetailsState> {
           if (res.statusCode == 200) {
             if (res.statusCode == 200) {
               Map data = jsonDecode(res.body);
-              Staff staff = Staff.fromJson(data);
+              print(data['designation']);
+              Staff staff;
+              if (data['designation'] == 'midTeacher') {
+                staff = Teacher.fromJson(data);
+              } else {
+                staff = Staff.fromJson(data);
+              }
 
               emit(StaffDetailsLoaded(staff));
             } else {
@@ -30,6 +37,11 @@ class StaffDetailsBloc extends Bloc<SatffDetailsEvent, StaffDetailsState> {
         } catch (e) {
           emit(StaffDetailsLoadError(e.toString()));
         }
+      },
+    );
+    on<UpdateStaffDetails>(
+      (event, emit) {
+        emit(StaffDetailsLoaded(event.staff));
       },
     );
   }
