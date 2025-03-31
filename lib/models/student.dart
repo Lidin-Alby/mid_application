@@ -26,6 +26,7 @@ class Student {
   final String? motherWhatsApp;
   final bool? check;
   final DateTime? modified;
+  final String? status;
 
   final String? profilePic;
 
@@ -33,6 +34,7 @@ class Student {
       {required this.admNo,
       required this.schoolCode,
       required this.fullName,
+      this.status,
       this.modified,
       this.classTitle,
       this.gender,
@@ -60,12 +62,12 @@ class Student {
       this.profilePic});
 
   factory Student.fromJson(json) {
-    
     return Student(
       admNo: json['admNo'],
       schoolCode: json['schoolCode'],
       fullName: json['fullName'].toString(),
       classTitle: json['classTitle'] == "null" ? null : json['classTitle'],
+      status: json['status'],
       gender: json['gender'] == "null" ? null : json['gender'],
       dob: json['dob'] == "null" ? null : json['dob'],
       bloodGroup: json['bloodGroup'] == "null" ? null : json['bloodGroup'],
@@ -90,7 +92,9 @@ class Student {
       fatherWhatsApp: json['fatherWhatsApp'],
       motherWhatsApp: json['motherWhatsApp'],
       check: json['check'],
-      modified: DateTime.parse(json['modified']),
+      modified: json['modified'] == null
+          ? DateTime.now()
+          : DateTime.parse(json['modified']),
       profilePic: json['profilePic'],
     );
   }
@@ -122,7 +126,9 @@ class Student {
       'fatherWhatsApp': fatherWhatsApp.toString(),
       'motherWhatsApp': motherWhatsApp.toString(),
       'profilePic': profilePic.toString(),
-      'modified': DateTime.now().toString()
+      'modified': DateTime.now().toString(),
+      'check': (check ?? false).toString(),
+      'status': status.toString()
     };
   }
 }

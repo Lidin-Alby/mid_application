@@ -190,6 +190,7 @@ class SchoolDashboard extends StatelessWidget {
                                       MaterialPageRoute(
                                         builder: (context) => DetailsInfoScreen(
                                           schoolCode: schoolCode,
+                                          listHead: 'all',
                                         ),
                                       ),
                                     ),
@@ -230,7 +231,15 @@ class SchoolDashboard extends StatelessWidget {
                               cardColor: Colors.black87,
                               color: Colors.white,
                               count: school.uncheckedCount.toString(),
-                              onTap: () {},
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsInfoScreen(
+                                    schoolCode: schoolCode,
+                                    listHead: 'null',
+                                  ),
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -243,14 +252,30 @@ class SchoolDashboard extends StatelessWidget {
                               cardColor: Colors.black87,
                               color: Colors.white,
                               count: school.noPhotosCount.toString(),
-                              onTap: () {},
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsInfoScreen(
+                                    schoolCode: schoolCode,
+                                    listHead: 'noPhoto',
+                                  ),
+                                ),
+                              ),
                             ),
                             MenuTile(
                               icon: Icons.print_outlined,
                               label: 'Ready to Print',
                               cardColor: Colors.white,
                               count: school.readyPrintCount.toString(),
-                              onTap: () {},
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsInfoScreen(
+                                    schoolCode: schoolCode,
+                                    listHead: 'ready',
+                                  ),
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -262,7 +287,15 @@ class SchoolDashboard extends StatelessWidget {
                               label: 'Printing',
                               cardColor: Colors.white,
                               count: school.printingCount.toString(),
-                              onTap: () {},
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsInfoScreen(
+                                    schoolCode: schoolCode,
+                                    listHead: 'printing',
+                                  ),
+                                ),
+                              ),
                             ),
                             MenuTile(
                               icon: Icons.done_all_rounded,
@@ -270,7 +303,15 @@ class SchoolDashboard extends StatelessWidget {
                               cardColor: Colors.black87,
                               color: Colors.white,
                               count: school.deliveredCount.toString(),
-                              onTap: () {},
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailsInfoScreen(
+                                    schoolCode: schoolCode,
+                                    listHead: 'printed',
+                                  ),
+                                ),
+                              ),
                             )
                           ],
                         ),

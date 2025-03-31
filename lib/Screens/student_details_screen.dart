@@ -14,6 +14,7 @@ import 'package:mid_application/models/class_model.dart';
 import 'package:mid_application/models/student.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
 import 'package:mid_application/widgets/gender_radio.dart';
+import 'package:mid_application/widgets/my_alert_dialog.dart';
 import 'package:mid_application/widgets/my_date_picker.dart';
 import 'package:mid_application/widgets/my_dropdown_button.dart';
 import 'package:mid_application/widgets/my_filled_button.dart';
@@ -85,6 +86,9 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   late ClassLoaded s;
   bool isEdit = false;
   String? profilePic;
+  bool check = false;
+  String? status;
+//  late DateTime modified;
 
   double spacing = 12;
   @override
@@ -162,6 +166,8 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     fatherWhatsApp.text = student.fatherWhatsApp.toString();
     motherWhatsApp.text = student.motherWhatsApp.toString();
     profilePic = student.profilePic;
+    check = student.check ?? false;
+    status = student.status;
   }
 
   Student newStudentValues() {
@@ -192,6 +198,8 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
       transportMode: transportMode,
       vehicleNo: vehicleNo.text.trim(),
       profilePic: profilePic,
+      check: check,
+      status: status.toString(),
     );
   }
 
@@ -236,13 +244,66 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                           label: 'Share', icon: Icons.share_outlined),
                     ),
                     PopupMenuItem(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => MyAlertDialog(
+                          title:
+                              'Are you sure you want to perform this action?',
+                          subtitle:
+                              'This action only deactivates the account and you cannot use reuse the ADMISSION No. unless you contact app support.',
+                          icon: Icon(
+                            Icons.delete,
+                            size: 35,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                          cancel: () => Navigator.pop(context),
+                          confirm: () {
+                            Navigator.pop(context);
+                            context.read<StudentBloc>().add(
+                                  DeleteStudent(
+                                    widget.schoolCode,
+                                    widget.admNo!,
+                                  ),
+                                );
+                          },
+                        ),
+                      ),
                       child: MyPopupMenuButton(
-                          label: 'Delete', icon: Icons.delete_outline),
+                        label: 'Delete',
+                        icon: Icons.delete_outline,
+                      ),
                     ),
                     PopupMenuItem(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => MyAlertDialog(
+                          title:
+                              'This action will send data to Print. Are you sure you want to perform this action.',
+                          subtitle:
+                              'You will need to contact app support to undo this action.',
+                          icon: Icon(
+                            Icons.print,
+                            size: 25,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                          cancel: () => Navigator.pop(context),
+                          confirm: () {
+                            status = 'ready';
+                            Navigator.pop(context);
+                            context.read<StudentBloc>().add(
+                                  SaveStudentPressed(
+                                    student: newStudentValues(),
+                                    checkAdmNo: widget.admNo == null,
+                                  ),
+                                );
+                          },
+                        ),
+                      ),
                       padding: EdgeInsets.only(left: 16),
                       child: MyPopupMenuButton(
-                          label: 'Send to Print', icon: Icons.print_outlined),
+                        label: 'Send to Print',
+                        icon: Icons.print_outlined,
+                      ),
                     ),
                   ],
                 )
@@ -262,10 +323,25 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
             child: SafeArea(
               child: BlocConsumer<StudentBloc, StudentState>(
                 listener: (context, saveState) {
+                  if (saveState is StudentDeleted) {
+                    Navigator.pop(context);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Deleted Successfully'),
+                      ),
+                    );
+                  }
+                  if (saveState is StudentDeleteError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(saveState.error),
+                      ),
+                    );
+                  }
                   if (saveState is StudentSaved) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Added SuccessFully'),
+                        content: Text('Saved Successfully'),
                       ),
                     );
                     if (widget.admNo != null) {
@@ -295,8 +371,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                           admNo: '',
                           schoolCode: widget.schoolCode,
                           fullName: '');
-                      if (state is StudentDetailsLoading ||
-                          state is StudentDetailsInitial) {
+                      if (state is StudentDetailsLoading) {
                         return SizedBox(
                           height: MediaQuery.of(context).size.height - 60,
                           child: Center(
@@ -626,69 +701,35 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                               children: [
                                 Expanded(
                                   child: MyFilledButton(
-                                    color:
-                                        const Color.fromARGB(255, 54, 166, 31),
-                                    label: 'Check',
+                                    color: check
+                                        ? Colors.amber
+                                        : const Color.fromARGB(
+                                            255, 54, 166, 31),
+                                    label: check ? 'Uncheck' : 'Check',
                                     onPressed: () => showDialog(
                                       context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: Column(
-                                            children: [
-                                              Icon(
-                                                Icons.warning_rounded,
-                                                color: Colors.amber,
-                                                size: 35,
-                                              ),
-                                              SizedBox(
-                                                height: 5,
-                                              ),
-                                              Text(
-                                                'The data will be marked as checked. You can change it later.',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 14,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                                      builder: (context) => MyAlertDialog(
+                                        title:
+                                            'The data will be marked as checked. You can change it later.',
+                                        subtitle:
+                                            'Press OK to contine, Cancel to stay on current page.',
+                                        icon: Icon(
+                                          Icons.warning_rounded,
+                                          color: Colors.amber,
+                                          size: 35,
                                         ),
-                                        content: Text(
-                                          'Press OK to contine, Cancel to stay on current page.',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.grey[600],
-                                          ),
-                                        ),
-                                        actions: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 10),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                MyFilledButton(
-                                                  color: const Color.fromARGB(
-                                                      255, 54, 166, 31),
-                                                  label: 'OK',
-                                                  onPressed: () {},
+                                        cancel: () => Navigator.pop(context),
+                                        confirm: () {
+                                          check = !check;
+                                          Navigator.pop(context);
+                                          context.read<StudentBloc>().add(
+                                                SaveStudentPressed(
+                                                  student: newStudentValues(),
+                                                  checkAdmNo:
+                                                      widget.admNo == null,
                                                 ),
-                                                MyFilledButton(
-                                                  color: Colors.amber,
-                                                  // color: const Color.fromARGB(
-                                                  //     255, 242, 203, 45),
-                                                  label: 'Cancel',
-                                                  onPressed: () =>
-                                                      Navigator.pop(context),
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
+                                              );
+                                        },
                                       ),
                                     ),
                                   ),
@@ -714,9 +755,10 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                                     context)
                                                 .add(
                                               SaveStudentPressed(
-                                                  student: newStudentValues(),
-                                                  checkAdmNo:
-                                                      widget.admNo == null),
+                                                student: newStudentValues(),
+                                                checkAdmNo:
+                                                    widget.admNo == null,
+                                              ),
                                             );
                                           },
                                         ),

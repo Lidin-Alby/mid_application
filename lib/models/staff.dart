@@ -23,12 +23,14 @@ class Staff {
   final String? profilePic;
   final bool? check;
   final DateTime? modified;
+  final String? status;
 
   Staff(
       {required this.schoolCode,
       required this.fullName,
       required this.mob,
       required this.designation,
+      this.status,
       this.modified,
       this.gender,
       this.dob,
@@ -55,6 +57,7 @@ class Staff {
         schoolCode: json['schoolCode'],
         fullName: json['fullName'].toString(),
         mob: json['mob'],
+        status: json['status'],
         aadhaarNo: json['aadhaarNo'],
         address: json['address'],
         bloodGroup: json['bloodGroup'] == "null" ? null : json['bloodGroup'],
@@ -102,6 +105,7 @@ class Staff {
       'rfid': rfid,
       'subCaste': subCaste,
       'uan': uan,
+      'status': status.toString(),
       'modified': DateTime.now().toString()
     };
   }

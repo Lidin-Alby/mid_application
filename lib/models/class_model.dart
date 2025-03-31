@@ -4,19 +4,35 @@ class ClassModel {
   final String? section;
   final String? schoolCode;
   final int? totalStudents;
+  final int? uncheckCount;
+  final int? noPhotoCount;
+  final int? readyCount;
+  final int? printingCount;
+  final int? printedCount;
 
-  ClassModel(
-      {this.schoolCode,
-      required this.classTitle,
-      this.className,
-      this.section,
-      this.totalStudents});
+  ClassModel({
+    this.schoolCode,
+    required this.classTitle,
+    this.className,
+    this.section,
+    this.totalStudents,
+    this.uncheckCount,
+    this.noPhotoCount,
+    this.readyCount,
+    this.printingCount,
+    this.printedCount,
+  });
 
   factory ClassModel.fromJson(json) {
     return ClassModel(
       schoolCode: json['schoolCode'],
       classTitle: json['classTitle'],
       totalStudents: json['totalStudents'] ?? 0,
+      uncheckCount: json['uncheckCount'] ?? 0,
+      noPhotoCount: json['noPhotoCount'] ?? 0,
+      readyCount: json['readyCount'] ?? 0,
+      printingCount: json['printingCount'] ?? 0,
+      printedCount: json['printedCount'] ?? 0,
     );
   }
 

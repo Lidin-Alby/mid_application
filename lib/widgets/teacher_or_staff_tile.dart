@@ -20,12 +20,14 @@ class TeacherOrStaffTile extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: InkWell(
         onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => StaffDetailsScreen(
-                      schoolCode: schoolCode,
-                      staff: staff,
-                    ))),
+          context,
+          MaterialPageRoute(
+            builder: (context) => StaffDetailsScreen(
+              schoolCode: schoolCode,
+              staff: staff,
+            ),
+          ),
+        ),
         child: Container(
           height: 75,
           decoration: BoxDecoration(

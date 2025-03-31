@@ -35,3 +35,11 @@ class StudentLoadError extends StudentState {
 
   StudentLoadError(this.error);
 }
+
+class StudentDeleted extends StudentState {}
+
+class StudentDeleteError extends StudentState {
+  final String error;
+
+  StudentDeleteError(this.error);
+}

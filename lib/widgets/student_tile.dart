@@ -1,8 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mid_application/Screens/student_details_screen.dart';
 import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/student.dart';
+import 'package:mid_application/widgets/profile_pic.dart';
 
 class StudentTile extends StatelessWidget {
   const StudentTile({super.key, required this.student});
@@ -40,35 +40,9 @@ class StudentTile extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      CachedNetworkImage(
-                        imageUrl:
-                            '$ipv4/getPic/${student.schoolCode}/${student.profilePic}',
-                        imageBuilder: (context, imageProvider) => Container(
-                          height: 45,
-                          width: 45,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                  '$ipv4/getPic/${student.schoolCode}/${student.profilePic}'),
-                            ),
-                          ),
-                        ),
-                        placeholder: (context, imageUrl) =>
-                            CircularProgressIndicator(),
-                        errorWidget: (context, imageUrl, error) => Container(
-                          height: 45,
-                          width: 45,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/images/logoImg.jpg'),
-                            ),
-                          ),
-                        ),
-                      ),
+                      ProfilePicWidget(
+                          imageUrl:
+                              '$ipv4/getPic/${student.schoolCode}/${student.profilePic}'),
                       SizedBox(
                         width: 15,
                       ),
@@ -228,22 +202,22 @@ class StudentTile extends StatelessWidget {
                   ),
                 ],
               ),
-              // SizedBox(
-              //   width: 25,
-              // ),
+              SizedBox(
+                width: 15,
+              ),
               // Spacer(),
-              // if (student.check ?? false)
-              Align(
-                alignment: Alignment.topRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(3),
-                  child: Icon(
-                    Icons.check_circle_outline,
-                    color: Colors.green,
-                    size: 20,
+              if (student.check ?? false)
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Icon(
+                      Icons.check_circle_outline,
+                      color: Colors.green,
+                      size: 20,
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),

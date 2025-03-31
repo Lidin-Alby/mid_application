@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +19,9 @@ import 'package:mid_application/widgets/tab_button.dart';
 import 'package:mid_application/widgets/teacher_or_staff_tile.dart';
 
 class DetailsInfoScreen extends StatefulWidget {
-  const DetailsInfoScreen({super.key, required this.schoolCode});
+  const DetailsInfoScreen(
+      {super.key, required this.schoolCode, required this.listHead});
+  final String listHead;
 
   final String schoolCode;
 
@@ -128,30 +129,50 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                       );
                     } else if (state is ClassLoaded) {
                       List<ClassModel> classes = state.classes;
+
                       return Expanded(
                         child: ListView.builder(
-                          itemCount: classes.length,
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 5),
-                            child: InkWell(
-                              onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => StudentListScreen(
-                                    schoolCode: widget.schoolCode,
+                            itemCount: classes.length,
+                            itemBuilder: (context, index) {
+                              int totalStudents = classes[index].totalStudents!;
+                              switch (widget.listHead) {
+                                case 'null':
+                                  totalStudents = classes[index].uncheckCount!;
+                                  break;
+                                case 'noPhoto':
+                                  totalStudents = classes[index].noPhotoCount!;
+                                  break;
+                                case 'ready':
+                                  totalStudents = classes[index].readyCount!;
+                                  break;
+                                case 'printing':
+                                  totalStudents = classes[index].printingCount!;
+                                  break;
+                                case 'printed':
+                                  totalStudents = classes[index].printedCount!;
+                                  break;
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 5),
+                                child: InkWell(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => StudentListScreen(
+                                        schoolCode: widget.schoolCode,
+                                        classTitle: classes[index].classTitle,
+                                        listHead: widget.listHead,
+                                      ),
+                                    ),
+                                  ),
+                                  child: ClassTile(
                                     classTitle: classes[index].classTitle,
+                                    totalStudents: totalStudents.toString(),
                                   ),
                                 ),
-                              ),
-                              child: ClassTile(
-                                classTitle: classes[index].classTitle,
-                                totalStudents:
-                                    classes[index].totalStudents.toString(),
-                              ),
-                            ),
-                          ),
-                        ),
+                              );
+                            }),
                       );
                     } else {
                       return Center(
@@ -180,6 +201,22 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                           );
                         } else if (state is StaffsLoaded) {
                           List<Teacher> teachers = state.teachers;
+                          if (widget.listHead == 'noPhoto') {
+                            teachers = teachers.where((teacher) {
+                              return teacher.profilePic.toString() == "" ||
+                                  teacher.profilePic.toString() == "null";
+                            }).toList();
+                          } else {
+                            if (widget.listHead != 'all') {
+                              teachers = teachers
+                                  .where(
+                                    (teacher) =>
+                                        teacher.status.toString() ==
+                                        widget.listHead,
+                                  )
+                                  .toList();
+                            }
+                          }
                           teachers.sort(
                             (a, b) {
                               if (sort == 'name') {
@@ -251,6 +288,22 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                           );
                         } else if (state is StaffsLoaded) {
                           List<Staff> staffs = state.staffs;
+                          if (widget.listHead == 'noPhoto') {
+                            staffs = staffs.where((staff) {
+                              return staff.profilePic.toString() == "" ||
+                                  staff.profilePic.toString() == "null";
+                            }).toList();
+                          } else {
+                            if (widget.listHead != 'all') {
+                              staffs = staffs
+                                  .where(
+                                    (staff) =>
+                                        staff.status.toString() ==
+                                        widget.listHead,
+                                  )
+                                  .toList();
+                            }
+                          }
                           if (staffs.isEmpty) {
                             return Center(
                               child: Text('No Staffs added'),

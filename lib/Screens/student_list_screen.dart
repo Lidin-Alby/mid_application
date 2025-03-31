@@ -8,9 +8,13 @@ import 'package:mid_application/widgets/student_tile.dart';
 
 class StudentListScreen extends StatefulWidget {
   const StudentListScreen(
-      {super.key, required this.schoolCode, required this.classTitle});
+      {super.key,
+      required this.schoolCode,
+      required this.classTitle,
+      required this.listHead});
   final String schoolCode;
   final String classTitle;
+  final String listHead;
 
   @override
   State<StudentListScreen> createState() => _StudentListScreenState();
@@ -69,6 +73,23 @@ class _StudentListScreenState extends State<StudentListScreen> {
                 );
               } else if (state is StudentsLoaded) {
                 List<Student> students = state.students;
+
+                if (widget.listHead == 'noPhoto') {
+                  students = students.where((student) {
+                    return student.profilePic.toString() == "" ||
+                        student.profilePic.toString() == "null";
+                  }).toList();
+                } else {
+                  if (widget.listHead != 'all') {
+                    students = students
+                        .where(
+                          (student) =>
+                              student.status.toString() == widget.listHead,
+                        )
+                        .toList();
+                  }
+                }
+
                 return Expanded(
                   child: students.isEmpty
                       ? Center(child: Text('No Students added'))

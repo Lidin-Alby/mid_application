@@ -98,5 +98,32 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         emit(StudentsLoaded(event.students));
       },
     );
+    on<DeleteStudent>(
+      (event, emit) async {
+        try {
+          var url = Uri.parse('$ipv4/v2/deactiveMidStudent');
+          var res = await http.post(url,
+              body: {'admNo': event.admNo, 'schoolCode': event.schoolCode});
+          if (res.statusCode == 201) {
+            if (state is StudentsLoaded) {
+              final currentState = state as StudentsLoaded;
+              emit(StudentsLoading());
+              List<Student> updatedStudents = currentState.students
+                  .where(
+                    (student) => student.admNo != event.admNo,
+                  )
+                  .toList();
+
+              emit(StudentDeleted());
+              emit(StudentsLoaded(updatedStudents));
+            }
+          } else {
+            emit(StudentDeleteError(res.body));
+          }
+        } catch (e) {
+          emit(StudentDeleteError(e.toString()));
+        }
+      },
+    );
   }
 }

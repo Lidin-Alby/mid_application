@@ -21,3 +21,13 @@ class UpdateStudentsList extends StudentEvent {
 
   UpdateStudentsList(this.students);
 }
+
+class DeleteStudent extends StudentEvent {
+  final String schoolCode;
+  final String admNo;
+
+  DeleteStudent(
+    this.schoolCode,
+    this.admNo,
+  );
+}
