@@ -114,7 +114,8 @@ class Staff {
       'uan': uan,
       'status': status.toString(),
       'modified': DateTime.now().toString(),
-      'oldMob': oldMob ?? mob
+      'oldMob': oldMob ?? mob,
+      'check': check.toString()
     };
   }
 }

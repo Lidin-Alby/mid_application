@@ -73,6 +73,7 @@ class StaffBloc extends Bloc<StaffEvent, StaffState> {
             url = Uri.parse('$ipv4/v2/updateStaffInfoMid');
           }
           var res = await http.post(url, body: event.staff.toJson());
+          print(event.staff.check);
           if (res.statusCode == 201) {
             if (event.isMob) {
               staffDetailsBloc.add(UpdateStaffDetails(event.staff));

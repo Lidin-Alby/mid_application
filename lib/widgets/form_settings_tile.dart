@@ -5,10 +5,14 @@ class FormSettingsTile extends StatelessWidget {
       {super.key,
       required this.title,
       required this.icon,
-      required this.description});
+      required this.description,
+      required this.onTap,
+      required this.value});
   final String title;
   final IconData icon;
   final String description;
+  final bool value;
+  final Function(bool value) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -35,31 +39,41 @@ class FormSettingsTile extends StatelessWidget {
             ],
           ),
           Spacer(),
-          Ink(
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
-              BoxShadow(
-                blurRadius: 6.4,
-                color: Color.fromARGB(61, 0, 0, 0),
-              ),
-            ]),
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 6.4,
+                    color: Color.fromARGB(61, 0, 0, 0),
+                  ),
+                ]),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                onTap(!value);
+              },
               child: Ink(
-                width: 32,
+                width: 28,
                 height: 16,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Row(
+                  mainAxisAlignment:
+                      value ? MainAxisAlignment.end : MainAxisAlignment.start,
                   children: [
                     Container(
+                      margin: EdgeInsets.symmetric(horizontal: 2),
                       decoration: BoxDecoration(
-                        color: Colors.black,
+                        color: value
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.black,
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Icon(
-                        Icons.close,
+                        value ? Icons.check : Icons.close,
                         color: Colors.white,
                         size: 12,
                       ),
