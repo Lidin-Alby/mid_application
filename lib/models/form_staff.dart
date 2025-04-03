@@ -1,4 +1,6 @@
-class FormStaff {
+import 'package:equatable/equatable.dart';
+
+class FormStaff extends Equatable {
   bool joiningDate;
   bool department;
   bool designation;
@@ -7,7 +9,6 @@ class FormStaff {
   bool dob;
   bool bloodGroup;
   bool email;
-  bool mob;
   bool fatherOrHusName;
   bool qualification;
   bool religion;
@@ -29,7 +30,7 @@ class FormStaff {
     this.dob = false,
     this.bloodGroup = false,
     this.email = false,
-    this.mob = false,
+    // this.mob = false,
     this.fatherOrHusName = false,
     this.qualification = false,
     this.religion = false,
@@ -42,4 +43,75 @@ class FormStaff {
     this.dlValidity = false,
     this.address = false,
   });
+
+  factory FormStaff.fromJson(json) {
+    return FormStaff(
+      joiningDate: bool.parse(json['joiningDate']),
+      department: bool.parse(json['department']),
+      designation: bool.parse(json['designation']),
+      rfid: bool.parse(json['rfid']),
+      gender: bool.parse(json['gender']),
+      dob: bool.parse(json['dob']),
+      bloodGroup: bool.parse(json['bloodGroup']),
+      email: bool.parse(json['email']),
+      //  mob:bool.parse(json[ob]),
+      fatherOrHusName: bool.parse(json['fatherOrHusName']),
+      qualification: bool.parse(json['qualification']),
+      religion: bool.parse(json['religion']),
+      caste: bool.parse(json['caste']),
+      subCaste: bool.parse(json['subCaste']),
+      aadhaarNo: bool.parse(json['aadhaarNo']),
+      panNo: bool.parse(json['panNo']),
+      uan: bool.parse(json['uan']),
+      dlNo: bool.parse(json['dlNo']),
+      dlValidity: bool.parse(json['dlValidity']),
+      address: bool.parse(json['address']),
+    );
+  }
+  Map tomap() {
+    return {
+      'joiningDate': joiningDate.toString(),
+      'department': department.toString(),
+      'designation': designation.toString(),
+      'rfid': rfid.toString(),
+      'gender': gender.toString(),
+      'dob': dob.toString(),
+      'bloodGroup': bloodGroup.toString(),
+      'email': email.toString(),
+      'fatherOrHusName': fatherOrHusName.toString(),
+      'qualification': qualification.toString(),
+      'religion': religion.toString(),
+      'caste': caste.toString(),
+      'subCaste': subCaste.toString(),
+      'aadhaarNo': aadhaarNo.toString(),
+      'panNo': panNo.toString(),
+      'uan': uan.toString(),
+      'dlNo': dlNo.toString(),
+      'dlValidity': dlValidity.toString(),
+      'address': address.toString(),
+    };
+  }
+
+  @override
+  List<Object?> get props => [
+        joiningDate,
+        department,
+        designation,
+        rfid,
+        gender,
+        dob,
+        bloodGroup,
+        email,
+        fatherOrHusName,
+        qualification,
+        religion,
+        caste,
+        subCaste,
+        aadhaarNo,
+        panNo,
+        uan,
+        dlNo,
+        dlValidity,
+        address,
+      ];
 }

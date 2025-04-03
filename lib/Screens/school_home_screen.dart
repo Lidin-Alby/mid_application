@@ -108,7 +108,9 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => FormSettingsScreen(),
+                          builder: (context) => FormSettingsScreen(
+                            schoolCode: widget.schoolCode,
+                          ),
                         ),
                       ),
                     ),

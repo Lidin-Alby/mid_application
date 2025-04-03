@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 
 import 'package:mid_application/Blocs/Add%20school/add_school_bloc.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form_settings_bloc.dart';
 import 'package:mid_application/Blocs/Login/login_bloc.dart';
 import 'package:mid_application/Blocs/Login/login_state.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_bloc.dart';
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => StudentBloc(context.read<StudentDetailsBloc>()),
+        ),
+        BlocProvider(
+          create: (context) => FormSettingsBloc(),
         ),
         BlocProvider(
           create: (context) => ProfilePicBloc(

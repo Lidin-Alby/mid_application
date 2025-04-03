@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_event.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form_settings_bloc.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form_settings_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_state.dart';
@@ -17,6 +19,7 @@ class SchoolDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<FormSettingsBloc>().add(LoadFormSettings(schoolCode));
     context.read<ClassBloc>().add(LoadClasses(schoolCode));
     BlocProvider.of<SchoolDetailsBloc>(context)
         .add(GetSchoolDetails(schoolCode));
