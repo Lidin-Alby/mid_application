@@ -11,20 +11,20 @@ class ProfilePicWithEdit extends StatelessWidget {
       {super.key,
       required this.userType,
       required this.userId,
-      required this.imageUrl,
+      // required this.imageUrl,
       required this.fullName,
       required this.schoolCode,
       required this.oldProfilePic});
   final String userType;
   final String userId;
-  final String imageUrl;
+  // final String imageUrl;
   final String fullName;
   final String schoolCode;
   final String? oldProfilePic;
 
   @override
   Widget build(BuildContext context) {
-    String url = imageUrl;
+    // String url = imageUrl;
     return BlocConsumer<ProfilePicBloc, ProfilePicState>(
       listener: (context, state) {
         if (state is ProfilePicUploadError) {
@@ -41,7 +41,8 @@ class ProfilePicWithEdit extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
             child: ProfilePicWidget(
               size: 80,
-              imageUrl: url,
+              profilePic: oldProfilePic.toString(),
+              schoolCode: schoolCode,
             ),
           ),
           if (state is ProfilePicUploading)

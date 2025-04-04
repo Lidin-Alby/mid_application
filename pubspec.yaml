@@ -59,6 +59,7 @@ dependencies:
   material_symbols_icons: ^4.2808.1
   cached_network_image: ^3.4.1
   equatable: ^2.0.7
+  qr_code_scanner_plus: ^2.0.10+1
   # flutter_sms: 
     # path: C:/Users/lidin/Documents/flutter_sms
 

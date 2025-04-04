@@ -8,7 +8,6 @@ import 'package:mid_application/Blocs/Staff%20Details/staff_details_state.dart';
 import 'package:mid_application/Blocs/Staff/staff_bloc.dart';
 import 'package:mid_application/Blocs/Staff/staff_event.dart';
 import 'package:mid_application/Blocs/Staff/staff_state.dart';
-import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/class_model.dart';
 import 'package:mid_application/models/staff.dart';
 import 'package:mid_application/models/teacher.dart';
@@ -403,8 +402,8 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                         ProfilePicWithEdit(
                           userType: widget.isTeacher ? 'teacher' : 'staff',
                           userId: staff.mob,
-                          imageUrl:
-                              '$ipv4/getPic/${widget.schoolCode}/$profilePic',
+                          // imageUrl:
+                          //     '$ipv4/getPic/${widget.schoolCode}/$profilePic',
                           schoolCode: widget.schoolCode,
                           fullName: staff.fullName,
                           oldProfilePic: profilePic,

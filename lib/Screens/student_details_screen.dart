@@ -9,7 +9,6 @@ import 'package:mid_application/Blocs/Student%20Details/student_details_state.da
 import 'package:mid_application/Blocs/Student/student_bloc.dart';
 import 'package:mid_application/Blocs/Student/student_event.dart';
 import 'package:mid_application/Blocs/Student/student_state.dart';
-import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/class_model.dart';
 import 'package:mid_application/models/student.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
@@ -397,8 +396,8 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                             ProfilePicWithEdit(
                               userType: 'student',
                               userId: student.admNo,
-                              imageUrl:
-                                  '$ipv4/getPic/${widget.schoolCode}/$profilePic',
+                              // imageUrl:
+                              //     '$ipv4/getPic/${widget.schoolCode}/$profilePic',
                               schoolCode: widget.schoolCode,
                               fullName: student.fullName,
                               oldProfilePic: profilePic,

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
-class CountsColumn extends StatelessWidget {
-  const CountsColumn(
+class CountsColumnAttendance extends StatelessWidget {
+  const CountsColumnAttendance(
       {super.key,
       required this.count,
       required this.icon,
       required this.label,
       this.iconColor,
-      this.iconSize = 30});
+      this.iconSize = 30,
+      this.textColor});
   final String count;
   final IconData icon;
   final String label;
   final Color? iconColor;
   final double? iconSize;
+  final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,7 @@ class CountsColumn extends StatelessWidget {
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.w900,
+            color: textColor,
           ),
         ),
         Container(
@@ -32,7 +35,7 @@ class CountsColumn extends StatelessWidget {
           margin: EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
               color: const Color.fromARGB(255, 255, 252, 242),
-              borderRadius: BorderRadius.circular(16)),
+              borderRadius: BorderRadius.circular(25)),
           child: Icon(
             color: iconColor,
             fill: 1,
@@ -43,7 +46,7 @@ class CountsColumn extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(fontSize: 10),
+          style: TextStyle(fontSize: 10, color: textColor),
         ),
       ],
     );

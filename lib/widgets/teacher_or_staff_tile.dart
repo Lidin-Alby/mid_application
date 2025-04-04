@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mid_application/Screens/staff_details_screen.dart';
-import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/staff.dart';
 import 'package:mid_application/models/teacher.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
@@ -43,7 +42,8 @@ class TeacherOrStaffTile extends StatelessWidget {
                 width: 15,
               ),
               ProfilePicWidget(
-                imageUrl: '$ipv4/getPic/$schoolCode/${staff.profilePic}',
+                profilePic: staff.profilePic!,
+                schoolCode: staff.schoolCode,
               ),
               SizedBox(
                 width: 15,

@@ -1,10 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:mid_application/ip_address.dart';
 
 class ProfilePicWidget extends StatelessWidget {
-  const ProfilePicWidget({super.key, required this.imageUrl, this.size = 45});
-  final String imageUrl;
+  const ProfilePicWidget(
+      {super.key,
+      required this.profilePic,
+      this.size = 45,
+      required this.schoolCode});
+  final String profilePic;
   final double size;
+  final String schoolCode;
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +19,7 @@ class ProfilePicWidget extends StatelessWidget {
         width: size,
         height: size,
       ),
-      imageUrl: imageUrl,
+      imageUrl: '$ipv4/getPic/$schoolCode/$profilePic',
       imageBuilder: (context, imageProvider) => Container(
         height: size,
         width: size,
@@ -21,7 +27,7 @@ class ProfilePicWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: NetworkImage(imageUrl),
+            image: NetworkImage('$ipv4/getPic/$schoolCode/$profilePic'),
           ),
         ),
       ),

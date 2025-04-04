@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mid_application/Screens/student_details_screen.dart';
-import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/student.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
 
@@ -41,8 +40,9 @@ class StudentTile extends StatelessWidget {
                   Row(
                     children: [
                       ProfilePicWidget(
-                          imageUrl:
-                              '$ipv4/getPic/${student.schoolCode}/${student.profilePic}'),
+                        profilePic: student.profilePic!,
+                        schoolCode: student.schoolCode,
+                      ),
                       SizedBox(
                         width: 15,
                       ),

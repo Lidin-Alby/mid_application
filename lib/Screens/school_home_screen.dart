@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:mid_application/Screens/add_class_screen.dart';
+import 'package:mid_application/Screens/attendance_dashboard.dart';
 import 'package:mid_application/Screens/form_settings_screen.dart';
 import 'package:mid_application/Screens/school_dashboard.dart';
 import 'package:mid_application/Screens/staff_details_screen.dart';
@@ -31,7 +32,7 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
           ? SchoolDashboard(
               schoolCode: widget.schoolCode,
             )
-          : Text('data'),
+          : AttendanceDashboard(),
       bottomNavigationBar: Container(
         height: 75,
         decoration: BoxDecoration(
@@ -77,103 +78,105 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Icon(Icons.add),
-        onPressed: () => showDialog(
-          context: context,
-          builder: (context) {
-            double width = MediaQuery.of(context).size.width;
-            double padding = width - 310;
-
-            return Dialog(
+      floatingActionButton: _selectedIndex == 0
+          ? FloatingActionButton(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
-              insetPadding: EdgeInsets.symmetric(horizontal: padding),
-              // width: 100,
-              backgroundColor: Color.fromARGB(255, 37, 36, 34),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Wrap(
-                  spacing: 30, runSpacing: 50,
-                  alignment: WrapAlignment.center,
-                  // crossAxisAlignment: WrapCrossAlignment.end,
-                  children: [
-                    DialogButton(
-                      icon: Icons.settings_outlined,
-                      label: 'Form Settings',
-                      color: Theme.of(context).colorScheme.primary,
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FormSettingsScreen(
-                            schoolCode: widget.schoolCode,
-                          ),
-                        ),
-                      ),
-                    ),
-                    DialogButton(
-                      icon: Icons.badge_outlined,
-                      label: 'Add Class',
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddClassScreen(
-                            schoolCode: widget.schoolCode,
-                          ),
-                        ),
-                      ),
-                    ),
-                    DialogButton(
-                      icon: Icons.person_outline,
-                      label: 'Add Student',
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StudentDetailsScreen(
-                            schoolCode: widget.schoolCode,
-                            admNo: null,
-                          ),
-                        ),
-                      ),
-                    ),
-                    DialogButton(
-                      icon: Symbols.person_edit,
-                      label: 'Add Teacher',
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StaffDetailsScreen(
-                            schoolCode: widget.schoolCode,
-                            isTeacher: true,
-                            mob: null,
-                          ),
-                        ),
-                      ),
-                    ),
-                    DialogButton(
-                      icon: Icons.manage_accounts_outlined,
-                      label: 'Add Staff',
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => StaffDetailsScreen(
-                            schoolCode: widget.schoolCode,
-                            isTeacher: false,
-                            mob: null,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                borderRadius: BorderRadius.circular(10),
               ),
-            );
-          },
-        ),
-      ),
+              child: Icon(Icons.add),
+              onPressed: () => showDialog(
+                context: context,
+                builder: (context) {
+                  double width = MediaQuery.of(context).size.width;
+                  double padding = width - 310;
+
+                  return Dialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    insetPadding: EdgeInsets.symmetric(horizontal: padding),
+                    // width: 100,
+                    backgroundColor: Color.fromARGB(255, 37, 36, 34),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Wrap(
+                        spacing: 30, runSpacing: 50,
+                        alignment: WrapAlignment.center,
+                        // crossAxisAlignment: WrapCrossAlignment.end,
+                        children: [
+                          DialogButton(
+                            icon: Icons.settings_outlined,
+                            label: 'Form Settings',
+                            color: Theme.of(context).colorScheme.primary,
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FormSettingsScreen(
+                                  schoolCode: widget.schoolCode,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DialogButton(
+                            icon: Icons.badge_outlined,
+                            label: 'Add Class',
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddClassScreen(
+                                  schoolCode: widget.schoolCode,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DialogButton(
+                            icon: Icons.person_outline,
+                            label: 'Add Student',
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StudentDetailsScreen(
+                                  schoolCode: widget.schoolCode,
+                                  admNo: null,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DialogButton(
+                            icon: Symbols.person_edit,
+                            label: 'Add Teacher',
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StaffDetailsScreen(
+                                  schoolCode: widget.schoolCode,
+                                  isTeacher: true,
+                                  mob: null,
+                                ),
+                              ),
+                            ),
+                          ),
+                          DialogButton(
+                            icon: Icons.manage_accounts_outlined,
+                            label: 'Add Staff',
+                            onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StaffDetailsScreen(
+                                  schoolCode: widget.schoolCode,
+                                  isTeacher: false,
+                                  mob: null,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+          : null,
     );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/school.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
 import 'package:mid_application/widgets/my_filled_button.dart';
@@ -45,8 +44,8 @@ class _EditSchoolScreenState extends State<EditSchoolScreen> {
                   userId: widget.school.principalPhone,
                   userType: 'school',
                   fullName: school.schoolName,
-                  imageUrl:
-                      '$ipv4/getPic/${school.schoolCode}/${school.schoolLogo}',
+                  // imageUrl:
+                  //     '$ipv4/getPic/${school.schoolCode}/${school.schoolLogo}',
                   schoolCode: school.schoolCode,
                   oldProfilePic: school.schoolLogo!,
                 ),

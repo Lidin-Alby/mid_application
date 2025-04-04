@@ -3,6 +3,9 @@ class ClassModel {
   final String classTitle;
   final String? section;
   final String? schoolCode;
+  final String? classTeacher;
+  final String? profilePic;
+  final String? mob;
   final int? totalStudents;
   final int? uncheckCount;
   final int? noPhotoCount;
@@ -11,6 +14,9 @@ class ClassModel {
   final int? printedCount;
 
   ClassModel({
+    this.profilePic,
+    this.classTeacher,
+    this.mob,
     this.schoolCode,
     required this.classTitle,
     this.className,
@@ -27,6 +33,8 @@ class ClassModel {
     return ClassModel(
       schoolCode: json['schoolCode'],
       classTitle: json['classTitle'],
+      classTeacher: json['classTeacher'],
+      profilePic: json['profilePic'],
       totalStudents: json['totalStudents'] ?? 0,
       uncheckCount: json['uncheckCount'] ?? 0,
       noPhotoCount: json['noPhotoCount'] ?? 0,
