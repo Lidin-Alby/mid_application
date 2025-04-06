@@ -23,7 +23,7 @@ class Staff {
   final String? profilePic;
   final bool? check;
   final DateTime? modified;
-  final String? status;
+  final String? printStatus;
   final String? oldMob;
 
   Staff({
@@ -32,7 +32,7 @@ class Staff {
     required this.mob,
     this.designation,
     this.oldMob,
-    this.status,
+    this.printStatus,
     this.modified,
     this.gender,
     this.dob,
@@ -60,7 +60,7 @@ class Staff {
       schoolCode: json['schoolCode'],
       fullName: json['fullName'].toString(),
       mob: json['mob'],
-      status: json['status'],
+      printStatus: json['printStatus'],
       aadhaarNo: json['aadhaarNo'],
       address: json['address'],
       bloodGroup: json['bloodGroup'] == "null" ? null : json['bloodGroup'],
@@ -112,7 +112,7 @@ class Staff {
       'rfid': rfid,
       'subCaste': subCaste,
       'uan': uan,
-      'status': status.toString(),
+      'printStatus': printStatus.toString(),
       'modified': DateTime.now().toString(),
       'oldMob': oldMob ?? mob,
       'check': check.toString()

@@ -84,7 +84,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     students = students
                         .where(
                           (student) =>
-                              student.status.toString() == widget.listHead,
+                              student.printStatus.toString() == widget.listHead,
                         )
                         .toList();
                   }

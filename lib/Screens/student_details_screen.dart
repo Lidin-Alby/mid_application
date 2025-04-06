@@ -86,7 +86,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   bool isEdit = false;
   String? profilePic;
   bool check = false;
-  String? status;
+  String? printStatus;
 //  late DateTime modified;
 
   double spacing = 12;
@@ -166,7 +166,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
     motherWhatsApp.text = student.motherWhatsApp.toString();
     profilePic = student.profilePic;
     check = student.check ?? false;
-    status = student.status;
+    printStatus = student.printStatus;
   }
 
   Student newStudentValues() {
@@ -198,7 +198,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
       vehicleNo: vehicleNo.text.trim(),
       profilePic: profilePic,
       check: check,
-      status: status.toString(),
+      printStatus: printStatus.toString(),
     );
   }
 
@@ -287,7 +287,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                           ),
                           cancel: () => Navigator.pop(context),
                           confirm: () {
-                            status = 'ready';
+                            printStatus = 'ready';
                             Navigator.pop(context);
                             context.read<StudentBloc>().add(
                                   SaveStudentPressed(

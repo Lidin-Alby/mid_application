@@ -80,7 +80,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
   String? oldMob;
   String? profilePic;
   bool check = false;
-  String? status;
+  String? printStatus;
 
   @override
   void initState() {
@@ -154,7 +154,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
     oldMob = staff.oldMob;
     profilePic = staff.profilePic;
     check = staff.check ?? false;
-    status = staff.status;
+    printStatus = staff.printStatus;
   }
 
   Staff newStaffValues() {
@@ -185,7 +185,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
         oldMob: oldMob,
         profilePic: profilePic,
         check: check,
-        status: status.toString(),
+        printStatus: printStatus.toString(),
       );
     }
     return Staff(
@@ -213,7 +213,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
       oldMob: oldMob,
       profilePic: profilePic,
       check: check,
-      status: status.toString(),
+      printStatus: printStatus.toString(),
     );
   }
 
@@ -309,7 +309,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                           ),
                           cancel: () => Navigator.pop(context),
                           confirm: () {
-                            status = 'ready';
+                            printStatus = 'ready';
                             Navigator.pop(context);
                             context.read<StaffBloc>().add(
                                   SaveStaffPressed(

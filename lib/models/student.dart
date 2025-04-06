@@ -26,7 +26,7 @@ class Student {
   final String? motherWhatsApp;
   final bool? check;
   final DateTime? modified;
-  final String? status;
+  final String? printStatus;
 
   final String? profilePic;
 
@@ -34,7 +34,7 @@ class Student {
       {required this.admNo,
       required this.schoolCode,
       required this.fullName,
-      this.status,
+      this.printStatus,
       this.modified,
       this.classTitle,
       this.gender,
@@ -67,7 +67,7 @@ class Student {
       schoolCode: json['schoolCode'],
       fullName: json['fullName'].toString(),
       classTitle: json['classTitle'] == "null" ? null : json['classTitle'],
-      status: json['status'],
+      printStatus: json['printStatus'],
       gender: json['gender'] == "null" ? null : json['gender'],
       dob: json['dob'] == "null" ? null : json['dob'],
       bloodGroup: json['bloodGroup'] == "null" ? null : json['bloodGroup'],
@@ -128,7 +128,7 @@ class Student {
       'profilePic': profilePic.toString(),
       'modified': DateTime.now().toString(),
       'check': (check ?? false).toString(),
-      'status': status.toString()
+      'printStatus': printStatus.toString()
     };
   }
 }

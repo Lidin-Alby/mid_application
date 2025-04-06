@@ -48,19 +48,19 @@ class AttendanceDashboard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     CountsColumnAttendance(
-                      count: '258',
+                      count: '10',
                       icon: Icons.person_outline_rounded,
                       label: 'Students',
                       // iconSize: 20,
                     ),
                     CountsColumnAttendance(
-                      count: '258',
+                      count: '5',
                       icon: Icons.dangerous,
                       iconColor: Theme.of(context).colorScheme.error,
                       label: 'Absent',
                     ),
                     CountsColumnAttendance(
-                      count: '258',
+                      count: '4',
                       icon: Icons.check_box,
                       iconColor: Colors.green,
                       label: 'Present',
@@ -93,7 +93,6 @@ class AttendanceDashboard extends StatelessWidget {
                       profilePic: classes[index].profilePic!,
                       schoolCode: classes[index].schoolCode!,
                       totalStudents: classes[index].totalStudents!,
-                      onTap: () {},
                     ),
                   ),
                 );

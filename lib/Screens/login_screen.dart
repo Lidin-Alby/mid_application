@@ -137,13 +137,13 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 255, 252, 242),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Card(
-            elevation: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Card(
+              elevation: 5,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
                 child: BlocBuilder<LoginBloc, LoginState>(
                     builder: (context, state) {
                   return Column(

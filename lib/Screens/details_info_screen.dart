@@ -211,7 +211,7 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                               teachers = teachers
                                   .where(
                                     (teacher) =>
-                                        teacher.status.toString() ==
+                                        teacher.printStatus.toString() ==
                                         widget.listHead,
                                   )
                                   .toList();
@@ -298,7 +298,7 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                               staffs = staffs
                                   .where(
                                     (staff) =>
-                                        staff.status.toString() ==
+                                        staff.printStatus.toString() ==
                                         widget.listHead,
                                   )
                                   .toList();

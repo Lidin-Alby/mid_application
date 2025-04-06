@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mid_application/Screens/manual_attendance_screen.dart';
 import 'package:mid_application/Screens/qr_attendance_screen.dart';
 import 'package:mid_application/widgets/my_popup_menu_button.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
@@ -6,13 +7,12 @@ import 'package:mid_application/widgets/profile_pic.dart';
 class AttendanceClassTile extends StatelessWidget {
   const AttendanceClassTile(
       {super.key,
-      required this.onTap,
       required this.classTitle,
       required this.classTeacher,
       required this.profilePic,
       required this.schoolCode,
       required this.totalStudents});
-  final VoidCallback onTap;
+
   final String classTitle;
   final String classTeacher;
   final String profilePic;
@@ -136,6 +136,14 @@ class AttendanceClassTile extends StatelessWidget {
                   ),
                 ),
                 PopupMenuItem(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ManualAttendanceScreen(
+                          schoolCode: schoolCode,
+                          classTitle: classTitle,
+                        ),
+                      )),
                   child: MyPopupMenuButton(
                     label: 'Manual Attendance',
                     icon: Icons.book_outlined,

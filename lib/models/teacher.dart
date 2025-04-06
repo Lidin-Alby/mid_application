@@ -29,7 +29,7 @@ class Teacher extends Staff {
     super.subCaste,
     super.uan,
     super.oldMob,
-    super.status,
+    super.printStatus,
     super.modified,
     this.classes,
   });
@@ -62,7 +62,7 @@ class Teacher extends Staff {
       subCaste: staff.subCaste,
       uan: staff.uan,
       oldMob: staff.oldMob,
-      status: staff.status,
+      printStatus: staff.printStatus,
       modified: staff.modified,
       classes: json['myClasses'],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mid_application/Blocs/Attendance/attendance_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 
 import 'package:mid_application/Blocs/Add%20school/add_school_bloc.dart';
@@ -76,8 +77,12 @@ class MyApp extends StatelessWidget {
               context.read<StaffBloc>(),
               context.read<StaffDetailsBloc>()),
         ),
+        BlocProvider(
+          create: (context) => AttendanceBloc(),
+        )
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(
