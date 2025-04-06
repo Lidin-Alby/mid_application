@@ -1,4 +1,5 @@
 import 'package:mid_application/models/attendance.dart';
+import 'package:mid_application/models/student.dart';
 
 abstract class AttendanceEvent {}
 
@@ -21,4 +22,10 @@ class SaveClassAttendance extends AttendanceEvent {
   final List<Attendance> students;
 
   SaveClassAttendance(this.students);
+}
+
+class LoadIndividualAttendance extends AttendanceEvent {
+  final Student student;
+
+  LoadIndividualAttendance(this.student);
 }

@@ -8,12 +8,14 @@ class AttendanceNotation extends StatelessWidget {
       required this.value,
       required this.onChanged,
       required this.color,
-      this.horizontalPadding = 0});
+      this.horizontalPadding = 0,
+      required this.groupValue});
   final String notation;
   final String label;
   final String value;
   final Color? color;
   final double horizontalPadding;
+  final String groupValue;
   final Function(String? value) onChanged;
 
   @override
@@ -54,7 +56,7 @@ class AttendanceNotation extends StatelessWidget {
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           visualDensity: VisualDensity(vertical: -3),
           value: value,
-          groupValue: 'status',
+          groupValue: groupValue,
           onChanged: (value) => onChanged(value),
         ),
       ],

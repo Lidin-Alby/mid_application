@@ -18,7 +18,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           var res = await http.get(url);
           if (res.statusCode == 200) {
             List data = jsonDecode(res.body);
-            print(data);
+
             List<Attendance> students =
                 data.map((e) => Attendance.fromJson(e)).toList();
 
@@ -54,9 +54,14 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
       (event, emit) async {
         emit(SaveAttendanceLoading());
         try {
-          var url = Uri.parse('$ipv4/v2/addFormAccessStudentMid');
-          var res = await http
-              .post(url, body: {'students': jsonEncode(event.students)});
+          List students = event.students
+              .map(
+                (e) => e.toMap(),
+              )
+              .toList();
+          var url = Uri.parse('$ipv4/v2/saveClassAttendanceMid');
+          var res =
+              await http.post(url, body: {'students': jsonEncode(students)});
           if (res.statusCode == 201) {
             // List classList = data['classes'];
             emit(SaveAttendanceSuccess());
@@ -65,6 +70,31 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           }
         } catch (e) {
           emit(SaveAttendanceError(e.toString()));
+        }
+      },
+    );
+    on<LoadIndividualAttendance>(
+      (event, emit) async {
+        emit(AttendanceLoading());
+        print(event.student.schoolCode);
+        print(event.student.admNo);
+        try {
+          var url = Uri.parse(
+              '$ipv4/v2/getMyAttendanceMid/${Uri.encodeQueryComponent(event.student.schoolCode)}/${Uri.encodeQueryComponent(event.student.admNo)}/04-2025');
+          var res = await http.get(url);
+          if (res.statusCode == 200) {
+            Map data = jsonDecode(res.body);
+            print(data);
+
+            // List<Attendance> students =
+            //     data.map((e) => Attendance.fromJson(e)).toList();
+
+            emit(IndividualAttendanceLoaded(data['attendance']));
+          } else {
+            emit(AttendanceLoadError(res.body));
+          }
+        } catch (e) {
+          AttendanceLoadError(e.toString());
         }
       },
     );

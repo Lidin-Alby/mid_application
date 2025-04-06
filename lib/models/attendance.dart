@@ -7,11 +7,19 @@ class Attendance {
   final DateTime date;
   final String? fatherName;
   final String? motherName;
+  final String? fatherMobNo;
+  final String? motherMobNo;
+  final String? fatherWhatsApp;
+  final String? motherWhatsApp;
   final String? profilePic;
   String? status;
 
   Attendance(
-      {this.fatherName,
+      {this.fatherMobNo,
+      this.motherMobNo,
+      this.fatherWhatsApp,
+      this.motherWhatsApp,
+      this.fatherName,
       this.motherName,
       required this.profilePic,
       required this.schoolCode,
@@ -27,6 +35,10 @@ class Attendance {
       schoolCode: json['schoolCode'],
       fatherName: json['fatherName'],
       motherName: json['motherName'],
+      fatherMobNo: json['fatherMobNo'],
+      motherMobNo: json['motherMobNo'],
+      fatherWhatsApp: json['fatherWhatsApp'],
+      motherWhatsApp: json['motherWhatsApp'],
       admNo: json['admNo'],
       date: json['date'] == null
           ? DateTime.now()

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mid_application/Screens/manual_attendance_screen.dart';
 import 'package:mid_application/Screens/qr_attendance_screen.dart';
+import 'package:mid_application/Screens/view_attendance_screen.dart';
 import 'package:mid_application/widgets/my_popup_menu_button.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
 
@@ -150,6 +151,15 @@ class AttendanceClassTile extends StatelessWidget {
                   ),
                 ),
                 PopupMenuItem(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ViewAttendanceScreen(
+                        classTitle: classTitle,
+                        schoolCode: schoolCode,
+                      ),
+                    ),
+                  ),
                   child: MyPopupMenuButton(
                     label: 'View Attendance',
                     icon: Icons.view_column,

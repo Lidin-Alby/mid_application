@@ -27,3 +27,9 @@ class SaveAttendanceError extends AttendanceState {
 
   SaveAttendanceError(this.error);
 }
+
+class IndividualAttendanceLoaded extends AttendanceState {
+  final Map<String, String> attendance;
+
+  IndividualAttendanceLoaded(this.attendance);
+}

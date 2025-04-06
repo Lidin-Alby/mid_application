@@ -6,7 +6,9 @@ import 'package:mid_application/Blocs/Attendance/attendance_bloc.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_event.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_state.dart';
 import 'package:mid_application/models/attendance.dart';
+import 'package:mid_application/widgets/attendance_action_dialog.dart';
 import 'package:mid_application/widgets/attendance_app_bar.dart';
+import 'package:mid_application/widgets/attendance_call_sms_dialog.dart';
 import 'package:mid_application/widgets/attendance_notation.dart';
 import 'package:mid_application/widgets/counts_column_attendance.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
@@ -24,6 +26,7 @@ class ManualAttendanceScreen extends StatefulWidget {
 class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
   DateTime _selectedDate = DateTime.now();
   int? _selectedShare;
+  List<Attendance> attendances = [];
 
   @override
   void initState() {
@@ -55,8 +58,25 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: BlocBuilder<AttendanceBloc, AttendanceState>(
           builder: (context, state) {
-            if (state is AttendanceLoaded) {
-              List<Attendance> attendances = state.students;
+            if (state is AttendanceLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is AttendanceLoadError) {
+              return FilledButton(
+                onPressed: () {
+                  context.read<AttendanceBloc>().add(
+                        LoadAttendance(
+                            schoolCode: widget.schoolCode,
+                            classTitle: widget.classTitle,
+                            date: DateFormat('ddMM-yyy').format(_selectedDate)),
+                      );
+                },
+                child: Text('Retry'),
+              );
+            } else {
+              if (state is AttendanceLoaded) {
+                attendances = state.students;
+              }
+
               int presentCount = 0;
               int absentCount = 0;
               for (Attendance student in attendances) {
@@ -204,7 +224,17 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                                   height: 30,
                                                   width: 30,
                                                   child: TextButton(
-                                                    onPressed: () {},
+                                                    onPressed: () => showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          AttendanceActionDialog(
+                                                        fatherNo:
+                                                            student.fatherMobNo,
+                                                        motherNo:
+                                                            student.motherMobNo,
+                                                        type: 'tel',
+                                                      ),
+                                                    ),
                                                     style: TextButton.styleFrom(
                                                         shape: CircleBorder(),
                                                         padding:
@@ -220,7 +250,17 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                                   height: 30,
                                                   width: 30,
                                                   child: TextButton(
-                                                    onPressed: () {},
+                                                    onPressed: () => showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          AttendanceActionDialog(
+                                                        fatherNo:
+                                                            student.fatherMobNo,
+                                                        motherNo:
+                                                            student.motherMobNo,
+                                                        type: 'sms',
+                                                      ),
+                                                    ),
                                                     style: TextButton.styleFrom(
                                                         shape: CircleBorder(),
                                                         padding:
@@ -236,7 +276,17 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                                   height: 30,
                                                   width: 30,
                                                   child: TextButton(
-                                                    onPressed: () {},
+                                                    onPressed: () => showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          AttendanceActionDialog(
+                                                        fatherNo: student
+                                                            .fatherWhatsApp,
+                                                        motherNo: student
+                                                            .motherWhatsApp,
+                                                        type: 'whatsapp',
+                                                      ),
+                                                    ),
                                                     style: TextButton.styleFrom(
                                                         shape: CircleBorder(),
                                                         padding:
@@ -363,37 +413,59 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                             children: [
                                               AttendanceNotation(
                                                 notation: 'P',
+                                                groupValue: student.status!,
                                                 label: 'Present',
                                                 value: 'present',
                                                 color: Colors.green,
-                                                onChanged: (value) {},
+                                                onChanged: (value) {
+                                                  student.status = value;
+                                                  context
+                                                      .read<AttendanceBloc>()
+                                                      .add(UpdateStatus(
+                                                          attendances));
+                                                },
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               AttendanceNotation(
+                                                groupValue: student.status!,
                                                 notation: 'H',
                                                 label: 'Half Day',
                                                 value: 'half',
                                                 color: Colors.brown[600],
-                                                onChanged: (value) {},
+                                                onChanged: (value) {
+                                                  student.status = value;
+                                                  context
+                                                      .read<AttendanceBloc>()
+                                                      .add(UpdateStatus(
+                                                          attendances));
+                                                },
                                               )
                                             ],
                                           ),
                                           Row(
                                             children: [
                                               AttendanceNotation(
+                                                groupValue: student.status!,
                                                 notation: 'L',
                                                 label: 'Leave',
                                                 value: 'leave',
                                                 color: Colors.amber,
                                                 horizontalPadding: 8,
-                                                onChanged: (value) {},
+                                                onChanged: (value) {
+                                                  student.status = value;
+                                                  context
+                                                      .read<AttendanceBloc>()
+                                                      .add(UpdateStatus(
+                                                          attendances));
+                                                },
                                               ),
                                               SizedBox(
                                                 width: 5,
                                               ),
                                               AttendanceNotation(
+                                                groupValue: student.status!,
                                                 notation: 'A',
                                                 label: 'Absent',
                                                 value: 'absent',
@@ -401,7 +473,13 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .error,
-                                                onChanged: (value) {},
+                                                onChanged: (value) {
+                                                  student.status = value;
+                                                  context
+                                                      .read<AttendanceBloc>()
+                                                      .add(UpdateStatus(
+                                                          attendances));
+                                                },
                                               )
                                             ],
                                           ),
@@ -419,53 +497,46 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        width: 90,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // print(state.students[0].status);
-                            // setState(() {
-                            //   state.students[0].status = 'present';
-                            // });
-                            // print(state.students[0].status);
-                          },
-                          child: Text('Save'),
+                  state is SaveAttendanceLoading
+                      ? Center(child: CircularProgressIndicator())
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizedBox(
+                              width: 90,
+                              child: ElevatedButton(
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (context) => AttendanceCallSmsDialog(
+                                    onConfirm: (
+                                      smsAbsent,
+                                      smsPresent,
+                                      callAbsent,
+                                      callPresent,
+                                    ) {
+                                      context.read<AttendanceBloc>().add(
+                                          SaveClassAttendance(attendances));
+                                    },
+                                  ),
+                                ),
+                                child: Text('Save'),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 90,
+                              child: ElevatedButton(
+                                onPressed: () {},
+                                child: Text('Cancel'),
+                              ),
+                            )
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        width: 90,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text('Cancel'),
-                        ),
-                      )
-                    ],
-                  ),
+
                   SizedBox(
                     height: 15,
                   )
                 ],
               );
-            }
-            if (state is AttendanceLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is AttendanceLoadError) {
-              return FilledButton(
-                onPressed: () {
-                  context.read<AttendanceBloc>().add(
-                        LoadAttendance(
-                            schoolCode: widget.schoolCode,
-                            classTitle: widget.classTitle,
-                            date: DateFormat('ddMM-yyy').format(_selectedDate)),
-                      );
-                },
-                child: Text('Retry'),
-              );
-            } else {
-              return SizedBox();
             }
           },
         ),

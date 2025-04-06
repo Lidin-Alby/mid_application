@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AttendanceAppBar extends StatelessWidget implements PreferredSize {
-  const AttendanceAppBar({super.key, required this.classTitle});
+  const AttendanceAppBar(
+      {super.key, required this.classTitle, this.title = 'Attendance'});
+  final String title;
   final String classTitle;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('Attendance'),
+      title: Text(title),
       centerTitle: true,
       actions: [
         Container(
