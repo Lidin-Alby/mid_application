@@ -405,7 +405,8 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                       height: 60,
                                       padding: EdgeInsets.only(left: 8, top: 2),
                                       color: Colors.white,
-                                      child: Column(
+                                      child: 
+                                      Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [

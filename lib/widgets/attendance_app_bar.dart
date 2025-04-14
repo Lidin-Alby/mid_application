@@ -16,10 +16,10 @@ class AttendanceAppBar extends StatelessWidget implements PreferredSize {
           alignment: Alignment.center,
           width: 43,
           padding: EdgeInsets.all(5),
-          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+          margin: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
           decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(25),
               border: Border.all()),
           child: Text(
             classTitle,

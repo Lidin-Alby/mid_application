@@ -33,19 +33,6 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     );
     on<UpdateStatus>(
       (event, emit) {
-        // Map updateMap = event.updateStudent.toMap();
-        // updateMap['status'] = 'present';
-        // print(updateMap);
-        // Attendance update = Attendance.fromJson(updateMap);
-        // List<Attendance> updatedStudents = event.students.map(
-        //   (e) {
-        //     if (e.admNo == event.updateStudent.admNo) {
-        //       return update;
-        //     }
-        //     return e;
-        //   },
-        // ).toList();
-        // print(updatedStudents[0].status);
         emit(AttendanceLoaded(event.students));
       },
     );
@@ -76,18 +63,13 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     on<LoadIndividualAttendance>(
       (event, emit) async {
         emit(AttendanceLoading());
-        print(event.student.schoolCode);
-        print(event.student.admNo);
+
         try {
           var url = Uri.parse(
               '$ipv4/v2/getMyAttendanceMid/${Uri.encodeQueryComponent(event.student.schoolCode)}/${Uri.encodeQueryComponent(event.student.admNo)}/04-2025');
           var res = await http.get(url);
           if (res.statusCode == 200) {
             Map data = jsonDecode(res.body);
-            print(data);
-
-            // List<Attendance> students =
-            //     data.map((e) => Attendance.fromJson(e)).toList();
 
             emit(IndividualAttendanceLoaded(data['attendance']));
           } else {
@@ -95,6 +77,29 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           }
         } catch (e) {
           AttendanceLoadError(e.toString());
+        }
+      },
+    );
+    on<UpdateSingleStatus>(
+      (event, emit) async {
+        try {
+          Map<String, dynamic> attendance = event.attendance;
+          attendance.addAll({event.date: event.status});
+          print(attendance);
+          emit(IndividualAttendanceLoaded(attendance));
+          var url = Uri.parse('$ipv4/v2/markMidAttendanceDate');
+          var res = await http.post(url, body: {
+            'admNo': event.admNo,
+            'schoolCode': event.schoolCode,
+            'date': event.date,
+            'status': event.status
+          });
+          if (res.statusCode == 201) {
+          } else {
+            emit(AttendanceLoadError(res.body));
+          }
+        } catch (e) {
+          emit(AttendanceLoadError(e.toString()));
         }
       },
     );

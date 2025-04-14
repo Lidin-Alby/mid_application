@@ -9,13 +9,22 @@ class AttendanceNotation extends StatelessWidget {
       required this.onChanged,
       required this.color,
       this.horizontalPadding = 0,
-      required this.groupValue});
+      required this.groupValue,
+      this.labelSize = 11,
+      this.notationSize = 18,
+      this.notationFontSize = 12,
+      this.notationLabelSpacing = 2});
   final String notation;
   final String label;
   final String value;
   final Color? color;
   final double horizontalPadding;
-  final String groupValue;
+  final String? groupValue;
+  final double labelSize;
+  final double notationSize;
+  final double notationFontSize;
+  final double notationLabelSpacing;
+
   final Function(String? value) onChanged;
 
   @override
@@ -23,8 +32,8 @@ class AttendanceNotation extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 18,
-          height: 18,
+          width: notationSize,
+          height: notationSize,
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: color,
@@ -35,17 +44,17 @@ class AttendanceNotation extends StatelessWidget {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w600,
-              fontSize: 12,
+              fontSize: notationFontSize,
             ),
           ),
         ),
         SizedBox(
-          width: 2,
+          width: notationLabelSpacing,
         ),
         Text(
           label,
           style: TextStyle(
-            fontSize: 11,
+            fontSize: labelSize,
             fontWeight: FontWeight.w600,
           ),
         ),

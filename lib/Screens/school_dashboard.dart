@@ -19,11 +19,6 @@ class SchoolDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<FormSettingsBloc>().add(LoadFormSettings(schoolCode));
-    context.read<ClassBloc>().add(LoadClasses(schoolCode));
-    BlocProvider.of<SchoolDetailsBloc>(context)
-        .add(GetSchoolDetails(schoolCode));
-
     return Stack(
       children: [
         Column(
@@ -347,6 +342,13 @@ class SchoolDashboard extends StatelessWidget {
                 ],
               );
             } else {
+              context
+                  .read<FormSettingsBloc>()
+                  .add(LoadFormSettings(schoolCode));
+              context.read<ClassBloc>().add(LoadClasses(schoolCode));
+              context
+                  .read<SchoolDetailsBloc>()
+                  .add(GetSchoolDetails(schoolCode));
               return Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Center(

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSize {
-  const MyAppBar({super.key, required this.onChanged});
+  const MyAppBar({super.key, required this.onChanged, required this.onSearch});
 
   final Function(String value) onChanged;
+  final VoidCallback onSearch;
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class MyAppBar extends StatelessWidget implements PreferredSize {
         child: SizedBox(
           height: 34,
           child: TextField(
+            onTap: onSearch,
             onChanged: onChanged,
             decoration: InputDecoration(
               filled: true,

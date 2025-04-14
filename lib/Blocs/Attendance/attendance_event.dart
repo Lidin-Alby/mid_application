@@ -29,3 +29,18 @@ class LoadIndividualAttendance extends AttendanceEvent {
 
   LoadIndividualAttendance(this.student);
 }
+
+class UpdateSingleStatus extends AttendanceEvent {
+  final String admNo;
+  final String schoolCode;
+  final String date;
+  final String status;
+  final Map<String, dynamic> attendance;
+
+  UpdateSingleStatus(
+      {required this.attendance,
+      required this.date,
+      required this.status,
+      required this.admNo,
+      required this.schoolCode});
+}

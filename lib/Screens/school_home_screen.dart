@@ -20,19 +20,37 @@ class SchoolHomeScreen extends StatefulWidget {
 
 class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
   int _selectedIndex = 0;
+  bool onSearch = false;
+
   // var staff;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
+        onSearch: () {
+          setState(() {
+            onSearch = true;
+          });
+        },
         onChanged: (value) {},
       ),
-      body: _selectedIndex == 0
-          ? SchoolDashboard(
-              schoolCode: widget.schoolCode,
-            )
-          : AttendanceDashboard(),
+      body: PopScope(
+        canPop: !onSearch,
+        onPopInvokedWithResult: (didPop, result) {
+          FocusScope.of(context).unfocus();
+          setState(() {
+            onSearch = false;
+          });
+        },
+        child: onSearch
+            ? Column()
+            : _selectedIndex == 0
+                ? SchoolDashboard(
+                    schoolCode: widget.schoolCode,
+                  )
+                : AttendanceDashboard(),
+      ),
       bottomNavigationBar: Container(
         height: 75,
         decoration: BoxDecoration(
