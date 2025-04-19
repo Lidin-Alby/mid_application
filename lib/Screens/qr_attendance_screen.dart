@@ -304,7 +304,7 @@ class _QrAttendanceScreenState extends State<QrAttendanceScreen> {
                                 LoadAttendance(
                                     schoolCode: widget.schoolCode,
                                     classTitle: widget.classTitle,
-                                    date: DateFormat('ddMM-yyy')
+                                    date: DateFormat('dd-MM-yyyy')
                                         .format(_selectedDate)),
                               );
                         },

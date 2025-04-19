@@ -21,7 +21,7 @@ class StaffDetailsBloc extends Bloc<StaffDetailsEvent, StaffDetailsState> {
           if (res.statusCode == 200) {
             if (res.statusCode == 200) {
               Map data = jsonDecode(res.body);
-              print(data['designation']);
+
               Staff staff;
               if (data['designation'] == 'midTeacher') {
                 staff = Teacher.fromJson(data);

@@ -4,6 +4,7 @@ import 'package:mid_application/Screens/add_class_screen.dart';
 import 'package:mid_application/Screens/attendance_dashboard.dart';
 import 'package:mid_application/Screens/form_settings_screen.dart';
 import 'package:mid_application/Screens/school_dashboard.dart';
+import 'package:mid_application/Screens/search_screen.dart';
 import 'package:mid_application/Screens/staff_details_screen.dart';
 import 'package:mid_application/Screens/student_details_screen.dart';
 import 'package:mid_application/widgets/dialog_button.dart';
@@ -20,37 +21,27 @@ class SchoolHomeScreen extends StatefulWidget {
 
 class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
   int _selectedIndex = 0;
-  bool onSearch = false;
-
-  // var staff;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        onSearch: () {
-          setState(() {
-            onSearch = true;
-          });
-        },
+        readonly: true,
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SearchScreen(
+              schoolCode: widget.schoolCode,
+            ),
+          ),
+        ),
         onChanged: (value) {},
       ),
-      body: PopScope(
-        canPop: !onSearch,
-        onPopInvokedWithResult: (didPop, result) {
-          FocusScope.of(context).unfocus();
-          setState(() {
-            onSearch = false;
-          });
-        },
-        child: onSearch
-            ? Column()
-            : _selectedIndex == 0
-                ? SchoolDashboard(
-                    schoolCode: widget.schoolCode,
-                  )
-                : AttendanceDashboard(),
-      ),
+      body: _selectedIndex == 0
+          ? SchoolDashboard(
+              schoolCode: widget.schoolCode,
+            )
+          : AttendanceDashboard(),
       bottomNavigationBar: Container(
         height: 75,
         decoration: BoxDecoration(

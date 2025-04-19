@@ -128,8 +128,8 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
   }
 
   assignValues(Staff staff) {
-    if (widget.isTeacher) {
-      classes = (staff as Teacher).classes!.toSet();
+    if (staff is Teacher) {
+      classes = (staff).classes!.toSet();
     }
     fullName.text = staff.fullName;
     mob.text = staff.mob;

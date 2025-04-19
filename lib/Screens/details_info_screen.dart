@@ -45,7 +45,7 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        onSearch: () {
+        onTap: () {
           setState(() {
             onSearch = true;
           });
