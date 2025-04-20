@@ -10,8 +10,11 @@ import 'package:mid_application/Blocs/School%20List/school_state.dart';
 import 'package:mid_application/Screens/add_school_model.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:mid_application/Screens/school_details_screen.dart';
 
 import 'package:mid_application/Screens/school_home_screen.dart';
+import 'package:mid_application/models/school.dart';
+import 'package:mid_application/widgets/profile_pic.dart';
 
 // class AgentHomeScreen extends ConsumerWidget {
 //   const AgentHomeScreen({super.key});
@@ -77,7 +80,8 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
             child: Text(state.error),
           );
         } else if (state is SchoolListLoaded) {
-          return state.schools.isEmpty
+          List<School> schools = state.schools;
+          return schools.isEmpty
               ? Center(
                   child: Text('No schools added'),
                 )
@@ -88,7 +92,7 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     child: ListView.builder(
-                      itemCount: state.schools.length,
+                      itemCount: schools.length,
                       itemBuilder: (context, index) => Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 5),
@@ -101,19 +105,14 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                                   left: Radius.circular(6)),
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
-                              onPressed: (context) {},
-                              // (context) => Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => EditSchool(
-                              //       school: School(
-                              //         schoolCode: '108',
-                              //         schoolName: 'SVP',
-                              //         principalPhone: '9422',
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
+                              onPressed: (context) => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SchoolDetailsScreen(
+                                    school: schools[index],
+                                  ),
+                                ),
+                              ),
                             )
                           ]),
                           child: InkWell(
@@ -133,11 +132,11 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                               ),
                               child: Row(
                                 children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundImage:
-                                        AssetImage('assets/images/logoImg.jpg'),
-                                  ),
+                                  ProfilePicWidget(
+                                      size: 55,
+                                      profilePic:
+                                          schools[index].schoolLogo.toString(),
+                                      schoolCode: schools[index].schoolCode),
                                   SizedBox(
                                     width: 15,
                                   ),

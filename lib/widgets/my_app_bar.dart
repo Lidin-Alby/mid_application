@@ -7,9 +7,11 @@ class MyAppBar extends StatelessWidget implements PreferredSize {
       required this.onChanged,
       required this.onTap,
       this.readonly,
-      this.autofocus});
+      this.autofocus,
+      this.showSearch = true});
   final bool? readonly;
   final bool? autofocus;
+  final bool showSearch;
 
   final Function(String value) onChanged;
   final VoidCallback onTap;
@@ -22,27 +24,29 @@ class MyAppBar extends StatelessWidget implements PreferredSize {
       ),
       title: Padding(
         padding: const EdgeInsets.only(top: 5),
-        child: SizedBox(
-          height: 34,
-          child: TextField(
-            readOnly: readonly ?? false,
-            autofocus: autofocus ?? false,
-            onTap: onTap,
-            onChanged: onChanged,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              isDense: true,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide.none,
-              ),
-              prefixIcon: Icon(Icons.search),
-              prefixIconColor: Theme.of(context).colorScheme.primary,
-              contentPadding: EdgeInsets.all(8),
-            ),
-          ),
-        ),
+        child: showSearch
+            ? SizedBox(
+                height: 34,
+                child: TextField(
+                  readOnly: readonly ?? false,
+                  autofocus: autofocus ?? false,
+                  onTap: onTap,
+                  onChanged: onChanged,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    isDense: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
+                    prefixIcon: Icon(Icons.search),
+                    prefixIconColor: Theme.of(context).colorScheme.primary,
+                    contentPadding: EdgeInsets.all(8),
+                  ),
+                ),
+              )
+            : null,
       ),
       actions: [
         CircleAvatar(

@@ -34,7 +34,7 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
   String? sort = 'name';
   bool openSort = false;
   String searchText = '';
-  bool onSearch = false;
+  // bool onSearch = false;
 
   @override
   void initState() {
@@ -45,384 +45,370 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
-        onTap: () {
-          setState(() {
-            onSearch = true;
-          });
-        },
+        showSearch: _currentIndex != 0,
+        onTap: () {},
         onChanged: (value) {
           setState(() {
             searchText = value.toLowerCase();
           });
         },
       ),
-      body: onSearch
-          ? Column()
-          : PopScope(
-              canPop: !openSort,
-              onPopInvokedWithResult: (didPop, result) {
-                setState(() {
-                  openSort = false;
-                });
-              },
-              child: Stack(
-                children: [
-                  Column(
+      body: PopScope(
+        canPop: !openSort,
+        onPopInvokedWithResult: (didPop, result) {
+          setState(() {
+            openSort = false;
+          });
+        },
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: Row(
                     children: [
-                      SizedBox(
-                        height: 20,
+                      TabButton(
+                        label: 'Class',
+                        selected: _currentIndex == 0,
+                        onTap: () {
+                          setState(() {
+                            _currentIndex = 0;
+                          });
+                        },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Row(
-                          children: [
-                            TabButton(
-                              label: 'Class',
-                              selected: _currentIndex == 0,
-                              onTap: () {
-                                setState(() {
-                                  _currentIndex = 0;
-                                });
-                              },
-                            ),
-                            TabButton(
-                              label: 'Teachers',
-                              selected: _currentIndex == 1,
-                              onTap: () {
-                                setState(() {
-                                  _currentIndex = 1;
-                                });
-                              },
-                            ),
-                            TabButton(
-                              label: 'Staff',
-                              selected: _currentIndex == 2,
-                              onTap: () {
-                                setState(() {
-                                  _currentIndex = 2;
-                                });
-                              },
-                            ),
-                            Spacer(),
-                            if (_currentIndex != 0)
-                              SizedBox(
-                                height: 32,
-                                width: 32,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      openSort = true;
-                                    });
-                                  },
-                                  child: Icon(Icons.sort),
-                                  style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.zero,
-                                    iconSize: 20,
-                                    shape: CircleBorder(),
-                                    elevation: 0,
-                                  ),
-                                ),
-                              )
-                          ],
-                        ),
+                      TabButton(
+                        label: 'Teachers',
+                        selected: _currentIndex == 1,
+                        onTap: () {
+                          setState(() {
+                            _currentIndex = 1;
+                          });
+                        },
                       ),
-                      SizedBox(
-                        height: 5,
+                      TabButton(
+                        label: 'Staff',
+                        selected: _currentIndex == 2,
+                        onTap: () {
+                          setState(() {
+                            _currentIndex = 2;
+                          });
+                        },
                       ),
-                      if (_currentIndex == 0)
-                        BlocBuilder<ClassBloc, ClassState>(
-                            builder: (context, state) {
-                          if (state is ClassError) {
-                            return Center(
-                              child: Text(state.error),
-                            );
-                          } else if (state is ClassLoaded) {
-                            List<ClassModel> classes = state.classes;
-
-                            return Expanded(
-                              child: ListView.builder(
-                                  itemCount: classes.length,
-                                  itemBuilder: (context, index) {
-                                    int totalStudents =
-                                        classes[index].totalStudents!;
-                                    switch (widget.listHead) {
-                                      case 'null':
-                                        totalStudents =
-                                            classes[index].uncheckCount!;
-                                        break;
-                                      case 'noPhoto':
-                                        totalStudents =
-                                            classes[index].noPhotoCount!;
-                                        break;
-                                      case 'ready':
-                                        totalStudents =
-                                            classes[index].readyCount!;
-                                        break;
-                                      case 'printing':
-                                        totalStudents =
-                                            classes[index].printingCount!;
-                                        break;
-                                      case 'printed':
-                                        totalStudents =
-                                            classes[index].printedCount!;
-                                        break;
-                                    }
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 25, vertical: 5),
-                                      child: InkWell(
-                                        onTap: () => Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                StudentListScreen(
-                                              schoolCode: widget.schoolCode,
-                                              classTitle:
-                                                  classes[index].classTitle,
-                                              listHead: widget.listHead,
-                                            ),
-                                          ),
-                                        ),
-                                        child: ClassTile(
-                                          classTitle: classes[index].classTitle,
-                                          totalStudents:
-                                              totalStudents.toString(),
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                            );
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                        }),
-                      if (_currentIndex == 1)
-                        Expanded(
-                          child: BlocBuilder<StaffBloc, StaffState>(
-                            builder: (context, state) {
-                              if (state is StaffLoadError) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(state.error),
-                                    MyFilledButton(
-                                      label: 'Retry',
-                                      onPressed: () {
-                                        context
-                                            .read<StaffBloc>()
-                                            .add(LoadStaffs(widget.schoolCode));
-                                      },
-                                    )
-                                  ],
-                                );
-                              } else if (state is StaffsLoaded) {
-                                List<Teacher> teachers = state.teachers;
-                                if (widget.listHead == 'noPhoto') {
-                                  teachers = teachers.where((teacher) {
-                                    return teacher.profilePic.toString() ==
-                                            "" ||
-                                        teacher.profilePic.toString() == "null";
-                                  }).toList();
-                                } else {
-                                  if (widget.listHead != 'all') {
-                                    teachers = teachers
-                                        .where(
-                                          (teacher) =>
-                                              teacher.printStatus.toString() ==
-                                              widget.listHead,
-                                        )
-                                        .toList();
-                                  }
-                                }
-                                teachers.sort(
-                                  (a, b) {
-                                    if (sort == 'name') {
-                                      return a.fullName.compareTo(b.fullName);
-                                    } else {
-                                      return DateFormat('dd-MM-yyyy')
-                                          .parse(a.joiningDate ?? '01-01-2024')
-                                          .compareTo(
-                                            DateFormat('dd-MM-yyyy').parse(
-                                                b.joiningDate ?? '01-01-2024'),
-                                          );
-                                    }
-                                  },
-                                );
-
-                                teachers = teachers
-                                    .where(
-                                      (element) => element.fullName
-                                          .toLowerCase()
-                                          .startsWith(searchText),
-                                    )
-                                    .toList();
-
-                                if (teachers.isEmpty) {
-                                  return Center(
-                                    child: Text('No Teachers added'),
-                                  );
-                                }
-                                return ListView.builder(
-                                  itemCount: teachers.length,
-                                  itemBuilder: (context, index) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0),
-                                    child: TeacherOrStaffTile(
-                                      staffUser: teachers[index],
-                                      schoolCode: widget.schoolCode,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                context
-                                    .read<StaffBloc>()
-                                    .add(LoadStaffs(widget.schoolCode));
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
+                      Spacer(),
+                      if (_currentIndex != 0)
+                        SizedBox(
+                          height: 32,
+                          width: 32,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                openSort = true;
+                              });
                             },
+                            child: Icon(Icons.sort),
+                            style: ElevatedButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              iconSize: 20,
+                              shape: CircleBorder(),
+                              elevation: 0,
+                            ),
                           ),
-                        ),
-                      if (_currentIndex == 2)
-                        Expanded(
-                          child: BlocBuilder<StaffBloc, StaffState>(
-                            builder: (context, state) {
-                              if (state is StaffLoadError) {
-                                return Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(state.error),
-                                    MyFilledButton(
-                                      label: 'Retry',
-                                      onPressed: () {
-                                        context
-                                            .read<StaffBloc>()
-                                            .add(LoadStaffs(widget.schoolCode));
-                                      },
-                                    )
-                                  ],
-                                );
-                              } else if (state is StaffsLoaded) {
-                                List<Staff> staffs = state.staffs;
-                                if (widget.listHead == 'noPhoto') {
-                                  staffs = staffs.where((staff) {
-                                    return staff.profilePic.toString() == "" ||
-                                        staff.profilePic.toString() == "null";
-                                  }).toList();
-                                } else {
-                                  if (widget.listHead != 'all') {
-                                    staffs = staffs
-                                        .where(
-                                          (staff) =>
-                                              staff.printStatus.toString() ==
-                                              widget.listHead,
-                                        )
-                                        .toList();
-                                  }
-                                }
-                                if (staffs.isEmpty) {
-                                  return Center(
-                                    child: Text('No Staffs added'),
-                                  );
-                                }
-                                return ListView.builder(
-                                  itemCount: staffs.length,
-                                  itemBuilder: (context, index) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 4.0),
-                                    child: TeacherOrStaffTile(
-                                      staffUser: staffs[index],
-                                      schoolCode: widget.schoolCode,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                context
-                                    .read<StaffBloc>()
-                                    .add(LoadStaffs(widget.schoolCode));
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-                            },
-                          ),
-                        ),
+                        )
                     ],
                   ),
-                  if (openSort)
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (openSort) {
-                            openSort = false;
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                if (_currentIndex == 0)
+                  BlocBuilder<ClassBloc, ClassState>(builder: (context, state) {
+                    if (state is ClassError) {
+                      return Center(
+                        child: Text(state.error),
+                      );
+                    } else if (state is ClassLoaded) {
+                      List<ClassModel> classes = state.classes;
+                      print(classes.length);
+
+                      return Expanded(
+                        child: ListView.builder(
+                            itemCount: classes.length,
+                            itemBuilder: (context, index) {
+                              int totalStudents = classes[index].totalStudents!;
+                              switch (widget.listHead) {
+                                case 'null':
+                                  totalStudents = classes[index].uncheckCount!;
+
+                                  break;
+                                case 'noPhoto':
+                                  totalStudents = classes[index].noPhotoCount!;
+                                  break;
+                                case 'ready':
+                                  totalStudents = classes[index].readyCount!;
+                                  break;
+                                case 'printing':
+                                  totalStudents = classes[index].printingCount!;
+                                  break;
+                                case 'printed':
+                                  totalStudents = classes[index].printedCount!;
+                                  break;
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 5),
+                                child: InkWell(
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => StudentListScreen(
+                                        schoolCode: widget.schoolCode,
+                                        classTitle: classes[index].classTitle,
+                                        listHead: widget.listHead,
+                                      ),
+                                    ),
+                                  ),
+                                  child: ClassTile(
+                                    classTitle: classes[index].classTitle,
+                                    totalStudents: totalStudents.toString(),
+                                  ),
+                                ),
+                              );
+                            }),
+                      );
+                    } else {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                  }),
+                if (_currentIndex == 1)
+                  Expanded(
+                    child: BlocBuilder<StaffBloc, StaffState>(
+                      builder: (context, state) {
+                        if (state is StaffLoadError) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(state.error),
+                              MyFilledButton(
+                                label: 'Retry',
+                                onPressed: () {
+                                  context
+                                      .read<StaffBloc>()
+                                      .add(LoadStaffs(widget.schoolCode));
+                                },
+                              )
+                            ],
+                          );
+                        } else if (state is StaffsLoaded) {
+                          List<Teacher> teachers = state.teachers;
+                          if (widget.listHead == 'noPhoto') {
+                            teachers = teachers.where((teacher) {
+                              return teacher.profilePic.toString() == "" ||
+                                  teacher.profilePic.toString() == "null";
+                            }).toList();
+                          } else {
+                            if (widget.listHead != 'all') {
+                              teachers = teachers
+                                  .where(
+                                    (teacher) =>
+                                        teacher.printStatus.toString() ==
+                                        widget.listHead,
+                                  )
+                                  .toList();
+                            }
                           }
-                        });
+                          teachers.sort(
+                            (a, b) {
+                              if (sort == 'name') {
+                                return a.fullName.compareTo(b.fullName);
+                              } else {
+                                return DateFormat('dd-MM-yyyy')
+                                    .parse(a.joiningDate ?? '01-01-2024')
+                                    .compareTo(
+                                      DateFormat('dd-MM-yyyy')
+                                          .parse(b.joiningDate ?? '01-01-2024'),
+                                    );
+                              }
+                            },
+                          );
+
+                          teachers = teachers
+                              .where(
+                                (element) => element.fullName
+                                    .toLowerCase()
+                                    .startsWith(searchText),
+                              )
+                              .toList();
+
+                          if (teachers.isEmpty) {
+                            return Center(
+                              child: Text('No Teachers added'),
+                            );
+                          }
+                          return ListView.builder(
+                            itemCount: teachers.length,
+                            itemBuilder: (context, index) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 4.0),
+                              child: TeacherOrStaffTile(
+                                staffUser: teachers[index],
+                                schoolCode: widget.schoolCode,
+                              ),
+                            ),
+                          );
+                        } else {
+                          context
+                              .read<StaffBloc>()
+                              .add(LoadStaffs(widget.schoolCode));
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
                       },
-                      child: Container(
-                        color: Colors.transparent,
-                      ),
                     ),
-                  if (openSort)
-                    Positioned(
-                      top: 15,
-                      right: 11,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(4),
-                            topRight: Radius.circular(20),
-                            bottomLeft: Radius.circular(4),
-                            bottomRight: Radius.circular(4),
-                          ),
-                        ),
-                        color: Theme.of(context).colorScheme.primary,
-                        elevation: 4,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            MyPopUpRadioItem(
-                              value: 'name',
-                              groupValue: sort,
-                              onSelected: (value) {
-                                setState(() {
-                                  sort = value;
-                                  openSort = false;
-                                });
-                              },
-                              label: 'Name',
+                  ),
+                if (_currentIndex == 2)
+                  Expanded(
+                    child: BlocBuilder<StaffBloc, StaffState>(
+                      builder: (context, state) {
+                        if (state is StaffLoadError) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(state.error),
+                              MyFilledButton(
+                                label: 'Retry',
+                                onPressed: () {
+                                  context
+                                      .read<StaffBloc>()
+                                      .add(LoadStaffs(widget.schoolCode));
+                                },
+                              )
+                            ],
+                          );
+                        } else if (state is StaffsLoaded) {
+                          List<Staff> staffs = state.staffs;
+                          if (widget.listHead == 'noPhoto') {
+                            staffs = staffs.where((staff) {
+                              return staff.profilePic.toString() == "" ||
+                                  staff.profilePic.toString() == "null";
+                            }).toList();
+                          } else {
+                            if (widget.listHead != 'all') {
+                              staffs = staffs
+                                  .where(
+                                    (staff) =>
+                                        staff.printStatus.toString() ==
+                                        widget.listHead,
+                                  )
+                                  .toList();
+                            }
+                          }
+                          if (staffs.isEmpty) {
+                            return Center(
+                              child: Text('No Staffs added'),
+                            );
+                          }
+                          return ListView.builder(
+                            itemCount: staffs.length,
+                            itemBuilder: (context, index) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 4.0),
+                              child: TeacherOrStaffTile(
+                                staffUser: staffs[index],
+                                schoolCode: widget.schoolCode,
+                              ),
                             ),
-                            MyPopUpRadioItem(
-                              value: 'joining',
-                              groupValue: sort,
-                              onSelected: (value) {
-                                setState(() {
-                                  sort = value;
-                                  openSort = false;
-                                });
-                              },
-                              label: 'Joining',
-                            ),
-                            MyPopUpRadioItem(
-                              value: 'modified',
-                              groupValue: sort,
-                              onSelected: (value) {
-                                setState(() {
-                                  sort = value;
-                                  openSort = false;
-                                });
-                              },
-                              label: 'Modified',
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                ],
-              ),
+                          );
+                        } else {
+                          context
+                              .read<StaffBloc>()
+                              .add(LoadStaffs(widget.schoolCode));
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+              ],
             ),
+            if (openSort)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    if (openSort) {
+                      openSort = false;
+                    }
+                  });
+                },
+                child: Container(
+                  color: Colors.transparent,
+                ),
+              ),
+            if (openSort)
+              Positioned(
+                top: 15,
+                right: 11,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(4),
+                      topRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(4),
+                      bottomRight: Radius.circular(4),
+                    ),
+                  ),
+                  color: Theme.of(context).colorScheme.primary,
+                  elevation: 4,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      MyPopUpRadioItem(
+                        value: 'name',
+                        groupValue: sort,
+                        onSelected: (value) {
+                          setState(() {
+                            sort = value;
+                            openSort = false;
+                          });
+                        },
+                        label: 'Name',
+                      ),
+                      MyPopUpRadioItem(
+                        value: 'joining',
+                        groupValue: sort,
+                        onSelected: (value) {
+                          setState(() {
+                            sort = value;
+                            openSort = false;
+                          });
+                        },
+                        label: 'Joining',
+                      ),
+                      MyPopUpRadioItem(
+                        value: 'modified',
+                        groupValue: sort,
+                        onSelected: (value) {
+                          setState(() {
+                            sort = value;
+                            openSort = false;
+                          });
+                        },
+                        label: 'Modified',
+                      ),
+                    ],
+                  ),
+                ),
+              )
+          ],
+        ),
+      ),
     );
   }
 }

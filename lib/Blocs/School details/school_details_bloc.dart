@@ -19,12 +19,36 @@ class SchoolDetailsBloc extends Bloc<SchoolDetailsEvent, SchoolDetailsState> {
           var res = await http.get(url);
 
           Map data = jsonDecode(res.body);
+          print(data);
 
           School school = School.fromJson(data);
           emit(SchoolDetailsLoaded(school: school));
         } catch (e) {
           emit(SchoolDetailsError(e.toString()));
         }
+      },
+    );
+    on<SaveSchoolDetails>(
+      (event, emit) async {
+        emit(SavingSchoolDetails());
+        try {
+          var url = Uri.parse('$ipv4/v2/saveSchoolDataMid');
+          var res = await http.post(url, body: event.school.toMap());
+
+          if (res.statusCode == 201) {
+            emit(SavedSchoolDetails());
+            emit(SchoolDetailsLoaded(school: event.school));
+          } else {
+            emit(SchoolDetailsSaveError(res.body));
+          }
+        } catch (e) {
+          emit(SchoolDetailsSaveError(e.toString()));
+        }
+      },
+    );
+    on<UpdateSchoolDetails>(
+      (event, emit) {
+        emit(SchoolDetailsLoaded(school: event.school));
       },
     );
   }

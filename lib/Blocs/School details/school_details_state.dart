@@ -17,3 +17,13 @@ class SchoolDetailsLoaded extends SchoolDetailsState {
 
   SchoolDetailsLoaded({required this.school});
 }
+
+class SavingSchoolDetails extends SchoolDetailsState {}
+
+class SavedSchoolDetails extends SchoolDetailsState {}
+
+class SchoolDetailsSaveError extends SchoolDetailsState {
+  final String error;
+
+  SchoolDetailsSaveError(this.error);
+}

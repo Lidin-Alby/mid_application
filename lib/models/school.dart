@@ -51,13 +51,14 @@ class School {
       schoolCode: json['schoolCode'] ?? '',
       schoolName: json['schoolName'] ?? '',
       principalPhone: json['principalPhone'] ?? '',
+      principalName: json['principalName'] ?? '',
       schoolPhone: json['schoolPhone'] ?? '',
-      schoolMail: json['schoolPhone'] ?? '',
+      schoolMail: json['schoolMail'] ?? '',
       schoolWebsite: json['schoolWebsite'] ?? '',
       schoolAddress: json['schoolAddress'] ?? '',
       schoolPincode: json['schoolPincode'] ?? '',
       estCode: json['estCode'] ?? '',
-      affNo: json['principalName'] ?? '',
+      affNo: json['affNo'] ?? '',
       schoolLogo: json['schoolLogo'] ?? '',
       principalSign: json['principalSign'] ?? '',
       studentCount: json['studentCount'] ?? 0,
@@ -70,5 +71,20 @@ class School {
       deliveredCount: json['deliveredCount'] ?? 0,
       loginPendingCount: json['loginPendingCount'] ?? 0,
     );
+  }
+  Map toMap() {
+    return {
+      'schoolCode': schoolCode,
+      'schoolName': schoolName,
+      'principalPhone': principalPhone,
+      'schoolPhone': schoolPhone.toString(),
+      'schoolMail': schoolMail.toString(),
+      'schoolWebsite': schoolWebsite.toString(),
+      'schoolAddress': schoolAddress.toString(),
+      'schoolPincode': schoolPincode.toString(),
+      'estCode': estCode.toString(),
+      'affNo': affNo.toString(),
+      'principalName': principalName.toString()
+    };
   }
 }

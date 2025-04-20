@@ -72,10 +72,13 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ProfilePicBloc(
-              context.read<StudentBloc>(),
-              context.read<StudentDetailsBloc>(),
-              context.read<StaffBloc>(),
-              context.read<StaffDetailsBloc>()),
+            context.read<StudentBloc>(),
+            context.read<StudentDetailsBloc>(),
+            context.read<StaffBloc>(),
+            context.read<StaffDetailsBloc>(),
+            context.read<SchoolListBloc>(),
+            context.read<SchoolDetailsBloc>(),
+          ),
         ),
         BlocProvider(
           create: (context) => AttendanceBloc(),
