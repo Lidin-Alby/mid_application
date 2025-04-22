@@ -12,6 +12,7 @@ import 'package:mid_application/Screens/details_info_screen.dart';
 import 'package:mid_application/models/school.dart';
 import 'package:mid_application/widgets/counts_column.dart';
 import 'package:mid_application/widgets/menu_tile.dart';
+import 'package:mid_application/widgets/profile_pic.dart';
 
 class SchoolDashboard extends StatelessWidget {
   const SchoolDashboard({super.key, required this.schoolCode});
@@ -99,11 +100,10 @@ class SchoolDashboard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage:
-                                      AssetImage('assets/images/logoImg.jpg'),
-                                ),
+                                ProfilePicWidget(
+                                    size: 65,
+                                    profilePic: school.schoolLogo.toString(),
+                                    schoolCode: schoolCode),
                                 Spacer(),
                                 Text(
                                   school.schoolName.toString(),
@@ -187,6 +187,7 @@ class SchoolDashboard extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => DetailsInfoScreen(
+                                          logo: school.schoolLogo.toString(),
                                           schoolCode: schoolCode,
                                           listHead: 'all',
                                         ),
@@ -224,6 +225,7 @@ class SchoolDashboard extends StatelessWidget {
                               ),
                             ),
                             MenuTile(
+                              showBadge: school.uncheckedCount != 0,
                               icon: Icons.cancel_outlined,
                               label: 'Unchecked',
                               cardColor: Colors.black87,
@@ -233,6 +235,7 @@ class SchoolDashboard extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DetailsInfoScreen(
+                                    logo: school.schoolLogo.toString(),
                                     schoolCode: schoolCode,
                                     listHead: 'null',
                                   ),
@@ -245,6 +248,7 @@ class SchoolDashboard extends StatelessWidget {
                           spacing: 20,
                           children: [
                             MenuTile(
+                              showBadge: school.noPhotosCount != 0,
                               icon: Icons.no_photography_outlined,
                               label: 'No Photos',
                               cardColor: Colors.black87,
@@ -254,6 +258,7 @@ class SchoolDashboard extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DetailsInfoScreen(
+                                    logo: school.schoolLogo.toString(),
                                     schoolCode: schoolCode,
                                     listHead: 'noPhoto',
                                   ),
@@ -261,6 +266,7 @@ class SchoolDashboard extends StatelessWidget {
                               ),
                             ),
                             MenuTile(
+                              showBadge: school.readyPrintCount != 0,
                               icon: Icons.print_outlined,
                               label: 'Ready to Print',
                               cardColor: Colors.white,
@@ -269,6 +275,7 @@ class SchoolDashboard extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DetailsInfoScreen(
+                                    logo: school.schoolLogo.toString(),
                                     schoolCode: schoolCode,
                                     listHead: 'ready',
                                   ),
@@ -281,6 +288,7 @@ class SchoolDashboard extends StatelessWidget {
                           spacing: 20,
                           children: [
                             MenuTile(
+                              showBadge: false,
                               icon: Icons.restart_alt,
                               label: 'Printing',
                               cardColor: Colors.white,
@@ -289,6 +297,7 @@ class SchoolDashboard extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DetailsInfoScreen(
+                                    logo: school.schoolLogo.toString(),
                                     schoolCode: schoolCode,
                                     listHead: 'printing',
                                   ),
@@ -296,6 +305,7 @@ class SchoolDashboard extends StatelessWidget {
                               ),
                             ),
                             MenuTile(
+                              showBadge: false,
                               icon: Icons.done_all_rounded,
                               label: 'Delivered',
                               cardColor: Colors.black87,
@@ -305,6 +315,7 @@ class SchoolDashboard extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DetailsInfoScreen(
+                                    logo: school.schoolLogo.toString(),
                                     schoolCode: schoolCode,
                                     listHead: 'printed',
                                   ),
@@ -317,6 +328,7 @@ class SchoolDashboard extends StatelessWidget {
                           spacing: 20,
                           children: [
                             MenuTile(
+                              showBadge: false,
                               icon: Icons.login_rounded,
                               label: 'Login Pending',
                               cardColor: Colors.black87,
@@ -325,6 +337,7 @@ class SchoolDashboard extends StatelessWidget {
                               onTap: () {},
                             ),
                             MenuTile(
+                              showBadge: false,
                               icon: Icons.badge_outlined,
                               label: 'Card Designs',
                               cardColor: Colors.white,

@@ -9,6 +9,7 @@ class MenuTile extends StatelessWidget {
     required this.cardColor,
     this.color,
     required this.onTap,
+    required this.showBadge,
   });
   final IconData icon;
   final String label;
@@ -16,6 +17,7 @@ class MenuTile extends StatelessWidget {
   final Color cardColor;
   final Color? color;
   final VoidCallback onTap;
+  final bool showBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -81,11 +83,15 @@ class MenuTile extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 6, right: 6),
-                      child: Icon(
-                        Icons.circle,
-                        color: Theme.of(context).colorScheme.primary,
-                        size: 10,
-                      ),
+                      child: showBadge
+                          ? Icon(
+                              Icons.circle,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 10,
+                            )
+                          : SizedBox(
+                              width: 10,
+                            ),
                     ),
                   ),
                 ],

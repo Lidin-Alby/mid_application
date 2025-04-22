@@ -212,21 +212,21 @@ class _FormSettingsScreenState extends State<FormSettingsScreen> {
                                           Divider(
                                             thickness: .5,
                                           ),
-                                          FormSettingsTile(
-                                            onTap: (value) {
-                                              setState(() {
-                                                formStudent.fatherMobNo = value;
-                                              });
-                                            },
-                                            value: formStudent.fatherMobNo,
-                                            icon: Icons.call,
-                                            title: 'Father Mobile',
-                                            description:
-                                                'Text field father mobile no.',
-                                          ),
-                                          Divider(
-                                            thickness: .5,
-                                          ),
+                                          // FormSettingsTile(
+                                          //   onTap: (value) {
+                                          //     setState(() {
+                                          //       formStudent.fatherMobNo = value;
+                                          //     });
+                                          //   },
+                                          //   value: formStudent.fatherMobNo,
+                                          //   icon: Icons.call,
+                                          //   title: 'Father Mobile',
+                                          //   description:
+                                          //       'Text field father mobile no.',
+                                          // ),
+                                          // Divider(
+                                          //   thickness: .5,
+                                          // ),
                                           FormSettingsTile(
                                             onTap: (value) {
                                               setState(() {

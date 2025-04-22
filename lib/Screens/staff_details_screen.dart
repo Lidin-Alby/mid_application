@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form__settings_state.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form_settings_bloc.dart';
 import 'package:mid_application/Blocs/Staff%20Details/staff_details_event.dart';
 import 'package:mid_application/Blocs/Staff%20Details/staff_details_bloc.dart';
 import 'package:mid_application/Blocs/Staff%20Details/staff_details_state.dart';
@@ -9,6 +11,7 @@ import 'package:mid_application/Blocs/Staff/staff_bloc.dart';
 import 'package:mid_application/Blocs/Staff/staff_event.dart';
 import 'package:mid_application/Blocs/Staff/staff_state.dart';
 import 'package:mid_application/models/class_model.dart';
+import 'package:mid_application/models/form_staff.dart';
 import 'package:mid_application/models/staff.dart';
 import 'package:mid_application/models/teacher.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
@@ -342,361 +345,409 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SafeArea(
-              child: BlocConsumer<StaffBloc, StaffState>(
-                listener: (context, saveState) {
-                  if (saveState is StaffSaveError) {
-                    if (saveState.error != null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(saveState.error!),
-                        ),
-                      );
-                    }
-                  } else if (saveState is StaffSaved) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Saved Successfully'),
-                      ),
-                    );
-                    if (widget.mob != null) {
-                      setState(() {
-                        isEdit = false;
-                      });
-                    }
-                    if (widget.mob == null) {
-                      clearFields();
-                    }
-                  }
-                },
-                builder: (context, saveState) =>
-                    BlocBuilder<StaffDetailsBloc, StaffDetailsState>(
-                        builder: (context, state) {
-                  Staff staff = Staff(
-                    designation: '',
-                    fullName: '',
-                    mob: '',
-                    schoolCode: widget.schoolCode,
-                  );
+              child: BlocBuilder<FormSettingsBloc, FormSettingsState>(
+                  builder: (context, formState) {
+                if (formState is FormSettingsLoaded) {
+                  FormStaff formStaff = formState.formStaff;
                   if (widget.isTeacher) {
-                    staff = Teacher(
-                      schoolCode: widget.schoolCode,
-                      fullName: '',
-                      mob: '',
-                      designation: 'midTeacher',
-                    );
-                  }
-                  if (state is StaffDetailsLoaded && widget.mob != null) {
-                    staff = state.staff;
-                    if (!isEdit) {
-                      assignValues(staff);
-                    }
+                    formStaff = formState.formTeacher;
                   }
 
-                  return Column(
-                    spacing: 15,
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      if (widget.mob != null)
-                        ProfilePicWithEdit(
-                          userType: widget.isTeacher ? 'teacher' : 'staff',
-                          userId: staff.mob,
-                          // imageUrl:
-                          //     '$ipv4/getPic/${widget.schoolCode}/$profilePic',
+                  return BlocConsumer<StaffBloc, StaffState>(
+                    listener: (context, saveState) {
+                      if (saveState is StaffSaveError) {
+                        if (saveState.error != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(saveState.error!),
+                            ),
+                          );
+                        }
+                      } else if (saveState is StaffSaved) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Saved Successfully'),
+                          ),
+                        );
+                        if (widget.mob != null) {
+                          setState(() {
+                            isEdit = false;
+                          });
+                        }
+                        if (widget.mob == null) {
+                          clearFields();
+                        }
+                      }
+                    },
+                    builder: (context, saveState) =>
+                        BlocBuilder<StaffDetailsBloc, StaffDetailsState>(
+                            builder: (context, state) {
+                      Staff staff = Staff(
+                        designation: '',
+                        fullName: '',
+                        mob: '',
+                        schoolCode: widget.schoolCode,
+                      );
+                      if (widget.isTeacher) {
+                        staff = Teacher(
                           schoolCode: widget.schoolCode,
-                          fullName: staff.fullName,
-                          oldProfilePic: profilePic,
-                        ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      MyTextfield(
-                          label: 'Full Name',
-                          controller: fullName,
-                          error: saveState is StaffSaveError
-                              ? saveState.fullNameError
-                              : null),
-                      Row(
-                        spacing: spacing,
+                          fullName: '',
+                          mob: '',
+                          designation: 'midTeacher',
+                        );
+                      }
+                      if (state is StaffDetailsLoaded && widget.mob != null) {
+                        staff = state.staff;
+                        if (!isEdit) {
+                          assignValues(staff);
+                        }
+                      }
+
+                      return Column(
+                        spacing: 15,
                         children: [
-                          Expanded(
-                            child: GenderRadio(
-                              gender: gender,
-                              onChanged: (value) {
-                                setState(() {
-                                  gender = value;
-                                });
-                              },
+                          SizedBox(
+                            height: 5,
+                          ),
+                          if (widget.mob != null)
+                            ProfilePicWithEdit(
+                              userType: widget.isTeacher ? 'teacher' : 'staff',
+                              userId: staff.mob,
+                              // imageUrl:
+                              //     '$ipv4/getPic/${widget.schoolCode}/$profilePic',
+                              schoolCode: widget.schoolCode,
+                              fullName: staff.fullName,
+                              oldProfilePic: profilePic,
                             ),
+                          SizedBox(
+                            height: 10,
                           ),
-                          Expanded(
-                            child: MyDatePicker(
-                              label: 'DOB',
-                              onSelected: (value) {
-                                setState(() {
-                                  dob = value;
-                                });
-                              },
-                              value: dob,
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (widget.isTeacher)
-                        MultiClassSelector(
-                          classList: classList,
-                          onSelected: (value) {
-                            setState(() {
-                              classes.add(value);
-                            });
-                          },
-                          selectedClasses: classes,
-                          onRemove: (value) {
-                            setState(() {
-                              classes.remove(value);
-                            });
-                          },
-                        ),
-                      MyTextfield(
-                          label: 'Mobile No.',
-                          controller: mob,
-                          error: saveState is StaffSaveError
-                              ? saveState.mobError
-                              : null),
-                      MyTextfield(
-                          label: 'Qualification', controller: qualification),
-                      Row(
-                        spacing: spacing,
-                        children: [
-                          Expanded(
-                            child: MyDropdownButton(
-                              value: bloodGroup,
-                              label: 'Blood Group',
-                              onChanged: (value) {
-                                setState(() {
-                                  bloodGroup = value;
-                                });
-                              },
-                              items: bloodGroupList
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      child: Text(e),
-                                      value: e,
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                          Expanded(
-                            child: MyDropdownButton(
-                              value: religion,
-                              label: 'Religion',
-                              onChanged: (value) {
-                                setState(() {
-                                  religion = value;
-                                });
-                              },
-                              items: religionList
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      child: Text(e),
-                                      value: e,
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        spacing: spacing,
-                        children: [
-                          Expanded(
-                            child: MyDropdownButton(
-                              value: caste,
-                              label: 'Caste',
-                              onChanged: (value) {
-                                setState(() {
-                                  caste = value;
-                                });
-                              },
-                              items: casteList
-                                  .map(
-                                    (e) => DropdownMenuItem(
-                                      child: Text(e),
-                                      value: e,
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                          Expanded(
-                            child: MyTextfield(
-                              label: 'Sub-Caste',
-                              controller: subCaste,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        spacing: spacing,
-                        children: [
-                          Expanded(
-                            child: MyTextfield(
-                                label: 'Department', controller: department),
-                          ),
-                          Expanded(
-                            child: MyDatePicker(
-                              label: 'Joining Date',
-                              onSelected: (value) {
-                                setState(() {
-                                  joiningDate = value;
-                                });
-                              },
-                              value: joiningDate,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        spacing: spacing,
-                        children: [
-                          Expanded(
-                            child: MyDatePicker(
-                              label: 'DL Validity',
-                              onSelected: (value) {
-                                setState(() {
-                                  dlValidity = value;
-                                });
-                              },
-                              value: dlValidity,
-                            ),
-                          ),
-                          Expanded(
-                            child:
-                                MyTextfield(label: 'DL No.', controller: dlNo),
-                          ),
-                        ],
-                      ),
-                      AddressTextfield(label: 'Address', controller: address),
-                      Row(
-                        spacing: spacing,
-                        children: [
-                          Expanded(
-                            child: MyTextfield(
-                                label: 'Aadhaar No.', controller: aadhaarNo),
-                          ),
-                          Expanded(
-                            child: MyTextfield(label: 'Pan', controller: panNo),
-                          )
-                        ],
-                      ),
-                      Row(
-                        spacing: spacing,
-                        children: [
-                          Expanded(
-                            child: MyTextfield(label: 'RFID', controller: rfid),
-                          ),
-                          if (!widget.isTeacher)
-                            Expanded(
-                              child: MyTextfield(
-                                label: 'Designation',
-                                controller: designation,
-                                error: saveState is StaffSaveError
-                                    ? saveState.designationError
-                                    : null,
-                              ),
-                            ),
-                        ],
-                      ),
-                      Row(
-                        spacing: spacing,
-                        children: [
-                          Expanded(
-                            child: MyTextfield(
-                                label: 'Father/Husband',
-                                controller: fatherOrHusName),
-                          ),
-                          Expanded(
-                            child:
-                                MyTextfield(label: 'UAN Card', controller: uan),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      if (!isEdit)
-                        Row(
-                          children: [
-                            Expanded(
-                              child: MyFilledButton(
-                                color: check
-                                    ? Colors.amber
-                                    : const Color.fromARGB(255, 54, 166, 31),
-                                label: check ? 'Uncheck' : 'Check',
-                                onPressed: () => showDialog(
-                                  context: context,
-                                  builder: (context) => MyAlertDialog(
-                                    title:
-                                        'The data will be marked as checked. You can change it later.',
-                                    subtitle:
-                                        'Press OK to contine, Cancel to stay on current page.',
-                                    icon: Icon(
-                                      Icons.warning_rounded,
-                                      color: Colors.amber,
-                                      size: 35,
-                                    ),
-                                    cancel: () => Navigator.pop(context),
-                                    confirm: () {
-                                      check = !check;
-                                      Navigator.pop(context);
-                                      context.read<StaffBloc>().add(
-                                            SaveStaffPressed(
-                                              staff: newStaffValues(),
-                                              isMob: widget.mob != null,
-                                            ),
-                                          );
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      saveState is StaffSaveLoading
-                          ? CircularProgressIndicator()
-                          : isEdit
-                              ? Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    MyFilledButton(
-                                      label: 'Cancel',
-                                      onPressed: () => Navigator.pop(context),
-                                    ),
-                                    MyFilledButton(
-                                      label: 'Save',
-                                      onPressed: () {
-                                        BlocProvider.of<StaffBloc>(context).add(
-                                          SaveStaffPressed(
-                                            staff: newStaffValues(),
-                                            isMob: widget.mob != null,
-                                          ),
-                                        );
+                          MyTextfield(
+                              label: 'Full Name',
+                              controller: fullName,
+                              error: saveState is StaffSaveError
+                                  ? saveState.fullNameError
+                                  : null),
+                          if (formStaff.gender && formStaff.dob)
+                            Row(
+                              spacing: spacing,
+                              children: [
+                                if (formStaff.gender)
+                                  Expanded(
+                                    child: GenderRadio(
+                                      gender: gender,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          gender = value;
+                                        });
                                       },
                                     ),
-                                  ],
-                                )
-                              : SizedBox(),
-                      SizedBox(
-                        height: 30,
-                      ),
-                    ],
+                                  ),
+                                if (formStaff.dob)
+                                  Expanded(
+                                    child: MyDatePicker(
+                                      label: 'DOB',
+                                      onSelected: (value) {
+                                        setState(() {
+                                          dob = value;
+                                        });
+                                      },
+                                      value: dob,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          if (widget.isTeacher)
+                            MultiClassSelector(
+                              classList: classList,
+                              onSelected: (value) {
+                                setState(() {
+                                  classes.add(value);
+                                });
+                              },
+                              selectedClasses: classes,
+                              onRemove: (value) {
+                                setState(() {
+                                  classes.remove(value);
+                                });
+                              },
+                            ),
+                          MyTextfield(
+                              label: 'Mobile No.',
+                              controller: mob,
+                              error: saveState is StaffSaveError
+                                  ? saveState.mobError
+                                  : null),
+                          if (formStaff.qualification)
+                            MyTextfield(
+                                label: 'Qualification',
+                                controller: qualification),
+                          if (formStaff.bloodGroup && formStaff.religion)
+                            Row(
+                              spacing: spacing,
+                              children: [
+                                if (formStaff.bloodGroup)
+                                  Expanded(
+                                    child: MyDropdownButton(
+                                      value: bloodGroup,
+                                      label: 'Blood Group',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          bloodGroup = value;
+                                        });
+                                      },
+                                      items: bloodGroupList
+                                          .map(
+                                            (e) => DropdownMenuItem(
+                                              child: Text(e),
+                                              value: e,
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                if (formStaff.religion)
+                                  Expanded(
+                                    child: MyDropdownButton(
+                                      value: religion,
+                                      label: 'Religion',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          religion = value;
+                                        });
+                                      },
+                                      items: religionList
+                                          .map(
+                                            (e) => DropdownMenuItem(
+                                              child: Text(e),
+                                              value: e,
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          if (formStaff.caste && formStaff.subCaste)
+                            Row(
+                              spacing: spacing,
+                              children: [
+                                if (formStaff.caste)
+                                  Expanded(
+                                    child: MyDropdownButton(
+                                      value: caste,
+                                      label: 'Caste',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          caste = value;
+                                        });
+                                      },
+                                      items: casteList
+                                          .map(
+                                            (e) => DropdownMenuItem(
+                                              child: Text(e),
+                                              value: e,
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                if (formStaff.subCaste)
+                                  Expanded(
+                                    child: MyTextfield(
+                                      label: 'Sub-Caste',
+                                      controller: subCaste,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          if (formStaff.department && formStaff.joiningDate)
+                            Row(
+                              spacing: spacing,
+                              children: [
+                                if (formStaff.department)
+                                  Expanded(
+                                    child: MyTextfield(
+                                        label: 'Department',
+                                        controller: department),
+                                  ),
+                                if (formStaff.joiningDate)
+                                  Expanded(
+                                    child: MyDatePicker(
+                                      label: 'Joining Date',
+                                      onSelected: (value) {
+                                        setState(() {
+                                          joiningDate = value;
+                                        });
+                                      },
+                                      value: joiningDate,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          if (formStaff.dlValidity && formStaff.dlNo)
+                            Row(
+                              spacing: spacing,
+                              children: [
+                                if (formStaff.dlValidity)
+                                  Expanded(
+                                    child: MyDatePicker(
+                                      label: 'DL Validity',
+                                      onSelected: (value) {
+                                        setState(() {
+                                          dlValidity = value;
+                                        });
+                                      },
+                                      value: dlValidity,
+                                    ),
+                                  ),
+                                if (formStaff.dlNo)
+                                  Expanded(
+                                    child: MyTextfield(
+                                        label: 'DL No.', controller: dlNo),
+                                  ),
+                              ],
+                            ),
+                          if (formStaff.address)
+                            AddressTextfield(
+                                label: 'Address', controller: address),
+                          if (formStaff.aadhaarNo && formStaff.panNo)
+                            Row(
+                              spacing: spacing,
+                              children: [
+                                if (formStaff.aadhaarNo)
+                                  Expanded(
+                                    child: MyTextfield(
+                                        label: 'Aadhaar No.',
+                                        controller: aadhaarNo),
+                                  ),
+                                if (formStaff.panNo)
+                                  Expanded(
+                                    child: MyTextfield(
+                                        label: 'Pan', controller: panNo),
+                                  )
+                              ],
+                            ),
+                          if (formStaff.rfid && !widget.isTeacher)
+                            Row(
+                              spacing: spacing,
+                              children: [
+                                if (formStaff.rfid)
+                                  Expanded(
+                                    child: MyTextfield(
+                                        label: 'RFID', controller: rfid),
+                                  ),
+                                if (!widget.isTeacher)
+                                  Expanded(
+                                    child: MyTextfield(
+                                      label: 'Designation',
+                                      controller: designation,
+                                      error: saveState is StaffSaveError
+                                          ? saveState.designationError
+                                          : null,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          if (formStaff.fatherOrHusName && formStaff.uan)
+                            Row(
+                              spacing: spacing,
+                              children: [
+                                if (formStaff.fatherOrHusName)
+                                  Expanded(
+                                    child: MyTextfield(
+                                        label: 'Father/Husband',
+                                        controller: fatherOrHusName),
+                                  ),
+                                if (formStaff.uan)
+                                  Expanded(
+                                    child: MyTextfield(
+                                        label: 'UAN Card', controller: uan),
+                                  ),
+                              ],
+                            ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          if (!isEdit)
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: MyFilledButton(
+                                    color: check
+                                        ? Colors.amber
+                                        : const Color.fromARGB(
+                                            255, 54, 166, 31),
+                                    label: check ? 'Uncheck' : 'Check',
+                                    onPressed: () => showDialog(
+                                      context: context,
+                                      builder: (context) => MyAlertDialog(
+                                        title:
+                                            'The data will be marked as checked. You can change it later.',
+                                        subtitle:
+                                            'Press OK to contine, Cancel to stay on current page.',
+                                        icon: Icon(
+                                          Icons.warning_rounded,
+                                          color: Colors.amber,
+                                          size: 35,
+                                        ),
+                                        cancel: () => Navigator.pop(context),
+                                        confirm: () {
+                                          check = !check;
+                                          Navigator.pop(context);
+                                          context.read<StaffBloc>().add(
+                                                SaveStaffPressed(
+                                                  staff: newStaffValues(),
+                                                  isMob: widget.mob != null,
+                                                ),
+                                              );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          saveState is StaffSaveLoading
+                              ? CircularProgressIndicator()
+                              : isEdit
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        MyFilledButton(
+                                          label: 'Cancel',
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                        ),
+                                        MyFilledButton(
+                                          label: 'Save',
+                                          onPressed: () {
+                                            BlocProvider.of<StaffBloc>(context)
+                                                .add(
+                                              SaveStaffPressed(
+                                                staff: newStaffValues(),
+                                                isMob: widget.mob != null,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(),
+                          SizedBox(
+                            height: 30,
+                          ),
+                        ],
+                      );
+                    }),
                   );
-                }),
-              ),
+                } else if (formState is FormSettingsLoadError) {
+                  return Text(formState.error);
+                } else {
+                  return CircularProgressIndicator();
+                }
+              }),
             ),
           ),
         ),

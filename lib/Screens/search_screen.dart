@@ -9,8 +9,9 @@ import 'package:mid_application/widgets/my_app_bar.dart';
 import 'package:http/http.dart' as http;
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key, required this.schoolCode});
+  const SearchScreen({super.key, required this.schoolCode, required this.logo});
   final String schoolCode;
+  final String logo;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -23,6 +24,8 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
+        schoolCode: widget.schoolCode,
+        logo: widget.logo,
         autofocus: true,
         onChanged: (value) async {
           if (value.trim().isNotEmpty) {

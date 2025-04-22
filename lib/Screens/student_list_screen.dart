@@ -13,10 +13,12 @@ class StudentListScreen extends StatefulWidget {
       {super.key,
       required this.schoolCode,
       required this.classTitle,
-      required this.listHead});
+      required this.listHead,
+      required this.logo});
   final String schoolCode;
   final String classTitle;
   final String listHead;
+  final String logo;
 
   @override
   State<StudentListScreen> createState() => _StudentListScreenState();
@@ -38,6 +40,8 @@ class _StudentListScreenState extends State<StudentListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
+        schoolCode: widget.schoolCode,
+        logo: widget.logo,
         onChanged: (value) {
           setState(() {
             searchText = value.toLowerCase();

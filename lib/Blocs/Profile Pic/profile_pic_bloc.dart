@@ -161,6 +161,28 @@ class ProfilePicBloc extends Bloc<ProfilePicEvent, ProfilePicState> {
 
                   schoolListBloc.add(SchoolListUpdated(schools: updateSchools));
                   schoolDetailsBloc.add(UpdateSchoolDetails(update));
+                  break;
+                case 'sign':
+                  School update = School(
+                    schoolCode: schoolCode,
+                    principalPhone: event.userId,
+                    schoolName: event.fullName,
+                  );
+                  Map data = jsonDecode(responded.body);
+
+                  final updateSchools =
+                      (schoolListBloc.state as SchoolListLoaded).schools.map(
+                    (school) {
+                      if (school.schoolCode == event.schoolCode) {
+                        update = School.fromJson(data);
+                        return update;
+                      }
+                      return school;
+                    },
+                  ).toList();
+
+                  schoolListBloc.add(SchoolListUpdated(schools: updateSchools));
+                  schoolDetailsBloc.add(UpdateSchoolDetails(update));
               }
 
               emit(ProfilePicUploaded());

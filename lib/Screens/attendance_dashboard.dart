@@ -36,8 +36,6 @@ class AttendanceDashboard extends StatelessWidget {
                 ),
                 Divider(
                   color: Colors.black,
-                  // indent: 10,
-                  // endIndent: 10,
                   thickness: 1.5,
                   height: 5,
                 ),
@@ -51,7 +49,6 @@ class AttendanceDashboard extends StatelessWidget {
                       count: '10',
                       icon: Icons.person_outline_rounded,
                       label: 'Students',
-                      // iconSize: 20,
                     ),
                     CountsColumnAttendance(
                       count: '5',

@@ -39,36 +39,62 @@ class AgentHomeScreen extends StatefulWidget {
 }
 
 class _AgentHomeScreenState extends State<AgentHomeScreen> {
-  @override
-  void initState() {
-    // schoolListBloc.add(LoadschoolList());
-    super.initState();
-  }
-
-  // final schoolListBloc = SchoolListBloc();
+  String searchText = '';
+  bool onSearch = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('DashBoard'),
+        title: onSearch
+            ? Padding(
+                padding: const EdgeInsets.only(right: 15),
+                child: SizedBox(
+                  height: 34,
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        searchText = value.toLowerCase();
+                      });
+                    },
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      isDense: true,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      prefixIcon: Icon(Icons.search),
+                      prefixIconColor: Theme.of(context).colorScheme.primary,
+                      contentPadding: EdgeInsets.all(8),
+                    ),
+                  ),
+                ),
+              )
+            : Text('Dashboard'),
         actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-            child: Ink(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: IconButton(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                color: Theme.of(context).colorScheme.primary,
-                onPressed: () {},
-                icon: Icon(Icons.search),
+          if (!onSearch)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              child: Ink(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: IconButton(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                  color: Theme.of(context).colorScheme.primary,
+                  onPressed: () {
+                    setState(() {
+                      onSearch = true;
+                    });
+                  },
+                  icon: Icon(Icons.search),
+                ),
               ),
             ),
-          ),
         ],
       ),
       body: BlocBuilder<SchoolListBloc, SchoolListState>(
@@ -81,6 +107,13 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
           );
         } else if (state is SchoolListLoaded) {
           List<School> schools = state.schools;
+
+          schools = schools
+              .where(
+                (element) =>
+                    element.schoolName.toLowerCase().startsWith(searchText),
+              )
+              .toList();
           return schools.isEmpty
               ? Center(
                   child: Text('No schools added'),
@@ -100,29 +133,37 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                           startActionPane:
                               ActionPane(motion: ScrollMotion(), children: [
                             SlidableAction(
-                              icon: Icons.edit_outlined,
-                              borderRadius: BorderRadius.horizontal(
-                                  left: Radius.circular(6)),
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              onPressed: (context) => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SchoolDetailsScreen(
-                                    school: schools[index],
-                                  ),
-                                ),
-                              ),
-                            )
+                                icon: Icons.edit_outlined,
+                                borderRadius: BorderRadius.horizontal(
+                                    left: Radius.circular(6)),
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                onPressed: (context) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SchoolDetailsScreen(
+                                        school: schools[index],
+                                      ),
+                                    ),
+                                  );
+                                })
                           ]),
                           child: InkWell(
-                            onTap: () => Navigator.push(
+                            onTap: () {
+                              setState(() {
+                                onSearch = false;
+                              });
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SchoolHomeScreen(
-                                    schoolCode: state.schools[index].schoolCode,
+                                    logo: schools[index].schoolLogo.toString(),
+                                    schoolCode: schools[index].schoolCode,
                                   ),
-                                )),
+                                ),
+                              );
+                            },
                             child: Ink(
                               padding: EdgeInsets.symmetric(
                                   vertical: 8, horizontal: 12),
@@ -145,8 +186,7 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        state.schools[index].schoolName
-                                            .toString(),
+                                        schools[index].schoolName.toString(),
                                         style: TextStyle(
                                             fontWeight: FontWeight.w500),
                                       ),
@@ -154,7 +194,8 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                                         height: 3,
                                       ),
                                       Text(
-                                        state.schools[index].principalPhone
+                                        schools[index]
+                                            .principalPhone
                                             .toString(),
                                       ),
                                     ],
@@ -199,12 +240,6 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
             TextButton(
               onPressed: () {
                 BlocProvider.of<LoginBloc>(context).add(LogoutPressed());
-
-                // Navigator.pushReplacement(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => LoginScreen(),
-                //     ));
               },
               child: Text('Logout'),
             ),

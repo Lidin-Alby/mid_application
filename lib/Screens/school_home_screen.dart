@@ -12,8 +12,10 @@ import 'package:mid_application/widgets/my_app_bar.dart';
 import 'package:mid_application/widgets/my_navigation_button.dart';
 
 class SchoolHomeScreen extends StatefulWidget {
-  const SchoolHomeScreen({super.key, required this.schoolCode});
+  const SchoolHomeScreen(
+      {super.key, required this.schoolCode, required this.logo});
   final String schoolCode;
+  final String logo;
 
   @override
   State<SchoolHomeScreen> createState() => _SchoolHomeScreenState();
@@ -26,11 +28,14 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
+        schoolCode: widget.schoolCode,
+        logo: widget.logo,
         readonly: true,
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => SearchScreen(
+              logo: widget.logo,
               schoolCode: widget.schoolCode,
             ),
           ),

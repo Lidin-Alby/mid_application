@@ -20,10 +20,14 @@ import 'package:mid_application/widgets/teacher_or_staff_tile.dart';
 
 class DetailsInfoScreen extends StatefulWidget {
   const DetailsInfoScreen(
-      {super.key, required this.schoolCode, required this.listHead});
+      {super.key,
+      required this.schoolCode,
+      required this.listHead,
+      required this.logo});
   final String listHead;
 
   final String schoolCode;
+  final String logo;
 
   @override
   State<DetailsInfoScreen> createState() => _DetailsInfoScreenState();
@@ -45,6 +49,8 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
+        schoolCode: widget.schoolCode,
+        logo: widget.logo,
         showSearch: _currentIndex != 0,
         onTap: () {},
         onChanged: (value) {
@@ -132,7 +138,6 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                       );
                     } else if (state is ClassLoaded) {
                       List<ClassModel> classes = state.classes;
-                      print(classes.length);
 
                       return Expanded(
                         child: ListView.builder(
@@ -165,6 +170,7 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => StudentListScreen(
+                                        logo: widget.logo,
                                         schoolCode: widget.schoolCode,
                                         classTitle: classes[index].classTitle,
                                         listHead: widget.listHead,

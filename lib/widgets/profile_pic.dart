@@ -31,6 +31,9 @@ class ProfilePicWidget extends StatelessWidget {
           ),
         ),
       ),
+      errorListener: (value) {
+        // print(value);
+      },
       errorWidget: (context, imageUrl, error) => Container(
         height: size,
         width: size,

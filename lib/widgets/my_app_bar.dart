@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mid_application/widgets/profile_pic.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSize {
   const MyAppBar(
@@ -8,10 +9,14 @@ class MyAppBar extends StatelessWidget implements PreferredSize {
       required this.onTap,
       this.readonly,
       this.autofocus,
-      this.showSearch = true});
+      this.showSearch = true,
+      required this.logo,
+      required this.schoolCode});
   final bool? readonly;
   final bool? autofocus;
   final bool showSearch;
+  final String logo;
+  final String schoolCode;
 
   final Function(String value) onChanged;
   final VoidCallback onTap;
@@ -49,12 +54,13 @@ class MyAppBar extends StatelessWidget implements PreferredSize {
             : null,
       ),
       actions: [
-        CircleAvatar(
-          radius: 20,
-          backgroundImage: AssetImage('assets/images/logoImg.jpg'),
-        ),
+        ProfilePicWidget(
+          profilePic: logo,
+          schoolCode: schoolCode,
+          size: 40,
+        )
       ],
-      actionsPadding: EdgeInsets.only(right: 15),
+      actionsPadding: EdgeInsets.only(right: 15, top: 10, bottom: 5),
     );
   }
 

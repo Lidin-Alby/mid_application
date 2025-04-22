@@ -1,8 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_bloc.dart';
+import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_event.dart';
+import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_state.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_state.dart';
+import 'package:mid_application/ip_address.dart';
 import 'package:mid_application/models/school.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
 import 'package:mid_application/widgets/my_filled_button.dart';
@@ -188,33 +194,140 @@ class _SchoolDetailsScreenState extends State<SchoolDetailsScreen> {
                             ),
                           ),
                         ),
-                        Stack(
-                          children: [
-                            Container(
-                              height: 70,
-                              width: 180,
-                              alignment: Alignment.center,
-                              margin: EdgeInsets.only(right: 20, top: 20),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  border: Border.all(color: Colors.grey)),
-                              child: Text(
-                                'Signature\nHere',
-                                style: TextStyle(color: Colors.grey),
-                                textAlign: TextAlign.center,
+                        BlocConsumer<ProfilePicBloc, ProfilePicState>(
+                          listener: (context, picState) {
+                            if (picState is ProfilePicUploadError) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(picState.error),
+                                ),
+                              );
+                            }
+                          },
+                          builder: (context, picState) => Stack(
+                            children: [
+                              Container(
+                                height: 70,
+                                width: 180,
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.only(right: 20, top: 20),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    border: Border.all(color: Colors.grey)),
+                                child: CachedNetworkImage(
+                                  errorListener: (value) {
+                                    // print(value);
+                                  },
+                                  imageUrl:
+                                      '$ipv4/getPic/${school.schoolCode}/$sign',
+                                  errorWidget: (context, url, error) => Text(
+                                    'Signature\nHere',
+                                    style: TextStyle(color: Colors.grey),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                               ),
-                            ),
-                            Positioned(
-                              right: -10,
-                              top: -5,
-                              child: ElevatedButton(
-                                onPressed: () {},
-                                style: ElevatedButton.styleFrom(
-                                    shape: CircleBorder()),
-                                child: Icon(Icons.attach_file_rounded),
-                              ),
-                            )
-                          ],
+                              if (picState is ProfilePicUploading)
+                                Positioned(
+                                  bottom: 20,
+                                  left: 80,
+                                  child: SizedBox(
+                                    width: 25,
+                                    height: 25,
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ),
+                              Positioned(
+                                right: -10,
+                                top: -5,
+                                child: ElevatedButton(
+                                  onPressed: () => showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20),
+                                      ),
+                                    ),
+                                    context: context,
+                                    builder: (context) => Padding(
+                                      padding: const EdgeInsets.all(30),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Profile Photo',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 20,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Column(
+                                                children: [
+                                                  IconButton.outlined(
+                                                    onPressed: () {
+                                                      context
+                                                          .read<
+                                                              ProfilePicBloc>()
+                                                          .add(
+                                                            PickAndUploadProfilePicEvent(
+                                                              userId: school
+                                                                  .principalPhone,
+                                                              userType: 'sign',
+                                                              fullName: school
+                                                                  .schoolName,
+                                                              schoolCode: school
+                                                                  .schoolCode,
+                                                              oldProfilePic:
+                                                                  sign,
+                                                              sourceType:
+                                                                  ImageSource
+                                                                      .camera,
+                                                            ),
+                                                          );
+                                                      Navigator.pop(context);
+                                                    },
+                                                    icon:
+                                                        Icon(Icons.camera_alt),
+                                                  ),
+                                                  Text('Camera')
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: 20,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  IconButton.outlined(
+                                                    onPressed: () async {
+                                                      // pickImg(ImageSource.gallery);
+                                                    },
+                                                    icon: Icon(
+                                                        Icons.photo_library),
+                                                  ),
+                                                  Text('Pick Photo')
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                      shape: CircleBorder()),
+                                  child: Icon(Icons.attach_file_rounded),
+                                ),
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
