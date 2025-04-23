@@ -46,7 +46,9 @@ class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
           ? SchoolDashboard(
               schoolCode: widget.schoolCode,
             )
-          : AttendanceDashboard(),
+          : AttendanceDashboard(
+              schoolCode: widget.schoolCode,
+            ),
       bottomNavigationBar: Container(
         height: 75,
         decoration: BoxDecoration(

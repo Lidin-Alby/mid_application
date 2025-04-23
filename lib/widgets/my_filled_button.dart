@@ -4,7 +4,7 @@ class MyFilledButton extends StatelessWidget {
   const MyFilledButton(
       {super.key, required this.label, required this.onPressed, this.color});
   final String label;
-  final Function() onPressed;
+  final Function()? onPressed;
   final Color? color;
 
   @override

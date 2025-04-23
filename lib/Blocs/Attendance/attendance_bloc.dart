@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_event.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_state.dart';
 import 'package:http/http.dart ' as http;
@@ -63,10 +64,11 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
     on<LoadIndividualAttendance>(
       (event, emit) async {
         emit(AttendanceLoading());
+        String date = DateFormat('MM-yyyy').format(event.date);
 
         try {
           var url = Uri.parse(
-              '$ipv4/v2/getMyAttendanceMid/${Uri.encodeQueryComponent(event.student.schoolCode)}/${Uri.encodeQueryComponent(event.student.admNo)}/04-2025');
+              '$ipv4/v2/getMyAttendanceMid/${Uri.encodeQueryComponent(event.student.schoolCode)}/${Uri.encodeQueryComponent(event.student.admNo)}/$date');
           var res = await http.get(url);
           if (res.statusCode == 200) {
             Map data = jsonDecode(res.body);

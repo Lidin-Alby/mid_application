@@ -26,8 +26,9 @@ class SaveClassAttendance extends AttendanceEvent {
 
 class LoadIndividualAttendance extends AttendanceEvent {
   final Student student;
+  final DateTime date;
 
-  LoadIndividualAttendance(this.student);
+  LoadIndividualAttendance(this.student, this.date);
 }
 
 class UpdateSingleStatus extends AttendanceEvent {

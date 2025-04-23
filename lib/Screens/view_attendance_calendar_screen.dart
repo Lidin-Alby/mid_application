@@ -55,7 +55,7 @@ class _ViewAttendanceCalendarScreenState
     selectedDateStatus = DateFormat('dd-MM-yyyy').format(selectedDate);
     context
         .read<AttendanceBloc>()
-        .add(LoadIndividualAttendance(widget.student));
+        .add(LoadIndividualAttendance(widget.student, selectedMonth));
     super.initState();
   }
 
@@ -74,7 +74,16 @@ class _ViewAttendanceCalendarScreenState
 
     return Scaffold(
       appBar: AttendanceAppBar(classTitle: widget.classTitle),
-      body: BlocBuilder<AttendanceBloc, AttendanceState>(
+      body: BlocConsumer<AttendanceBloc, AttendanceState>(
+        listener: (context, state) {
+          if (state is SaveAttendanceSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Saved Successfully'),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           if (state is IndividualAttendanceLoaded) {
             Map<String, dynamic> attendance = state.attendance;
@@ -135,6 +144,9 @@ class _ViewAttendanceCalendarScreenState
                                       selectedMonth = selectedMonth
                                           .subtract(Duration(days: 30));
                                     });
+                                    context.read<AttendanceBloc>().add(
+                                        LoadIndividualAttendance(
+                                            widget.student, selectedMonth));
                                   },
                                   icon: Icon(Icons.arrow_back_ios),
                                 ),
@@ -152,6 +164,9 @@ class _ViewAttendanceCalendarScreenState
                                       selectedMonth =
                                           selectedMonth.add(Duration(days: 30));
                                     });
+                                    context.read<AttendanceBloc>().add(
+                                        LoadIndividualAttendance(
+                                            widget.student, selectedMonth));
                                   },
                                   icon: Icon(Icons.arrow_forward_ios),
                                 ),

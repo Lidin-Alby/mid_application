@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mid_application/Blocs/Attendance%20School/school_attendance_bloc.dart';
+import 'package:mid_application/Blocs/Attendance%20School/school_attendance_event.dart';
+import 'package:mid_application/Blocs/Attendance%20School/school_attendance_state.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
 import 'package:mid_application/models/class_model.dart';
+import 'package:mid_application/models/school_attendance.dart';
 import 'package:mid_application/widgets/attendance_class_tile.dart';
 import 'package:mid_application/widgets/counts_column_attendance.dart';
 
 class AttendanceDashboard extends StatelessWidget {
-  const AttendanceDashboard({super.key});
+  const AttendanceDashboard({super.key, required this.schoolCode});
+  final String schoolCode;
 
   @override
   Widget build(BuildContext context) {
+    context
+        .read<SchoolAttendanceBloc>()
+        .add(GetSchoolAttendance(schoolCode, DateTime.now()));
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -42,28 +50,55 @@ class AttendanceDashboard extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    CountsColumnAttendance(
-                      count: '10',
-                      icon: Icons.person_outline_rounded,
-                      label: 'Students',
-                    ),
-                    CountsColumnAttendance(
-                      count: '5',
-                      icon: Icons.dangerous,
-                      iconColor: Theme.of(context).colorScheme.error,
-                      label: 'Absent',
-                    ),
-                    CountsColumnAttendance(
-                      count: '4',
-                      icon: Icons.check_box,
-                      iconColor: Colors.green,
-                      label: 'Present',
-                    )
-                  ],
-                ),
+                BlocBuilder<SchoolAttendanceBloc, SchoolAttendanceState>(
+                    builder: (context, state) {
+                  if (state is SchoolAttendanceLoadError) {
+                    return Row(
+                      children: [
+                        Text(state.error),
+                      ],
+                    );
+                  }
+                  if (state is SchoolAttendanceLoaded) {
+                    SchoolAttendance schoolAttendance = state.schoolAttendance;
+                    if (schoolAttendance.totalCount == 0) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Not taken yet'),
+                        ],
+                      );
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CountsColumnAttendance(
+                          count: schoolAttendance.totalCount.toString(),
+                          icon: Icons.person_outline_rounded,
+                          label: 'Students',
+                        ),
+                        CountsColumnAttendance(
+                          count: (schoolAttendance.absentCount +
+                                  schoolAttendance.leaveCount)
+                              .toString(),
+                          icon: Icons.dangerous,
+                          iconColor: Theme.of(context).colorScheme.error,
+                          label: 'Absent',
+                        ),
+                        CountsColumnAttendance(
+                          count: (schoolAttendance.presentCount +
+                                  schoolAttendance.halfCount)
+                              .toString(),
+                          icon: Icons.check_box,
+                          iconColor: Colors.green,
+                          label: 'Present',
+                        )
+                      ],
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                }),
                 SizedBox(
                   height: 40,
                 ),

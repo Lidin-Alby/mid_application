@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mid_application/Blocs/Attendance%20Report/attendance_report_bloc.dart';
+import 'package:mid_application/Blocs/Attendance%20School/school_attendance_bloc.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 
@@ -69,6 +71,12 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => FormSettingsBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SchoolAttendanceBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AttendanceReportBloc(),
         ),
         BlocProvider(
           create: (context) => ProfilePicBloc(

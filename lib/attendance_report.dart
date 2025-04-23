@@ -61,72 +61,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
   // }
 
   downloadReport() async {
-    int noOfDays = DateUtils.getDaysInMonth(selectedYear!, selectedMonth! + 1);
-    var url = Uri.parse('$ipv4/midAttendanceReport');
-    var res = await http.post(url, body: {
-      'schoolCode': widget.schoolCode,
-      'classTitle': widget.classTitle,
-      'date': '${selectedMonth! + 1}-$selectedYear'
-    });
-    print(res.body);
-
-    List students = jsonDecode(res.body);
-    final font = await rootBundle.load("assets/fonts/OpenSans.ttf");
-    var myFont = pw.Font.ttf(font);
-
-    final pdf = pw.Document();
-    pdf.addPage(
-      pw.Page(
-          pageFormat: PdfPageFormat.a3,
-          margin: pw.EdgeInsets.all(5),
-          build: (context) => pw.Column(
-                children: [
-                  pw.Text('School Code: ${widget.schoolCode}'),
-                  pw.Text('class: ${widget.classTitle}'),
-                  pw.Text('Month: $selectedMonth-$selectedYear'),
-                  pw.SizedBox(height: 20),
-                  pw.Table(border: pw.TableBorder.all(), children: [
-                    pw.TableRow(
-                      children: [
-                        pw.Padding(
-                          padding: pw.EdgeInsets.only(left: 1),
-                          child: pw.Text('Name'),
-                        ),
-                        for (int i = 1; i <= noOfDays; i++)
-                          pw.Padding(
-                              padding: pw.EdgeInsets.only(left: 1),
-                              child: pw.Text(i.toString())),
-                        pw.Text('Total')
-                      ],
-                    ),
-                    for (Map student in students)
-                      pw.TableRow(children: [
-                        pw.Padding(
-                          padding: pw.EdgeInsets.only(left: 1),
-                          child: pw.Text(student['fullName']),
-                        ),
-                        for (int i = 1; i <= noOfDays; i++) setData(i, student),
-                        pw.Center(
-                            child: pw.Text(student['attendance']
-                                .values
-                                .where((element) => element != 'absent')
-                                .length
-                                .toString()))
-                      ])
-                  ]),
-                ],
-              )),
-    );
-    final output = await getTemporaryDirectory();
-    final file = File("${output.path}/example.pdf");
-
-    var a = await file.writeAsBytes(await pdf.save());
-    FileSaver().saveAs(
-        name:
-            "${widget.schoolCode}_${widget.classTitle}_${selectedMonth}_$selectedYear",
-        ext: "pdf",
-        mimeType: MimeType.pdf,
-        file: a);
+    
   }
 
   @override

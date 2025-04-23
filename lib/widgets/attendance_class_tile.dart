@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mid_application/Screens/download_attendance_report_screen.dart';
 import 'package:mid_application/Screens/manual_attendance_screen.dart';
 import 'package:mid_application/Screens/qr_attendance_screen.dart';
 import 'package:mid_application/Screens/view_attendance_screen.dart';
@@ -166,6 +167,13 @@ class AttendanceClassTile extends StatelessWidget {
                   ),
                 ),
                 PopupMenuItem(
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => DownloadAttendanceReportScreen(
+                      schoolCode: schoolCode,
+                      classTitle: classTitle,
+                    ),
+                  ),
                   child: MyPopupMenuButton(
                     label: 'Download Report',
                     icon: Icons.download_outlined,
