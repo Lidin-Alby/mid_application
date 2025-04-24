@@ -18,6 +18,7 @@ import 'package:mid_application/models/form_student.dart';
 import 'package:mid_application/models/student.dart';
 import 'package:mid_application/widgets/address_textfield.dart';
 import 'package:mid_application/widgets/gender_radio.dart';
+import 'package:mid_application/widgets/multiple_entry_widget.dart';
 import 'package:mid_application/widgets/my_alert_dialog.dart';
 import 'package:mid_application/widgets/my_date_picker.dart';
 import 'package:mid_application/widgets/my_dropdown_button.dart';
@@ -93,6 +94,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   bool check = false;
   String? printStatus;
   bool sendToPrint = false;
+  bool isExpanded = false;
 //  late DateTime modified;
 
   double spacing = 12;
@@ -327,512 +329,576 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SafeArea(
-              child: BlocBuilder<FormSettingsBloc, FormSettingsState>(
-                  builder: (context, formState) {
-                if (formState is FormSettingsLoaded) {
-                  FormStudent studentFormMid = formState.formStudent;
-                  return BlocConsumer<StudentBloc, StudentState>(
-                    listener: (context, saveState) {
-                      if (saveState is StudentDeleted) {
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Deleted Successfully'),
+              child: Column(
+                children: [
+                  if (widget.admNo == null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 15,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              isExpanded = !isExpanded;
+                            });
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Multiple Entries',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 12),
+                              ),
+                              Icon(
+                                isExpanded
+                                    ? Icons.keyboard_arrow_up
+                                    : Icons.keyboard_arrow_down,
+                                size: 17,
+                              )
+                            ],
                           ),
-                        );
-                      }
-                      if (saveState is StudentDeleteError) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(saveState.error),
-                          ),
-                        );
-                      }
-                      if (saveState is StudentSaved) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Saved Successfully'),
-                          ),
-                        );
-                        if (sendToPrint) {
-                          Navigator.pop(context);
-                          context
-                              .read<SchoolDetailsBloc>()
-                              .add(GetSchoolDetails(widget.schoolCode));
-                        }
-                        if (widget.admNo != null) {
-                          setState(() {
-                            isEdit = false;
-                          });
-                        }
-                        clearFields();
-                        context
-                            .read<ClassBloc>()
-                            .add(LoadClasses(widget.schoolCode));
-                      } else if (saveState is StudentSaveError) {
-                        if (saveState.error != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(saveState.error!),
-                            ),
-                          );
-                        }
-                      }
-                    },
-                    builder: (context, saveState) => BlocConsumer<
-                            StudentDetailsBloc, StudentDetailsState>(
-                        listener: (context, state) {},
-                        builder: (context, state) {
-                          Student student = Student(
-                              admNo: '',
-                              schoolCode: widget.schoolCode,
-                              fullName: '');
-                          if (state is StudentDetailsLoading) {
-                            return SizedBox(
-                              height: MediaQuery.of(context).size.height - 60,
-                              child: Center(
-                                child: CircularProgressIndicator(),
+                        ),
+                        Divider(
+                          height: 6,
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        if (isExpanded) MultipleEntryWidget(),
+                        Text(
+                          'Single Student',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                        Divider(
+                          height: 7,
+                          thickness: 1,
+                          color: Colors.grey,
+                        ),
+                      ],
+                    ),
+                  BlocBuilder<FormSettingsBloc, FormSettingsState>(
+                      builder: (context, formState) {
+                    if (formState is FormSettingsLoaded) {
+                      FormStudent studentFormMid = formState.formStudent;
+                      return BlocConsumer<StudentBloc, StudentState>(
+                        listener: (context, saveState) {
+                          if (saveState is StudentDeleted) {
+                            Navigator.pop(context);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Deleted Successfully'),
                               ),
                             );
                           }
-                          if (state is StudentDetailsLoaded &&
-                              widget.admNo != null) {
-                            student = state.student;
-                            if (!isEdit) {
-                              assignValues(student);
+                          if (saveState is StudentDeleteError) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(saveState.error),
+                              ),
+                            );
+                          }
+                          if (saveState is StudentSaved) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Saved Successfully'),
+                              ),
+                            );
+                            if (sendToPrint) {
+                              Navigator.pop(context);
+                              context
+                                  .read<SchoolDetailsBloc>()
+                                  .add(GetSchoolDetails(widget.schoolCode));
+                            }
+                            if (widget.admNo != null) {
+                              setState(() {
+                                isEdit = false;
+                              });
+                            }
+                            clearFields();
+                            context
+                                .read<ClassBloc>()
+                                .add(LoadClasses(widget.schoolCode));
+                          } else if (saveState is StudentSaveError) {
+                            if (saveState.error != null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(saveState.error!),
+                                ),
+                              );
                             }
                           }
-
-                          return Column(
-                            spacing: 10,
-                            children: [
-                              SizedBox(
-                                height: 5,
-                              ),
-                              if (widget.admNo != null)
-                                ProfilePicWithEdit(
-                                  userType: 'student',
-                                  userId: student.admNo,
-                                  // imageUrl:
-                                  //     '$ipv4/getPic/${widget.schoolCode}/$profilePic',
+                        },
+                        builder: (context, saveState) => BlocConsumer<
+                                StudentDetailsBloc, StudentDetailsState>(
+                            listener: (context, state) {},
+                            builder: (context, state) {
+                              Student student = Student(
+                                  admNo: '',
                                   schoolCode: widget.schoolCode,
-                                  fullName: student.fullName,
-                                  oldProfilePic: profilePic,
-                                ),
-                              if (widget.admNo == null)
-                                BlocBuilder<ClassBloc, ClassState>(
-                                  builder: (context, state) => Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text.rich(
-                                      TextSpan(
-                                        text: 'Last : ',
-                                        children: [
-                                          TextSpan(
-                                            text: state is ClassLoaded
-                                                ? state.lastNo
-                                                : 'error',
-                                            style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .error,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
+                                  fullName: '');
+                              if (state is StudentDetailsLoading) {
+                                return SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height - 60,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
                                   ),
-                                ),
-                              SizedBox(
-                                height: 3,
-                              ),
-                              MyTextfield(
-                                label: 'Admission No.',
-                                controller: admNo,
-                                error: saveState is StudentSaveError
-                                    ? saveState.admNoError
-                                    : null,
-                              ),
-                              MyTextfield(
-                                  label: 'Full Name', controller: fullName),
-                              MyDropdownButton(
-                                value: classTitle,
-                                label: 'Class',
-                                onChanged: (value) {
-                                  setState(() {
-                                    classTitle = value;
-                                  });
-                                },
-                                items: classList
-                                    .map(
-                                      (e) => DropdownMenuItem(
-                                          value: e.classTitle,
-                                          child: Text(e.classTitle)),
-                                    )
-                                    .toList(),
-                              ),
-                              if (studentFormMid.gender && studentFormMid.dob)
-                                Row(
-                                  spacing: spacing,
-                                  children: [
-                                    if (studentFormMid.gender)
-                                      Expanded(
-                                        child: GenderRadio(
-                                          gender: gender,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              gender = value;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    if (studentFormMid.dob)
-                                      Expanded(
-                                        child: MyDatePicker(
-                                          label: 'DOB',
-                                          onSelected: (value) {
-                                            setState(() {
-                                              dob = value;
-                                            });
-                                          },
-                                          value: dob,
-                                        ),
-                                      )
-                                  ],
-                                ),
-                              if (studentFormMid.bloodGroup &&
-                                  studentFormMid.religion)
-                                Row(
-                                  spacing: spacing,
-                                  children: [
-                                    if (studentFormMid.bloodGroup)
-                                      Expanded(
-                                        child: MyDropdownButton(
-                                          value: bloodGroup,
-                                          label: 'Blood Group',
-                                          onChanged: (value) {
-                                            setState(() {
-                                              bloodGroup = value;
-                                            });
-                                          },
-                                          items: bloodGroupList
-                                              .map(
-                                                (e) => DropdownMenuItem(
-                                                  child: Text(e),
-                                                  value: e,
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      ),
-                                    if (studentFormMid.religion)
-                                      Expanded(
-                                        child: MyDropdownButton(
-                                          value: religion,
-                                          label: 'Religion',
-                                          onChanged: (value) {
-                                            setState(() {
-                                              religion = value;
-                                            });
-                                          },
-                                          items: religionList
-                                              .map(
-                                                (e) => DropdownMenuItem(
-                                                  child: Text(e),
-                                                  value: e,
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              if (studentFormMid.caste &&
-                                  studentFormMid.subCaste)
-                                Row(
-                                  spacing: spacing,
-                                  children: [
-                                    if (studentFormMid.caste)
-                                      Expanded(
-                                        child: MyDropdownButton(
-                                          value: caste,
-                                          label: 'Caste',
-                                          onChanged: (value) {
-                                            setState(() {
-                                              caste = value;
-                                            });
-                                          },
-                                          items: casteList
-                                              .map(
-                                                (e) => DropdownMenuItem(
-                                                  child: Text(e),
-                                                  value: e,
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      ),
-                                    if (studentFormMid.subCaste)
-                                      Expanded(
-                                        child: MyTextfield(
-                                          label: 'Sub-Caste',
-                                          controller: subCaste,
-                                        ),
-                                      )
-                                  ],
-                                ),
-                              if (studentFormMid.email)
-                                MyTextfield(
-                                  label: 'Email',
-                                  controller: email,
-                                ),
-                              if (studentFormMid.aadhaarNo)
-                                MyTextfield(
-                                    label: 'Aadhaar No.',
-                                    controller: aadhaarNo),
-                              if (studentFormMid.address)
-                                AddressTextfield(
-                                  label: 'Address',
-                                  controller: address,
-                                ),
-                              if (studentFormMid.rfid &&
-                                  studentFormMid.transportMode)
-                                Row(
-                                  spacing: spacing,
-                                  children: [
-                                    if (studentFormMid.rfid)
-                                      Expanded(
-                                        child: MyTextfield(
-                                          label: 'RFID',
-                                          controller: rfid,
-                                        ),
-                                      ),
-                                    if (studentFormMid.transportMode)
-                                      Expanded(
-                                        child: MyDropdownButton(
-                                          value: transportMode,
-                                          label: 'Transport Mode',
-                                          onChanged: (value) {
-                                            setState(() {
-                                              transportMode = value;
-                                            });
-                                          },
-                                          items: transportList
-                                              .map(
-                                                (e) => DropdownMenuItem(
-                                                  child: Text(e),
-                                                  value: e,
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              if (studentFormMid.session &&
-                                  studentFormMid.boardingType)
-                                Row(
-                                  spacing: spacing,
-                                  children: [
-                                    if (studentFormMid.session)
-                                      Expanded(
-                                        child: MyTextfield(
-                                          label: 'Session',
-                                          controller: session,
-                                        ),
-                                      ),
-                                    if (studentFormMid.boardingType)
-                                      Expanded(
-                                        child: MyDropdownButton(
-                                          value: boardingType,
-                                          label: 'Boarding Type',
-                                          onChanged: (value) {
-                                            setState(() {
-                                              boardingType = value;
-                                            });
-                                          },
-                                          items: boardingTypeList
-                                              .map(
-                                                (e) => DropdownMenuItem(
-                                                  child: Text(e),
-                                                  value: e,
-                                                ),
-                                              )
-                                              .toList(),
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              if (studentFormMid.schoolHouse &&
-                                  studentFormMid.vehicleNo)
-                                Row(
-                                  spacing: spacing,
-                                  children: [
-                                    if (studentFormMid.schoolHouse)
-                                      Expanded(
-                                        child: MyTextfield(
-                                          label: 'School House',
-                                          controller: schoolHouse,
-                                        ),
-                                      ),
-                                    if (studentFormMid.vehicleNo)
-                                      Expanded(
-                                        child: MyTextfield(
-                                          label: 'Vehicle No.',
-                                          controller: vehicleNo,
-                                        ),
-                                      )
-                                  ],
-                                ),
-                              if (studentFormMid.fatherName &&
-                                  studentFormMid.motherName)
-                                Row(
-                                  spacing: spacing,
-                                  children: [
-                                    if (studentFormMid.fatherName)
-                                      Expanded(
-                                        child: MyTextfield(
-                                          label: 'Father Name',
-                                          controller: fatherName,
-                                        ),
-                                      ),
-                                    if (studentFormMid.motherName)
-                                      Expanded(
-                                        child: MyTextfield(
-                                          label: 'Mother Name',
-                                          controller: motherName,
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              Row(
-                                spacing: spacing,
+                                );
+                              }
+                              if (state is StudentDetailsLoaded &&
+                                  widget.admNo != null) {
+                                student = state.student;
+                                if (!isEdit) {
+                                  assignValues(student);
+                                }
+                              }
+
+                              return Column(
+                                spacing: 10,
                                 children: [
-                                  Expanded(
-                                    child: MyTextfield(
-                                      label: 'Father Phone',
-                                      controller: fatherMobNo,
-                                      error: saveState is StudentSaveError
-                                          ? saveState.fatherMobError
-                                          : null,
-                                    ),
+                                  SizedBox(
+                                    height: 5,
                                   ),
-                                  if (studentFormMid.motherMobNo)
-                                    Expanded(
-                                      child: MyTextfield(
-                                        label: 'Mother Phone',
-                                        controller: motherMobNo,
-                                      ),
-                                    )
-                                ],
-                              ),
-                              if (studentFormMid.fatherWhatsApp &&
-                                  studentFormMid.motherWhatsApp)
-                                Row(
-                                  spacing: spacing,
-                                  children: [
-                                    if (studentFormMid.fatherWhatsApp)
-                                      Expanded(
-                                        child: MyTextfield(
-                                          label: 'Father WhatsApp',
-                                          controller: fatherWhatsApp,
-                                        ),
-                                      ),
-                                    if (studentFormMid.motherWhatsApp)
-                                      Expanded(
-                                        child: MyTextfield(
-                                          label: 'Mother WhatsApp',
-                                          controller: motherWhatsApp,
-                                        ),
-                                      )
-                                  ],
-                                ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              if (!isEdit)
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: MyFilledButton(
-                                        color: check
-                                            ? Colors.amber
-                                            : const Color.fromARGB(
-                                                255, 54, 166, 31),
-                                        label: check ? 'Uncheck' : 'Check',
-                                        onPressed: () => showDialog(
-                                          context: context,
-                                          builder: (context) => MyAlertDialog(
-                                            title:
-                                                'The data will be marked as checked. You can change it later.',
-                                            subtitle:
-                                                'Press OK to contine, Cancel to stay on current page.',
-                                            icon: Icon(
-                                              Icons.warning_rounded,
-                                              color: Colors.amber,
-                                              size: 35,
-                                            ),
-                                            cancel: () =>
-                                                Navigator.pop(context),
-                                            confirm: () {
-                                              check = !check;
-                                              Navigator.pop(context);
-                                              context.read<StudentBloc>().add(
-                                                    SaveStudentPressed(
-                                                      student:
-                                                          newStudentValues(),
-                                                      checkAdmNo:
-                                                          widget.admNo == null,
-                                                    ),
-                                                  );
-                                            },
+                                  if (widget.admNo != null)
+                                    ProfilePicWithEdit(
+                                      userType: 'student',
+                                      userId: student.admNo,
+                                      // imageUrl:
+                                      //     '$ipv4/getPic/${widget.schoolCode}/$profilePic',
+                                      schoolCode: widget.schoolCode,
+                                      fullName: student.fullName,
+                                      oldProfilePic: profilePic,
+                                    ),
+                                  if (widget.admNo == null)
+                                    BlocBuilder<ClassBloc, ClassState>(
+                                      builder: (context, state) => Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text.rich(
+                                          TextSpan(
+                                            text: 'Last : ',
+                                            children: [
+                                              TextSpan(
+                                                text: state is ClassLoaded
+                                                    ? state.lastNo
+                                                    : 'error',
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .error,
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              saveState is StudentSaveLoading
-                                  ? CircularProgressIndicator()
-                                  : isEdit
-                                      ? Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            MyFilledButton(
-                                              label: 'Cancel',
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                            ),
-                                            MyFilledButton(
-                                              label: 'Save',
-                                              onPressed: () {
-                                                BlocProvider.of<StudentBloc>(
-                                                        context)
-                                                    .add(
-                                                  SaveStudentPressed(
-                                                    student: newStudentValues(),
-                                                    checkAdmNo:
-                                                        widget.admNo == null,
-                                                  ),
-                                                );
+                                  SizedBox(
+                                    height: 3,
+                                  ),
+                                  MyTextfield(
+                                    label: 'Admission No.',
+                                    controller: admNo,
+                                    error: saveState is StudentSaveError
+                                        ? saveState.admNoError
+                                        : null,
+                                  ),
+                                  MyTextfield(
+                                      label: 'Full Name', controller: fullName),
+                                  MyDropdownButton(
+                                    value: classTitle,
+                                    label: 'Class',
+                                    onChanged: (value) {
+                                      setState(() {
+                                        classTitle = value;
+                                      });
+                                    },
+                                    items: classList
+                                        .map(
+                                          (e) => DropdownMenuItem(
+                                              value: e.classTitle,
+                                              child: Text(e.classTitle)),
+                                        )
+                                        .toList(),
+                                  ),
+                                  if (studentFormMid.gender &&
+                                      studentFormMid.dob)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        if (studentFormMid.gender)
+                                          Expanded(
+                                            child: GenderRadio(
+                                              gender: gender,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  gender = value;
+                                                });
                                               },
                                             ),
-                                          ],
+                                          ),
+                                        if (studentFormMid.dob)
+                                          Expanded(
+                                            child: MyDatePicker(
+                                              label: 'DOB',
+                                              onSelected: (value) {
+                                                setState(() {
+                                                  dob = value;
+                                                });
+                                              },
+                                              value: dob,
+                                            ),
+                                          )
+                                      ],
+                                    ),
+                                  if (studentFormMid.bloodGroup &&
+                                      studentFormMid.religion)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        if (studentFormMid.bloodGroup)
+                                          Expanded(
+                                            child: MyDropdownButton(
+                                              value: bloodGroup,
+                                              label: 'Blood Group',
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  bloodGroup = value;
+                                                });
+                                              },
+                                              items: bloodGroupList
+                                                  .map(
+                                                    (e) => DropdownMenuItem(
+                                                      child: Text(e),
+                                                      value: e,
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                          ),
+                                        if (studentFormMid.religion)
+                                          Expanded(
+                                            child: MyDropdownButton(
+                                              value: religion,
+                                              label: 'Religion',
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  religion = value;
+                                                });
+                                              },
+                                              items: religionList
+                                                  .map(
+                                                    (e) => DropdownMenuItem(
+                                                      child: Text(e),
+                                                      value: e,
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  if (studentFormMid.caste &&
+                                      studentFormMid.subCaste)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        if (studentFormMid.caste)
+                                          Expanded(
+                                            child: MyDropdownButton(
+                                              value: caste,
+                                              label: 'Caste',
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  caste = value;
+                                                });
+                                              },
+                                              items: casteList
+                                                  .map(
+                                                    (e) => DropdownMenuItem(
+                                                      child: Text(e),
+                                                      value: e,
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                          ),
+                                        if (studentFormMid.subCaste)
+                                          Expanded(
+                                            child: MyTextfield(
+                                              label: 'Sub-Caste',
+                                              controller: subCaste,
+                                            ),
+                                          )
+                                      ],
+                                    ),
+                                  if (studentFormMid.email)
+                                    MyTextfield(
+                                      label: 'Email',
+                                      controller: email,
+                                    ),
+                                  if (studentFormMid.aadhaarNo)
+                                    MyTextfield(
+                                        label: 'Aadhaar No.',
+                                        controller: aadhaarNo),
+                                  if (studentFormMid.address)
+                                    AddressTextfield(
+                                      label: 'Address',
+                                      controller: address,
+                                    ),
+                                  if (studentFormMid.rfid &&
+                                      studentFormMid.transportMode)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        if (studentFormMid.rfid)
+                                          Expanded(
+                                            child: MyTextfield(
+                                              label: 'RFID',
+                                              controller: rfid,
+                                            ),
+                                          ),
+                                        if (studentFormMid.transportMode)
+                                          Expanded(
+                                            child: MyDropdownButton(
+                                              value: transportMode,
+                                              label: 'Transport Mode',
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  transportMode = value;
+                                                });
+                                              },
+                                              items: transportList
+                                                  .map(
+                                                    (e) => DropdownMenuItem(
+                                                      child: Text(e),
+                                                      value: e,
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  if (studentFormMid.session &&
+                                      studentFormMid.boardingType)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        if (studentFormMid.session)
+                                          Expanded(
+                                            child: MyTextfield(
+                                              label: 'Session',
+                                              controller: session,
+                                            ),
+                                          ),
+                                        if (studentFormMid.boardingType)
+                                          Expanded(
+                                            child: MyDropdownButton(
+                                              value: boardingType,
+                                              label: 'Boarding Type',
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  boardingType = value;
+                                                });
+                                              },
+                                              items: boardingTypeList
+                                                  .map(
+                                                    (e) => DropdownMenuItem(
+                                                      child: Text(e),
+                                                      value: e,
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  if (studentFormMid.schoolHouse &&
+                                      studentFormMid.vehicleNo)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        if (studentFormMid.schoolHouse)
+                                          Expanded(
+                                            child: MyTextfield(
+                                              label: 'School House',
+                                              controller: schoolHouse,
+                                            ),
+                                          ),
+                                        if (studentFormMid.vehicleNo)
+                                          Expanded(
+                                            child: MyTextfield(
+                                              label: 'Vehicle No.',
+                                              controller: vehicleNo,
+                                            ),
+                                          )
+                                      ],
+                                    ),
+                                  if (studentFormMid.fatherName &&
+                                      studentFormMid.motherName)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        if (studentFormMid.fatherName)
+                                          Expanded(
+                                            child: MyTextfield(
+                                              label: 'Father Name',
+                                              controller: fatherName,
+                                            ),
+                                          ),
+                                        if (studentFormMid.motherName)
+                                          Expanded(
+                                            child: MyTextfield(
+                                              label: 'Mother Name',
+                                              controller: motherName,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  Row(
+                                    spacing: spacing,
+                                    children: [
+                                      Expanded(
+                                        child: MyTextfield(
+                                          label: 'Father Phone',
+                                          controller: fatherMobNo,
+                                          error: saveState is StudentSaveError
+                                              ? saveState.fatherMobError
+                                              : null,
+                                        ),
+                                      ),
+                                      if (studentFormMid.motherMobNo)
+                                        Expanded(
+                                          child: MyTextfield(
+                                            label: 'Mother Phone',
+                                            controller: motherMobNo,
+                                          ),
                                         )
-                                      : SizedBox(),
-                              SizedBox(
-                                height: 30,
-                              )
-                            ],
-                          );
-                        }),
-                  );
-                } else if (formState is FormSettingsLoadError) {
-                  return Text(formState.error);
-                } else {
-                  return CircularProgressIndicator();
-                }
-              }),
+                                    ],
+                                  ),
+                                  if (studentFormMid.fatherWhatsApp &&
+                                      studentFormMid.motherWhatsApp)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        if (studentFormMid.fatherWhatsApp)
+                                          Expanded(
+                                            child: MyTextfield(
+                                              label: 'Father WhatsApp',
+                                              controller: fatherWhatsApp,
+                                            ),
+                                          ),
+                                        if (studentFormMid.motherWhatsApp)
+                                          Expanded(
+                                            child: MyTextfield(
+                                              label: 'Mother WhatsApp',
+                                              controller: motherWhatsApp,
+                                            ),
+                                          )
+                                      ],
+                                    ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  if (!isEdit)
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: MyFilledButton(
+                                            color: check
+                                                ? Colors.amber
+                                                : const Color.fromARGB(
+                                                    255, 54, 166, 31),
+                                            label: check ? 'Uncheck' : 'Check',
+                                            onPressed: () => showDialog(
+                                              context: context,
+                                              builder: (context) =>
+                                                  MyAlertDialog(
+                                                title:
+                                                    'The data will be marked as checked. You can change it later.',
+                                                subtitle:
+                                                    'Press OK to contine, Cancel to stay on current page.',
+                                                icon: Icon(
+                                                  Icons.warning_rounded,
+                                                  color: Colors.amber,
+                                                  size: 35,
+                                                ),
+                                                cancel: () =>
+                                                    Navigator.pop(context),
+                                                confirm: () {
+                                                  check = !check;
+                                                  Navigator.pop(context);
+                                                  context
+                                                      .read<StudentBloc>()
+                                                      .add(
+                                                        SaveStudentPressed(
+                                                          student:
+                                                              newStudentValues(),
+                                                          checkAdmNo:
+                                                              widget.admNo ==
+                                                                  null,
+                                                        ),
+                                                      );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  saveState is StudentSaveLoading
+                                      ? CircularProgressIndicator()
+                                      : isEdit
+                                          ? Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                MyFilledButton(
+                                                  label: 'Cancel',
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                ),
+                                                MyFilledButton(
+                                                  label: 'Save',
+                                                  onPressed: () {
+                                                    BlocProvider.of<
+                                                                StudentBloc>(
+                                                            context)
+                                                        .add(
+                                                      SaveStudentPressed(
+                                                        student:
+                                                            newStudentValues(),
+                                                        checkAdmNo:
+                                                            widget.admNo ==
+                                                                null,
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            )
+                                          : SizedBox(),
+                                  SizedBox(
+                                    height: 30,
+                                  )
+                                ],
+                              );
+                            }),
+                      );
+                    } else if (formState is FormSettingsLoadError) {
+                      return Text(formState.error);
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  }),
+                ],
+              ),
             ),
           ),
         ),

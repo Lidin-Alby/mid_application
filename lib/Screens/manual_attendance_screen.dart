@@ -13,6 +13,8 @@ import 'package:mid_application/widgets/attendance_notation.dart';
 import 'package:mid_application/widgets/counts_column_attendance.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
 
+import 'package:flutter_background_messenger/flutter_background_messenger.dart';
+
 class ManualAttendanceScreen extends StatefulWidget {
   const ManualAttendanceScreen(
       {super.key, required this.classTitle, required this.schoolCode});
@@ -405,8 +407,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                       height: 60,
                                       padding: EdgeInsets.only(left: 8, top: 2),
                                       color: Colors.white,
-                                      child: 
-                                      Column(
+                                      child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
@@ -509,12 +510,50 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                 onPressed: () => showDialog(
                                   context: context,
                                   builder: (context) => AttendanceCallSmsDialog(
+                                    schoolCode: widget.schoolCode,
                                     onConfirm: (
                                       smsAbsent,
                                       smsPresent,
                                       callAbsent,
                                       callPresent,
+                                      smsText,
                                     ) {
+                                      final messenger =
+                                          FlutterBackgroundMessenger();
+                                      if (smsPresent) {
+                                        for (Attendance student
+                                            in attendances) {
+                                          if (student.status == 'present') {
+                                            String message = smsText
+                                                .replaceAll("{studentName}",
+                                                    student.fullName)
+                                                .replaceAll("{studentStatus}",
+                                                    student.status!);
+                                            messenger.sendSMS(
+                                              message: message,
+                                              phoneNumber: student.fatherMobNo!,
+                                            );
+                                          }
+                                        }
+                                      }
+                                      if (smsAbsent) {
+                                        for (Attendance student
+                                            in attendances) {
+                                          if (student.status == 'absent' ||
+                                              student.status == 'leave') {
+                                            String message = smsText
+                                                .replaceAll("{studentName}",
+                                                    student.fullName)
+                                                .replaceAll("{studentStatus}",
+                                                    student.status!);
+                                            messenger.sendSMS(
+                                              message: message,
+                                              phoneNumber: student.fatherMobNo!,
+                                            );
+                                          }
+                                        }
+                                      }
+
                                       context.read<AttendanceBloc>().add(
                                           SaveClassAttendance(attendances));
                                     },

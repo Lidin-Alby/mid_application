@@ -14,6 +14,7 @@ import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_bloc.dart';
 import 'package:mid_application/Blocs/School%20List/school_bloc.dart';
 import 'package:mid_application/Blocs/School%20List/school_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
+import 'package:mid_application/Blocs/Sms%20and%20call%20api/sms_call_api_bloc.dart';
 import 'package:mid_application/Blocs/Staff%20Details/staff_details_bloc.dart';
 import 'package:mid_application/Blocs/Staff/staff_bloc.dart';
 import 'package:mid_application/Blocs/Student%20Details/student_details_bloc.dart';
@@ -77,6 +78,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AttendanceReportBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SmsCallApiBloc(),
         ),
         BlocProvider(
           create: (context) => ProfilePicBloc(
