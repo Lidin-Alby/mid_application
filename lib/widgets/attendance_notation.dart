@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AttendanceNotation extends StatelessWidget {
   const AttendanceNotation(
@@ -41,7 +42,7 @@ class AttendanceNotation extends StatelessWidget {
           ),
           child: Text(
             notation,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               color: Colors.white,
               fontWeight: FontWeight.w600,
               fontSize: notationFontSize,
@@ -53,9 +54,9 @@ class AttendanceNotation extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontSize: labelSize,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w500,
           ),
         ),
         SizedBox(

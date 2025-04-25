@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_bloc.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_event.dart';
@@ -110,7 +111,7 @@ class _SchoolDetailsScreenState extends State<SchoolDetailsScreen> {
                     ),
                     Text(
                       'Code : ${widget.school.schoolCode}',
-                      style: TextStyle(color: Colors.grey[600]),
+                      style: GoogleFonts.inter(color: Colors.grey[600]),
                     ),
                     MyTextfield(
                       label: 'School Name',
@@ -188,7 +189,7 @@ class _SchoolDetailsScreenState extends State<SchoolDetailsScreen> {
                           padding: const EdgeInsets.only(top: 30),
                           child: Text(
                             'Signature :',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.w500,
                               color: Colors.grey[800],
                             ),
@@ -222,7 +223,8 @@ class _SchoolDetailsScreenState extends State<SchoolDetailsScreen> {
                                       '$ipv4/getPic/${school.schoolCode}/$sign',
                                   errorWidget: (context, url, error) => Text(
                                     'Signature\nHere',
-                                    style: TextStyle(color: Colors.grey),
+                                    style:
+                                        GoogleFonts.inter(color: Colors.grey),
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -259,7 +261,7 @@ class _SchoolDetailsScreenState extends State<SchoolDetailsScreen> {
                                         children: [
                                           Text(
                                             'Profile Photo',
-                                            style: TextStyle(
+                                            style: GoogleFonts.inter(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
                                             ),

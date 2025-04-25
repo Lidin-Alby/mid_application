@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Attendance%20Report/attendance_report_bloc.dart';
 import 'package:mid_application/Blocs/Attendance%20Report/attendance_report_event.dart';
 import 'package:mid_application/Blocs/Attendance%20Report/attendance_report_state.dart';
@@ -136,7 +137,7 @@ class _DownloadAttendanceReportScreenState
           children: [
             Text(
               'Report',
-              style: TextStyle(
+              style: GoogleFonts.inter(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
@@ -162,7 +163,7 @@ class _DownloadAttendanceReportScreenState
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: DropdownButton(
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                       ),
@@ -178,7 +179,7 @@ class _DownloadAttendanceReportScreenState
                               value: months.indexOf(e).toString(),
                               child: Text(
                                 e,
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                     color: Colors.black, fontSize: 12),
                               ),
                             ),
@@ -207,8 +208,8 @@ class _DownloadAttendanceReportScreenState
                     ),
                     child: DropdownButton(
                       iconSize: 20,
-                      style:
-                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                      style: GoogleFonts.inter(
+                          fontSize: 12, fontWeight: FontWeight.w500),
                       hint: Text('Select Year'),
                       underline: Text(''),
                       isExpanded: true,
@@ -218,7 +219,8 @@ class _DownloadAttendanceReportScreenState
                           value: (2023 + index).toString(),
                           child: Text(
                             (2023 + index).toString(),
-                            style: TextStyle(color: Colors.black, fontSize: 12),
+                            style: GoogleFonts.inter(
+                                color: Colors.black, fontSize: 12),
                           ),
                         ),
                       ),

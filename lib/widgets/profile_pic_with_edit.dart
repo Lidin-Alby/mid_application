@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_bloc.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_event.dart';
@@ -76,7 +77,7 @@ class ProfilePicWithEdit extends StatelessWidget {
                     children: [
                       Text(
                         'Profile Photo',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),

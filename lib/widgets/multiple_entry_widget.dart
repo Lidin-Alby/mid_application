@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Bulk%20student%20upload/bulk_student_upload_bloc.dart';
 import 'package:mid_application/Blocs/Bulk%20student%20upload/bulk_student_upload_event.dart';
 import 'package:mid_application/Blocs/Bulk%20student%20upload/bulk_student_upload_state.dart';
@@ -50,7 +51,7 @@ class _MultipleEntryWidgetState extends State<MultipleEntryWidget> {
                     Icon(Icons.cloud_upload_outlined),
                     Text(
                       '.CSV file',
-                      style: TextStyle(color: Colors.grey),
+                      style: GoogleFonts.inter(color: Colors.grey),
                     )
                   ],
                 ),
@@ -149,7 +150,7 @@ class _MultipleEntryWidgetState extends State<MultipleEntryWidget> {
                       );
                     },
                     style: OutlinedButton.styleFrom(
-                      textStyle: TextStyle(fontSize: 12),
+                      textStyle: GoogleFonts.inter(fontSize: 12),
                       side: BorderSide(
                         color: Theme.of(context).colorScheme.primary,
                       ),
@@ -159,7 +160,7 @@ class _MultipleEntryWidgetState extends State<MultipleEntryWidget> {
                 ),
                 Text(
                   'ⓘ- Sample csv for uploading',
-                  style: TextStyle(fontSize: 8),
+                  style: GoogleFonts.inter(fontSize: 8),
                 ),
                 SizedBox(),
                 SizedBox(

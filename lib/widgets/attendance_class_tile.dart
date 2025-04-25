@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Screens/download_attendance_report_screen.dart';
 import 'package:mid_application/Screens/manual_attendance_screen.dart';
 import 'package:mid_application/Screens/qr_attendance_screen.dart';
@@ -47,7 +48,7 @@ class AttendanceClassTile extends StatelessWidget {
             child: Text(
               classTitle,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: GoogleFonts.inter(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
@@ -72,11 +73,11 @@ class AttendanceClassTile extends StatelessWidget {
                       children: [
                         Text(
                           classTeacher,
-                          style: TextStyle(fontWeight: FontWeight.w600),
+                          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
                         ),
                         Text(
                           'Class Teacher',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               fontSize: 11, fontWeight: FontWeight.w300),
                         )
                       ],
@@ -91,12 +92,12 @@ class AttendanceClassTile extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: 'Students : ',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                             fontSize: 11, fontWeight: FontWeight.w600),
                       ),
                       TextSpan(
                         text: totalStudents.toString(),
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                         ),

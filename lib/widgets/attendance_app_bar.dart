@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AttendanceAppBar extends StatelessWidget implements PreferredSize {
   const AttendanceAppBar(
@@ -24,7 +25,7 @@ class AttendanceAppBar extends StatelessWidget implements PreferredSize {
           child: Text(
             classTitle,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+            style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.bold),
           ),
         ),
       ],

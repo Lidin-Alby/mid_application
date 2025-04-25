@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Sms%20and%20call%20api/sms_call_api_bloc.dart';
 import 'package:mid_application/Blocs/Sms%20and%20call%20api/sms_call_api_event.dart';
 import 'package:mid_application/Blocs/Sms%20and%20call%20api/sms_call_api_state.dart';
@@ -71,7 +72,7 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
               children: [
                 Text(
                   'SMS',
-                  style: TextStyle(
+                  style: GoogleFonts.inter(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
@@ -106,7 +107,7 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
                         width: 58,
                         child: Text(
                           'Absent',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               color: permanentDisable || textDisable
                                   ? Colors.grey
                                   : null),
@@ -142,7 +143,7 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
                       width: 58,
                       child: Text(
                         'Present',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                             color: permanentDisable || textDisable
                                 ? Colors.grey
                                 : null),
@@ -161,14 +162,14 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
                 if (textDisable)
                   Text(
                     ' No sms Text Added. Contact admin.',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                         fontSize: 8,
                         color: Theme.of(context).colorScheme.error),
                   ),
                 if (permanentDisable)
                   Text(
                     'You Permanently denied the permission, enable them in settings.',
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                         fontSize: 10,
                         color: Theme.of(context).colorScheme.error),
                   ),
@@ -177,7 +178,7 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
                 ),
                 Text(
                   'Call',
-                  style: TextStyle(
+                  style: GoogleFonts.inter(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
@@ -209,7 +210,7 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
                         width: 58,
                         child: Text(
                           'Absent',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               color: (smsCallApi.absentCallApi &&
                                       smsCallApi.absentCallAudio.isNotEmpty)
                                   ? null
@@ -223,14 +224,14 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
                     if (!smsCallApi.absentCallApi)
                       Text(
                         ' No admin Permission',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                             fontSize: 8,
                             color: Theme.of(context).colorScheme.error),
                       ),
                     if (smsCallApi.absentCallAudio.isEmpty)
                       Text(
                         ', No audio',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                             fontSize: 8,
                             color: Theme.of(context).colorScheme.error),
                       )
@@ -257,7 +258,7 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
                         width: 58,
                         child: Text(
                           'Present',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               color: (smsCallApi.presentCallApi &&
                                       smsCallApi.presentCallAudio.isNotEmpty)
                                   ? null
@@ -271,7 +272,7 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
                     if (!smsCallApi.presentCallApi)
                       Text(
                         ' No admin Permission',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 8,
                           color: Theme.of(context).colorScheme.error,
                         ),
@@ -279,7 +280,7 @@ class _AttendanceCallSmsDialogState extends State<AttendanceCallSmsDialog> {
                     if (smsCallApi.presentCallAudio.isEmpty)
                       Text(
                         ', No audio',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 8,
                           color: Theme.of(context).colorScheme.error,
                         ),

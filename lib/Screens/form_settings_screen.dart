@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:mid_application/Blocs/Form%20Settings/form__settings_state.dart';
 import 'package:mid_application/Blocs/Form%20Settings/form_settings_bloc.dart';
@@ -138,7 +139,7 @@ class _FormSettingsScreenState extends State<FormSettingsScreen> {
                                     ),
                                     Text(
                                       'Personal Info :',
-                                      style: TextStyle(
+                                      style: GoogleFonts.inter(
                                           fontSize: 15, color: Colors.grey),
                                     ),
                                     SizedBox(
@@ -337,7 +338,7 @@ class _FormSettingsScreenState extends State<FormSettingsScreen> {
                                     ),
                                     Text(
                                       'School Releated :',
-                                      style: TextStyle(
+                                      style: GoogleFonts.inter(
                                           fontSize: 15, color: Colors.grey),
                                     ),
                                     SizedBox(
@@ -433,7 +434,7 @@ class _FormSettingsScreenState extends State<FormSettingsScreen> {
                                     ),
                                     Text(
                                       'More :',
-                                      style: TextStyle(
+                                      style: GoogleFonts.inter(
                                           fontSize: 15, color: Colors.grey),
                                     ),
                                     SizedBox(
@@ -531,7 +532,7 @@ class _FormSettingsScreenState extends State<FormSettingsScreen> {
                                 ),
                                 Text(
                                   'Personal Info :',
-                                  style: TextStyle(
+                                  style: GoogleFonts.inter(
                                       fontSize: 15, color: Colors.grey),
                                 ),
                                 SizedBox(
@@ -758,7 +759,7 @@ class _FormSettingsScreenState extends State<FormSettingsScreen> {
                                 ),
                                 Text(
                                   'Cards :',
-                                  style: TextStyle(
+                                  style: GoogleFonts.inter(
                                       fontSize: 15, color: Colors.grey),
                                 ),
                                 SizedBox(
@@ -881,7 +882,7 @@ class _FormSettingsScreenState extends State<FormSettingsScreen> {
                                 ),
                                 Text(
                                   'More :',
-                                  style: TextStyle(
+                                  style: GoogleFonts.inter(
                                       fontSize: 15, color: Colors.grey),
                                 ),
                                 SizedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Login/login_bloc.dart';
 import 'package:mid_application/Blocs/Login/login_event.dart';
 import 'package:mid_application/Blocs/Login/login_state.dart';
@@ -37,7 +38,7 @@ import 'package:mid_application/widgets/my_textfield.dart';
 //                           padding: const EdgeInsets.only(left: 10),
 //                           child: RichText(
 //                             text: TextSpan(
-//                               style: TextStyle(
+//                               style: GoogleFonts.inter(
 //                                   fontSize: 27,
 //                                   fontWeight: FontWeight.bold,
 //                                   height: 1.5,
@@ -49,7 +50,7 @@ import 'package:mid_application/widgets/my_textfield.dart';
 //                                 ),
 //                                 TextSpan(
 //                                   text: ' !',
-//                                   style: TextStyle(
+//                                   style: GoogleFonts.inter(
 //                                     color:
 //                                         Theme.of(context).colorScheme.primary,
 //                                     letterSpacing: 0.7,
@@ -86,7 +87,7 @@ import 'package:mid_application/widgets/my_textfield.dart';
 //                         padding: const EdgeInsets.only(top: 5),
 //                         child: Text(
 //                           loginState.error!,
-//                           style: TextStyle(
+//                           style: GoogleFonts.inter(
 //                             color: Theme.of(context).colorScheme.error,
 //                           ),
 //                         ),
@@ -125,11 +126,18 @@ import 'package:mid_application/widgets/my_textfield.dart';
 //   }
 // }
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController userId = TextEditingController();
+
   final TextEditingController schoolCode = TextEditingController();
+
   final TextEditingController password = TextEditingController();
 
   @override
@@ -158,7 +166,7 @@ class LoginScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 10),
                             child: RichText(
                               text: TextSpan(
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                     fontSize: 27,
                                     fontWeight: FontWeight.bold,
                                     height: 1.5,
@@ -170,7 +178,7 @@ class LoginScreen extends StatelessWidget {
                                   ),
                                   TextSpan(
                                     text: ' !',
-                                    style: TextStyle(
+                                    style: GoogleFonts.inter(
                                       color:
                                           Theme.of(context).colorScheme.primary,
                                       letterSpacing: 0.7,
@@ -207,7 +215,7 @@ class LoginScreen extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 5),
                           child: Text(
                             state.error,
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               color: Theme.of(context).colorScheme.error,
                             ),
                           ),

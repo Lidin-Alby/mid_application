@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_event.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
@@ -349,7 +350,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                             children: [
                               Text(
                                 'Multiple Entries',
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                     fontWeight: FontWeight.bold, fontSize: 12),
                               ),
                               Icon(
@@ -375,7 +376,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                           ),
                         Text(
                           'Single Student',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               fontWeight: FontWeight.bold, fontSize: 12),
                         ),
                         Divider(
@@ -490,7 +491,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                                 text: state is ClassLoaded
                                                     ? state.lastNo
                                                     : 'error',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .error,

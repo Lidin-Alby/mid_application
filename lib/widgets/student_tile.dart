@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Screens/student_details_screen.dart';
 import 'package:mid_application/models/student.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
@@ -51,11 +52,12 @@ class StudentTile extends StatelessWidget {
                         children: [
                           Text(
                             student.fullName.toString(),
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                            style:
+                                GoogleFonts.inter(fontWeight: FontWeight.w600),
                           ),
                           Text(
                             'Student',
-                            style: TextStyle(
+                            style: GoogleFonts.inter(
                               fontWeight: FontWeight.w600,
                               fontSize: 10,
                               color: Colors.grey,
@@ -74,7 +76,7 @@ class StudentTile extends StatelessWidget {
                         width: 37,
                         child: Text(
                           'Father',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                           ),
@@ -84,7 +86,7 @@ class StudentTile extends StatelessWidget {
                         width: 15,
                         child: Text(
                           ':',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                           ),
@@ -92,7 +94,7 @@ class StudentTile extends StatelessWidget {
                       ),
                       Text(
                         student.fatherName.toString(),
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
@@ -105,7 +107,7 @@ class StudentTile extends StatelessWidget {
                         width: 37,
                         child: Text(
                           'Mother',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                           ),
@@ -115,7 +117,7 @@ class StudentTile extends StatelessWidget {
                         width: 15,
                         child: Text(
                           ':',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                           ),
@@ -123,7 +125,7 @@ class StudentTile extends StatelessWidget {
                       ),
                       Text(
                         student.motherName.toString(),
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
@@ -136,7 +138,7 @@ class StudentTile extends StatelessWidget {
                         width: 37,
                         child: Text(
                           'Mobile',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                           ),
@@ -146,7 +148,7 @@ class StudentTile extends StatelessWidget {
                         width: 15,
                         child: Text(
                           ':',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                           ),
@@ -154,7 +156,7 @@ class StudentTile extends StatelessWidget {
                       ),
                       Text(
                         student.fatherMobNo.toString(),
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
@@ -164,14 +166,14 @@ class StudentTile extends StatelessWidget {
                       ),
                       Text(
                         'DOB : ',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         student.dob.toString(),
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
@@ -186,7 +188,7 @@ class StudentTile extends StatelessWidget {
                 children: [
                   Text(
                     student.admNo,
-                    style: TextStyle(
+                    style: GoogleFonts.inter(
                       fontSize: 20,
                       color: Colors.grey[800],
                       fontWeight: FontWeight.bold,
@@ -197,7 +199,7 @@ class StudentTile extends StatelessWidget {
                     child: Text(
                       'Admission No.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 10),
                     ),
                   ),
                 ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MenuTile extends StatelessWidget {
   const MenuTile({
@@ -61,7 +62,7 @@ class MenuTile extends StatelessWidget {
                         ),
                         Text(
                           count,
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: color,
@@ -69,7 +70,7 @@ class MenuTile extends StatelessWidget {
                         ),
                         Text(
                           label,
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontWeight: FontWeight.w300,
                             fontSize: 10,
                             color: color,

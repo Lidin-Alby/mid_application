@@ -64,6 +64,7 @@ dependencies:
   # flutter_sms: 
   #   path: C:/Users/lidin/Documents/flutter_sms-master
   flutter_background_messenger: ^0.0.2
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:

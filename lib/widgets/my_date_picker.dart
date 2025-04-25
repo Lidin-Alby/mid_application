@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class MyDatePicker extends StatelessWidget {
@@ -19,7 +20,7 @@ class MyDatePicker extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontWeight: FontWeight.w700,
             color: const Color.fromARGB(255, 96, 96, 96),
           ),

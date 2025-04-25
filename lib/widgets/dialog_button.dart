@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DialogButton extends StatelessWidget {
   const DialogButton({
@@ -34,7 +35,7 @@ class DialogButton extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontSize: 12,
             color: const Color.fromARGB(255, 148, 148, 148),
           ),

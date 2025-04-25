@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Student/student_bloc.dart';
 import 'package:mid_application/Blocs/Student/student_event.dart';
 import 'package:mid_application/Blocs/Student/student_state.dart';
@@ -75,7 +76,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
 
                       child: Text(
                         widget.classTitle,
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 25,
                           fontWeight: FontWeight.w900,
                         ),

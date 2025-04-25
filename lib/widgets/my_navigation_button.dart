@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyNavigationButton extends StatelessWidget {
   const MyNavigationButton(
@@ -36,7 +37,7 @@ class MyNavigationButton extends StatelessWidget {
             if (selected)
               Text(
                 label,
-                style: TextStyle(color: Colors.white),
+                style: GoogleFonts.inter(color: Colors.white),
               )
           ],
         ),

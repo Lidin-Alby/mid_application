@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Student/student_bloc.dart';
 import 'package:mid_application/Blocs/Student/student_event.dart';
 import 'package:mid_application/Blocs/Student/student_state.dart';
@@ -94,14 +95,14 @@ class _ViewAttendanceScreenState extends State<ViewAttendanceScreen> {
                                       children: [
                                         Text(
                                           student.fullName,
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             fontSize: 13,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                         Text(
                                           'Admission No. - ${student.admNo}',
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             fontSize: 10,
                                             color:
                                                 Color.fromRGBO(55, 55, 55, 1),

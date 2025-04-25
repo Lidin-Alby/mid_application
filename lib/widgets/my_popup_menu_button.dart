@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyPopupMenuButton extends StatelessWidget {
   const MyPopupMenuButton({super.key, required this.label, required this.icon});
@@ -22,7 +23,7 @@ class MyPopupMenuButton extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(color: Colors.white),
+          style: GoogleFonts.inter(color: Colors.white),
         ),
       ],
     );

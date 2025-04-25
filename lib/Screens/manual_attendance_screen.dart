@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_bloc.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_event.dart';
@@ -147,7 +148,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                       },
                       label: Text(
                         DateFormat('dd-MM-yyyy').format(_selectedDate),
-                        style: TextStyle(fontSize: 11),
+                        style: GoogleFonts.inter(fontSize: 11),
                       ),
                       style: FilledButton.styleFrom(
                         padding: EdgeInsets.symmetric(horizontal: 5),
@@ -194,14 +195,14 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                       children: [
                                         Text(
                                           student.fullName,
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             fontSize: 13,
                                             fontWeight: FontWeight.w600,
                                           ),
                                         ),
                                         Text(
                                           'Student',
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             fontSize: 10,
                                             // fontWeight: FontWeight.w600,
                                           ),
@@ -346,7 +347,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                               width: 42,
                                               child: Text(
                                                 'Father',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -356,7 +357,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                               width: 12,
                                               child: Text(
                                                 ':',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -364,7 +365,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                             ),
                                             Text(
                                               student.fatherName.toString(),
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 9,
                                               ),
                                             ),
@@ -376,7 +377,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                               width: 42,
                                               child: Text(
                                                 'Mother',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -386,7 +387,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                               width: 12,
                                               child: Text(
                                                 ':',
-                                                style: TextStyle(
+                                                style: GoogleFonts.inter(
                                                   fontSize: 11,
                                                   fontWeight: FontWeight.w600,
                                                 ),
@@ -394,7 +395,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                             ),
                                             Text(
                                               student.motherName.toString(),
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 9,
                                               ),
                                             ),

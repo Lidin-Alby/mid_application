@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Attendance%20Report/attendance_report_bloc.dart';
 import 'package:mid_application/Blocs/Attendance%20School/school_attendance_bloc.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_bloc.dart';
@@ -105,6 +106,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           appBarTheme: AppBarTheme(
+            titleTextStyle: GoogleFonts.inter(
+                fontSize: 20, fontWeight: FontWeight.w500, color: Colors.black),
             systemOverlayStyle: SystemUiOverlayStyle.dark.copyWith(
               statusBarColor: Colors.transparent,
               systemNavigationBarColor: Theme.of(context).colorScheme.onPrimary,
@@ -116,7 +119,8 @@ class MyApp extends StatelessWidget {
               bottom: BorderSide(color: Colors.grey),
             ),
           ),
-          fontFamily: 'Inter',
+          textTheme: GoogleFonts.interTextTheme(),
+          // fontFamily: 'Inter',
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.deepOrange,
           ),

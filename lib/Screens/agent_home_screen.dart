@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:mid_application/Blocs/Login/login_bloc.dart';
 import 'package:mid_application/Blocs/Login/login_event.dart';
@@ -10,10 +12,14 @@ import 'package:mid_application/Blocs/School%20List/school_state.dart';
 import 'package:mid_application/Screens/add_school_model.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:mid_application/Screens/change_password_screen.dart';
+import 'package:mid_application/Screens/manual_screen.dart';
 import 'package:mid_application/Screens/school_details_screen.dart';
 
 import 'package:mid_application/Screens/school_home_screen.dart';
+import 'package:mid_application/Screens/socials_screen.dart';
 import 'package:mid_application/models/school.dart';
+import 'package:mid_application/widgets/drawer_tile.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
 
 // class AgentHomeScreen extends ConsumerWidget {
@@ -174,12 +180,12 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                               child: Row(
                                 children: [
                                   ProfilePicWidget(
-                                      size: 55,
+                                      size: 52,
                                       profilePic:
                                           schools[index].schoolLogo.toString(),
                                       schoolCode: schools[index].schoolCode),
                                   SizedBox(
-                                    width: 15,
+                                    width: 8,
                                   ),
                                   Column(
                                     crossAxisAlignment:
@@ -187,7 +193,8 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                                     children: [
                                       Text(
                                         schools[index].schoolName.toString(),
-                                        style: TextStyle(
+                                        style: GoogleFonts.inter(
+                                            fontSize: 12,
                                             fontWeight: FontWeight.w500),
                                       ),
                                       SizedBox(
@@ -197,6 +204,9 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                                         schools[index]
                                             .principalPhone
                                             .toString(),
+                                        style: GoogleFonts.inter(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w300),
                                       ),
                                     ],
                                   ),
@@ -232,18 +242,62 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                 )),
       ),
       drawer: Drawer(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            TextButton(
-              onPressed: () {
-                BlocProvider.of<LoginBloc>(context).add(LogoutPressed());
-              },
-              child: Text('Logout'),
-            ),
-          ],
+        width: 210,
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                child: Text(
+                  'MID Card',
+                  style: GoogleFonts.inter(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Divider(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              DrawerTile(
+                icon: FontAwesomeIcons.instagram,
+                label: 'Socials',
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SocialsScreen(),
+                  ),
+                ),
+              ),
+              DrawerTile(
+                icon: FontAwesomeIcons.book,
+                label: 'Manual',
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ManualScreen(),
+                  ),
+                ),
+              ),
+              DrawerTile(
+                icon: FontAwesomeIcons.key,
+                iconSize: 16,
+                label: 'Change Password',
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangePasswordScreen(),
+                  ),
+                ),
+              ),
+              DrawerTile(
+                onTap: () {
+                  BlocProvider.of<LoginBloc>(context).add(LogoutPressed());
+                },
+                icon: Icons.logout,
+                label: 'Logout',
+              ),
+            ],
+          ),
         ),
       ),
     );

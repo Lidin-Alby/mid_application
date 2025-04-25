@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TabButton extends StatelessWidget {
   const TabButton({
@@ -31,7 +32,7 @@ class TabButton extends StatelessWidget {
               : null,
           child: Text(
             label,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontWeight: FontWeight.w600,
               color: selected ? null : Colors.grey,
             ),

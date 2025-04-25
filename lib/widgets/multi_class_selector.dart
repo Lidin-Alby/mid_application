@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/models/class_model.dart';
 
 class MultiClassSelector extends StatelessWidget {
@@ -20,7 +21,7 @@ class MultiClassSelector extends StatelessWidget {
       children: [
         Text(
           'Class',
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontWeight: FontWeight.w700,
             color: const Color.fromARGB(255, 96, 96, 96),
           ),
@@ -78,6 +79,10 @@ class MultiClassSelector extends StatelessWidget {
                               vertical: 4, horizontal: 6),
                           child: FilledButton(
                             onPressed: () => onRemove(e),
+                            style: FilledButton.styleFrom(
+                                backgroundColor: Colors.grey[300],
+                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                foregroundColor: Colors.black),
                             child: Row(
                               spacing: 3,
                               children: [
@@ -88,14 +93,10 @@ class MultiClassSelector extends StatelessWidget {
                                 ),
                                 Text(
                                   e,
-                                  style: TextStyle(fontSize: 12),
+                                  style: GoogleFonts.inter(fontSize: 12),
                                 )
                               ],
                             ),
-                            style: FilledButton.styleFrom(
-                                backgroundColor: Colors.grey[300],
-                                padding: EdgeInsets.symmetric(horizontal: 8),
-                                foregroundColor: Colors.black),
                           ),
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_bloc.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_event.dart';
@@ -108,7 +109,8 @@ class _ViewAttendanceCalendarScreenState
                         ),
                         Text(
                           DateFormat('dd-MM-yyyy').format(selectedDate),
-                          style: TextStyle(fontSize: 12, color: Colors.white),
+                          style: GoogleFonts.inter(
+                              fontSize: 12, color: Colors.white),
                         ),
                       ],
                     ),
@@ -152,7 +154,7 @@ class _ViewAttendanceCalendarScreenState
                                 ),
                                 Text(
                                   DateFormat('MMMM').format(selectedMonth),
-                                  style: TextStyle(
+                                  style: GoogleFonts.inter(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -188,9 +190,9 @@ class _ViewAttendanceCalendarScreenState
                                     child: Text(
                                       w,
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                      style: GoogleFonts.inter(
                                         fontSize: 15,
-                                        fontWeight: FontWeight.w600,
+                                        fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                   ),
@@ -240,8 +242,9 @@ class _ViewAttendanceCalendarScreenState
                                         ),
                                         child: Text(
                                           date.day.toString(),
-                                          style: TextStyle(
+                                          style: GoogleFonts.inter(
                                             fontSize: 15,
+                                            fontWeight: FontWeight.w400,
                                             color: date.weekday == 7
                                                 ? Theme.of(context)
                                                     .colorScheme

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_bloc.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_event.dart';
@@ -167,7 +168,7 @@ class _QrAttendanceScreenState extends State<QrAttendanceScreen> {
                               },
                               label: Text(
                                 DateFormat('dd-MM-yyyy').format(_selectedDate),
-                                style: TextStyle(fontSize: 11),
+                                style: GoogleFonts.inter(fontSize: 11),
                               ),
                               style: FilledButton.styleFrom(
                                 padding: EdgeInsets.symmetric(horizontal: 5),
@@ -233,7 +234,7 @@ class _QrAttendanceScreenState extends State<QrAttendanceScreen> {
                                                 children: [
                                                   Text(
                                                     student.fullName,
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.inter(
                                                       fontSize: 13,
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -241,7 +242,7 @@ class _QrAttendanceScreenState extends State<QrAttendanceScreen> {
                                                   ),
                                                   Text(
                                                     'Admission No. - ${student.admNo}',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.inter(
                                                       fontSize: 10,
                                                       color: Color.fromRGBO(
                                                           55, 55, 55, 1),

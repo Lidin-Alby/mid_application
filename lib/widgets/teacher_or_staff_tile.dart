@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Screens/staff_details_screen.dart';
 import 'package:mid_application/models/staff.dart';
 import 'package:mid_application/models/teacher.dart';
@@ -55,21 +56,21 @@ class TeacherOrStaffTile extends StatelessWidget {
                 children: [
                   Text(
                     staff.fullName,
-                    style: TextStyle(fontWeight: FontWeight.w600),
+                    style: GoogleFonts.inter(fontWeight: FontWeight.w600),
                   ),
                   Row(
                     spacing: 10,
                     children: [
                       Text(
                         'Joined :',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         staff.joiningDate.toString(),
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
@@ -81,14 +82,14 @@ class TeacherOrStaffTile extends StatelessWidget {
                     children: [
                       Text(
                         'Mobile :',
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
                         staff.mob,
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
                         ),
@@ -105,14 +106,14 @@ class TeacherOrStaffTile extends StatelessWidget {
                       children: [
                         Text(
                           staff.classes!.length.toString(),
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                               fontSize: 15,
                               color: Colors.black87,
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
                           'Classes',
-                          style: TextStyle(fontSize: 10),
+                          style: GoogleFonts.inter(fontSize: 10),
                         ),
                       ],
                     )
@@ -120,14 +121,14 @@ class TeacherOrStaffTile extends StatelessWidget {
                       children: [
                         Text(
                           'Designation : ',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                         Text(
                           staff.designation!,
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
                           ),

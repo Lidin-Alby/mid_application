@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_event.dart';
@@ -68,7 +69,8 @@ class SchoolDashboard extends StatelessWidget {
                   ),
                   Text(
                     'Details',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    style: GoogleFonts.inter(
+                        fontSize: 22, fontWeight: FontWeight.w600),
                   ),
                   SizedBox(
                     height: 12,
@@ -107,9 +109,9 @@ class SchoolDashboard extends StatelessWidget {
                                 Spacer(),
                                 Text(
                                   school.schoolName.toString(),
-                                  style: TextStyle(
+                                  style: GoogleFonts.inter(
                                     fontSize: 20,
-                                    fontWeight: FontWeight.w500,
+                                    fontWeight: FontWeight.w400,
                                   ),
                                 ),
                                 SizedBox(
@@ -117,7 +119,7 @@ class SchoolDashboard extends StatelessWidget {
                                 ),
                                 Text(
                                   school.principalPhone.toString(),
-                                  style: TextStyle(
+                                  style: GoogleFonts.inter(
                                     fontSize: 15,
                                     color: Colors.black38,
                                   ),
@@ -212,7 +214,7 @@ class SchoolDashboard extends StatelessWidget {
                                           ),
                                           Text(
                                             'List',
-                                            style: TextStyle(
+                                            style: GoogleFonts.inter(
                                               fontWeight: FontWeight.w600,
                                               fontSize: 16,
                                             ),

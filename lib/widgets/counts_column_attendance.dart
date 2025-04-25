@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CountsColumnAttendance extends StatelessWidget {
   const CountsColumnAttendance(
@@ -23,7 +24,7 @@ class CountsColumnAttendance extends StatelessWidget {
       children: [
         Text(
           count,
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontSize: 28,
             fontWeight: FontWeight.w900,
             color: textColor,
@@ -46,7 +47,7 @@ class CountsColumnAttendance extends StatelessWidget {
         ),
         Text(
           label,
-          style: TextStyle(fontSize: 10, color: textColor),
+          style: GoogleFonts.inter(fontSize: 10, color: textColor),
         ),
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Add%20school/add_school_bloc.dart';
 import 'package:mid_application/Blocs/Add%20school/add_school_event.dart';
 import 'package:mid_application/Blocs/Add%20school/add_school_state.dart';
@@ -51,7 +52,8 @@ class _AddSchoolModelState extends State<AddSchoolModel> {
                 children: [
                   Text(
                     'Add School',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: GoogleFonts.inter(
+                        fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                   MyTextfield(
                     label: 'School Code',

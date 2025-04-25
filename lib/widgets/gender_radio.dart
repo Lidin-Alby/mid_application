@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GenderRadio extends StatelessWidget {
   const GenderRadio({super.key, required this.gender, required this.onChanged});
@@ -12,7 +13,7 @@ class GenderRadio extends StatelessWidget {
       children: [
         Text(
           'Gender',
-          style: TextStyle(
+          style: GoogleFonts.inter(
             fontWeight: FontWeight.w700,
             color: const Color.fromARGB(255, 96, 96, 96),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FormSettingsTile extends StatelessWidget {
   const FormSettingsTile(
@@ -29,11 +30,12 @@ class FormSettingsTile extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                style: GoogleFonts.inter(
+                    fontSize: 18, fontWeight: FontWeight.bold),
               ),
               Text(
                 description,
-                style: TextStyle(fontSize: 10),
+                style: GoogleFonts.inter(fontSize: 10),
               ),
               // Spacer(),
             ],

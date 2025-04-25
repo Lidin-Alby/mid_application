@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Attendance%20School/school_attendance_bloc.dart';
 import 'package:mid_application/Blocs/Attendance%20School/school_attendance_event.dart';
 import 'package:mid_application/Blocs/Attendance%20School/school_attendance_state.dart';
@@ -27,7 +28,7 @@ class AttendanceDashboard extends StatelessWidget {
           ),
           Text(
             'Attendance',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            style: GoogleFonts.inter(fontSize: 22, fontWeight: FontWeight.w600),
           ),
           Container(
             margin: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
@@ -40,7 +41,8 @@ class AttendanceDashboard extends StatelessWidget {
               children: [
                 Text(
                   'School Strength',
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+                  style: GoogleFonts.inter(
+                      fontSize: 10, fontWeight: FontWeight.w600),
                 ),
                 Divider(
                   color: Colors.black,

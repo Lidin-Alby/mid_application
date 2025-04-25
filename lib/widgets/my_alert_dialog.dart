@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/widgets/my_filled_button.dart';
 
 class MyAlertDialog extends StatelessWidget {
@@ -29,7 +30,7 @@ class MyAlertDialog extends StatelessWidget {
             Text(
               title,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: GoogleFonts.inter(
                 fontSize: 14,
               ),
             ),
@@ -39,7 +40,7 @@ class MyAlertDialog extends StatelessWidget {
       content: Text(
         subtitle,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style: GoogleFonts.inter(
           fontSize: 10,
           color: Colors.grey[600],
         ),

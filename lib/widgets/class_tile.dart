@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ClassTile extends StatelessWidget {
   const ClassTile(
@@ -19,14 +20,14 @@ class ClassTile extends StatelessWidget {
         children: [
           Text(
             classTitle,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
           ),
           Text(
             'Total Students :',
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontSize: 10,
               fontWeight: FontWeight.w600,
               color: Colors.black87,
@@ -34,7 +35,7 @@ class ClassTile extends StatelessWidget {
           ),
           Text(
             totalStudents,
-            style: TextStyle(
+            style: GoogleFonts.inter(
               fontWeight: FontWeight.bold,
               fontSize: 16,
               color: Colors.black54,
