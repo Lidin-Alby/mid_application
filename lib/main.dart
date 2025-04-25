@@ -6,6 +6,7 @@ import 'package:mid_application/Blocs/Attendance%20Report/attendance_report_bloc
 import 'package:mid_application/Blocs/Attendance%20School/school_attendance_bloc.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_bloc.dart';
 import 'package:mid_application/Blocs/Bulk%20student%20upload/bulk_student_upload_bloc.dart';
+import 'package:mid_application/Blocs/Change%20password/change_password_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 
 import 'package:mid_application/Blocs/Add%20school/add_school_bloc.dart';
@@ -24,6 +25,7 @@ import 'package:mid_application/Blocs/Student/student_bloc.dart';
 import 'package:mid_application/Screens/agent_home_screen.dart';
 
 import 'package:mid_application/Screens/login_screen.dart';
+import 'package:mid_application/Screens/school_home_screen.dart';
 import 'package:mid_application/login_page.dart';
 
 void main() {
@@ -88,6 +90,9 @@ class MyApp extends StatelessWidget {
           create: (context) => BulkStudentUploadBloc(),
         ),
         BlocProvider(
+          create: (context) => ChangePasswordBloc(),
+        ),
+        BlocProvider(
           create: (context) => ProfilePicBloc(
             context.read<StudentBloc>(),
             context.read<StudentDetailsBloc>(),
@@ -129,19 +134,16 @@ class MyApp extends StatelessWidget {
         home: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
             if (state is LoggedIn) {
-              return AgentHomeScreen();
-              // Navigator.pushReplacement(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => AgentHomeScreen(),
-              //     ));
+              if (state.user == 'agent') {
+                return AgentHomeScreen();
+              } else {
+                return SchoolHomeScreen(
+                  schoolCode: state.schoolCode,
+                  isStaff: true,
+                );
+              }
             } else {
               return LoginScreen();
-              // Navigator.pushReplacement(
-              //     context,
-              //     MaterialPageRoute(
-              //       builder: (context) => LoginScreen(),
-              //     ));
             }
           },
         ),

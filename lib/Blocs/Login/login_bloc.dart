@@ -15,8 +15,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       (event, emit) async {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         final token = prefs.getString('token');
+        final user = prefs.getString('user');
+        final schoolCode = prefs.getString('schoolCode');
+
         if (token != null) {
-          emit(LoggedIn());
+          emit(LoggedIn(user!, schoolCode!));
         }
       },
     );
@@ -31,15 +34,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           'schoolCode': event.schoolCode,
           // 'ver': kIsWeb.toString()
         });
-        if (response.statusCode == 200) {
+        if (response.statusCode == 201) {
           final Map data = jsonDecode(response.body);
 
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('token', data['token']);
+          prefs.setString('userName', data['userName']);
 
           prefs.setString('user', data['user']);
           prefs.setString('schoolCode', data['schoolCode']);
-          emit(LoggedIn());
+          emit(LoggedIn(data['user'], data['schoolCode']));
         } else {
           final Map errorData = jsonDecode(response.body);
           emit(LoginFailure(error: errorData['message']));

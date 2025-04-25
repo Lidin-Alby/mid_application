@@ -139,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController schoolCode = TextEditingController();
 
   final TextEditingController password = TextEditingController();
+  bool hide = true;
 
   @override
   Widget build(BuildContext context) {
@@ -209,6 +210,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       MyTextfield(
                         label: 'Password',
                         controller: password,
+                        obscureText: hide,
+                        suffix: IconButton(
+                          icon: Icon(
+                              hide ? Icons.visibility_off : Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              hide = !hide;
+                            });
+                          },
+                        ),
                       ),
                       if (state is LoginFailure)
                         Padding(
@@ -234,13 +245,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                         borderRadius: BorderRadius.circular(4),
                                       ),
                                     ),
-                                    onPressed: () =>
-                                        BlocProvider.of<LoginBloc>(context).add(
-                                      LoginPressed(
-                                          userId: userId.text.trim(),
-                                          schoolCode: schoolCode.text.trim(),
-                                          password: password.text.trim()),
-                                    ),
+                                    onPressed: () {
+                                      BlocProvider.of<LoginBloc>(context).add(
+                                        LoginPressed(
+                                            userId: userId.text.trim(),
+                                            schoolCode: schoolCode.text.trim(),
+                                            password: password.text.trim()),
+                                      );
+                                    },
                                     child: Text('LOGIN'),
                                   ),
                                 ),

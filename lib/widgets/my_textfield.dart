@@ -3,9 +3,16 @@ import 'package:google_fonts/google_fonts.dart';
 
 class MyTextfield extends StatelessWidget {
   const MyTextfield(
-      {super.key, required this.label, required this.controller, this.error});
+      {super.key,
+      required this.label,
+      required this.controller,
+      this.error,
+      this.obscureText = false,
+      this.suffix});
   final String label;
   final String? error;
+  final bool obscureText;
+  final Widget? suffix;
   final TextEditingController controller;
   // final Function(String value) onChanged;
 
@@ -27,8 +34,12 @@ class MyTextfield extends StatelessWidget {
         SizedBox(
           // height: 34,
           child: TextField(
+            obscureText: obscureText,
             controller: controller,
             decoration: InputDecoration(
+              suffixIconConstraints:
+                  BoxConstraints(maxWidth: 34, maxHeight: 34),
+              suffixIcon: suffix,
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.black38, width: .5)),
               errorText: error,

@@ -16,7 +16,10 @@ class DrawerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: () {
+        Navigator.pop(context);
+        onTap();
+      },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 25),
         height: 50,

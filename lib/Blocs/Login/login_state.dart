@@ -10,6 +10,11 @@ class LoginFailure extends LoginState {
   LoginFailure({required this.error});
 }
 
-class LoggedIn extends LoginState {}
+class LoggedIn extends LoginState {
+  final String user;
+  final String schoolCode;
+
+  LoggedIn(this.user, this.schoolCode);
+}
 
 class LoggedOut extends LoginState {}

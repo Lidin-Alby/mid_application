@@ -62,6 +62,7 @@ class SchoolDashboard extends StatelessWidget {
             }
             if (state is SchoolDetailsLoaded) {
               School school = state.school;
+
               return Column(
                 children: [
                   SizedBox(
