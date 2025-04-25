@@ -369,7 +369,10 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                        if (isExpanded) MultipleEntryWidget(),
+                        if (isExpanded)
+                          MultipleEntryWidget(
+                            schoolCode: widget.schoolCode,
+                          ),
                         Text(
                           'Single Student',
                           style: TextStyle(

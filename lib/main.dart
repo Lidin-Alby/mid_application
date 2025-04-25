@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mid_application/Blocs/Attendance%20Report/attendance_report_bloc.dart';
 import 'package:mid_application/Blocs/Attendance%20School/school_attendance_bloc.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_bloc.dart';
+import 'package:mid_application/Blocs/Bulk%20student%20upload/bulk_student_upload_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 
 import 'package:mid_application/Blocs/Add%20school/add_school_bloc.dart';
@@ -81,6 +82,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => SmsCallApiBloc(),
+        ),
+        BlocProvider(
+          create: (context) => BulkStudentUploadBloc(),
         ),
         BlocProvider(
           create: (context) => ProfilePicBloc(
