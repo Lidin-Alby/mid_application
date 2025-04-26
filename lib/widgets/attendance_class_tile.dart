@@ -37,7 +37,7 @@ class AttendanceClassTile extends StatelessWidget {
             // height: 100,
             // padding: EdgeInsets.all(5),
             alignment: Alignment.center,
-            width: 90,
+            width: 90, padding: EdgeInsets.all(3),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.horizontal(left: Radius.circular(6)),
@@ -54,61 +54,68 @@ class AttendanceClassTile extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    ProfilePicWidget(
-                      profilePic: profilePic,
-                      schoolCode: schoolCode,
-                    ),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          classTeacher,
-                          style: GoogleFonts.inter(fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          'Class Teacher',
-                          style: GoogleFonts.inter(
-                              fontSize: 11, fontWeight: FontWeight.w300),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Text.rich(
-                  TextSpan(
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      TextSpan(
-                        text: 'Students : ',
-                        style: GoogleFonts.inter(
-                            fontSize: 11, fontWeight: FontWeight.w600),
+                      ProfilePicWidget(
+                        profilePic: profilePic,
+                        schoolCode: schoolCode,
                       ),
-                      TextSpan(
-                        text: totalStudents.toString(),
-                        style: GoogleFonts.inter(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              classTeacher,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: GoogleFonts.inter(
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              'Class Teacher',
+                              style: GoogleFonts.inter(
+                                  fontSize: 11, fontWeight: FontWeight.w300),
+                            )
+                          ],
                         ),
                       )
                     ],
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Students : ',
+                          style: GoogleFonts.inter(
+                              fontSize: 11, fontWeight: FontWeight.w600),
+                        ),
+                        TextSpan(
+                          text: totalStudents.toString(),
+                          style: GoogleFonts.inter(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
-          Spacer(),
+          // Spacer(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: PopupMenuButton(

@@ -2,12 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
-import 'package:mid_application/Blocs/Class%20Model/class_event.dart';
-import 'package:mid_application/Blocs/Form%20Settings/form_settings_bloc.dart';
-import 'package:mid_application/Blocs/Form%20Settings/form_settings_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
-import 'package:mid_application/Blocs/School%20details/school_details_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_state.dart';
 import 'package:mid_application/Screens/details_info_screen.dart';
 import 'package:mid_application/models/school.dart';
@@ -110,6 +105,8 @@ class SchoolDashboard extends StatelessWidget {
                                 Spacer(),
                                 Text(
                                   school.schoolName.toString(),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
                                   style: GoogleFonts.inter(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w400,
@@ -358,13 +355,6 @@ class SchoolDashboard extends StatelessWidget {
                 ],
               );
             } else {
-              context
-                  .read<FormSettingsBloc>()
-                  .add(LoadFormSettings(schoolCode));
-              context.read<ClassBloc>().add(LoadClasses(schoolCode));
-              context
-                  .read<SchoolDetailsBloc>()
-                  .add(GetSchoolDetails(schoolCode));
               return Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Center(

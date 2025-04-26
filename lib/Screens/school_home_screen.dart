@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_event.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form_settings_bloc.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form_settings_event.dart';
 import 'package:mid_application/Blocs/Login/login_bloc.dart';
 import 'package:mid_application/Blocs/Login/login_state.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
+import 'package:mid_application/Blocs/School%20details/school_details_event.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_state.dart';
 import 'package:mid_application/Screens/add_class_screen.dart';
 import 'package:mid_application/Screens/attendance_dashboard.dart';
@@ -30,6 +35,15 @@ class SchoolHomeScreen extends StatefulWidget {
 class _SchoolHomeScreenState extends State<SchoolHomeScreen> {
   int _selectedIndex = 0;
   String? logo;
+
+  @override
+  void initState() {
+    context.read<SchoolDetailsBloc>().add(GetSchoolDetails(widget.schoolCode));
+    context.read<FormSettingsBloc>().add(LoadFormSettings(widget.schoolCode));
+    context.read<ClassBloc>().add(LoadClasses(widget.schoolCode));
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

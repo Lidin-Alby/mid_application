@@ -170,7 +170,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                           return Container(
                             margin: EdgeInsets.symmetric(vertical: 5),
                             padding: EdgeInsets.symmetric(horizontal: 10),
-                            height: 120,
+                            height: 125,
                             decoration: BoxDecoration(
                                 color: Color.fromRGBO(245, 243, 244, 1),
                                 border: Border.all(
@@ -337,76 +337,91 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                 ),
                                 Row(
                                   children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 42,
-                                              child: Text(
-                                                'Father',
-                                                style: GoogleFonts.inter(
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w600,
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 42,
+                                                child: Text(
+                                                  'Father',
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 12,
-                                              child: Text(
-                                                ':',
-                                                style: GoogleFonts.inter(
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w600,
+                                              SizedBox(
+                                                width: 12,
+                                                child: Text(
+                                                  ':',
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Text(
-                                              student.fatherName.toString(),
-                                              style: GoogleFonts.inter(
-                                                fontSize: 9,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            SizedBox(
-                                              width: 42,
-                                              child: Text(
-                                                'Mother',
-                                                style: GoogleFonts.inter(
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w600,
+                                              Flexible(
+                                                child: Text(
+                                                  student.fatherName.toString(),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 9,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 12,
-                                              child: Text(
-                                                ':',
-                                                style: GoogleFonts.inter(
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w600,
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 42,
+                                                child: Text(
+                                                  'Mother',
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Text(
-                                              student.motherName.toString(),
-                                              style: GoogleFonts.inter(
-                                                fontSize: 9,
+                                              SizedBox(
+                                                width: 12,
+                                                child: Text(
+                                                  ':',
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                              Flexible(
+                                                child: Text(
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  student.motherName.toString(),
+                                                  style: GoogleFonts.inter(
+                                                    fontSize: 9,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Spacer(),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
                                     Container(
-                                      height: 60,
-                                      padding: EdgeInsets.only(left: 8, top: 2),
+                                      height: 65,
+                                      padding: EdgeInsets.only(left: 8, top: 3),
                                       color: Colors.white,
                                       child: Column(
                                         crossAxisAlignment:
@@ -435,7 +450,7 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                                 groupValue: student.status!,
                                                 notation: 'H',
                                                 label: 'Half Day',
-                                                value: 'half',
+                                                value: 'half-day',
                                                 color: Colors.brown[600],
                                                 onChanged: (value) {
                                                   student.status = value;
@@ -446,6 +461,9 @@ class _ManualAttendanceScreenState extends State<ManualAttendanceScreen> {
                                                 },
                                               )
                                             ],
+                                          ),
+                                          SizedBox(
+                                            height: 3,
                                           ),
                                           Row(
                                             children: [

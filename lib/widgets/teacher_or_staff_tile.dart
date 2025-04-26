@@ -58,7 +58,7 @@ class TeacherOrStaffTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    staff.fullName,
+                    staff.fullName.toString(),
                     style: GoogleFonts.inter(fontWeight: FontWeight.w600),
                   ),
                   Row(
@@ -91,7 +91,7 @@ class TeacherOrStaffTile extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        staff.mob,
+                        staff.mob.toString(),
                         style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w600,
@@ -130,7 +130,7 @@ class TeacherOrStaffTile extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          staff.designation!,
+                          staff.designation.toString(),
                           style: GoogleFonts.inter(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,

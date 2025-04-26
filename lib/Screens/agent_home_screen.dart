@@ -181,28 +181,32 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                                   SizedBox(
                                     width: 8,
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        schools[index].schoolName.toString(),
-                                        style: GoogleFonts.inter(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        height: 3,
-                                      ),
-                                      Text(
-                                        schools[index]
-                                            .principalPhone
-                                            .toString(),
-                                        style: GoogleFonts.inter(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                    ],
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          schools[index].schoolName.toString(),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.inter(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+                                        Text(
+                                          schools[index]
+                                              .principalPhone
+                                              .toString(),
+                                          style: GoogleFonts.inter(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w300),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),

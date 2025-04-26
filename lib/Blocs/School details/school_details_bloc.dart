@@ -19,7 +19,6 @@ class SchoolDetailsBloc extends Bloc<SchoolDetailsEvent, SchoolDetailsState> {
           var res = await http.get(url);
 
           Map data = jsonDecode(res.body);
-          print(data);
 
           School school = School.fromJson(data);
           emit(SchoolDetailsLoaded(school: school));

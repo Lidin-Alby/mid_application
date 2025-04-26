@@ -38,7 +38,7 @@ class _ViewAttendanceCalendarScreenState
       case 'absent':
         color = Theme.of(context).colorScheme.error;
         break;
-      case 'half':
+      case 'half-day':
         color = Colors.brown;
         break;
       case 'leave':
@@ -319,7 +319,7 @@ class _ViewAttendanceCalendarScreenState
                                   .format(selectedDate)],
                               notation: 'H',
                               label: 'Half Day',
-                              value: 'half',
+                              value: 'half-day',
                               color: Colors.brown[600],
                               onChanged: (value) {
                                 context.read<AttendanceBloc>().add(
