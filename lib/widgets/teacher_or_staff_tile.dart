@@ -25,6 +25,9 @@ class TeacherOrStaffTile extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => StaffDetailsScreen(
+              ready: (staff.printStatus == "printing" ||
+                  staff.printStatus == "printed" ||
+                  staff.printStatus == "ready"),
               schoolCode: schoolCode,
               isTeacher: staff is Teacher,
               mob: staff.mob,

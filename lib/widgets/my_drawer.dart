@@ -69,6 +69,15 @@ class MyDrawer extends StatelessWidget {
               icon: Icons.logout,
               label: 'Logout',
             ),
+            Spacer(),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'v2.0.0.0',
+                style: GoogleFonts.inter(
+                    fontSize: 10, fontWeight: FontWeight.w500),
+              ),
+            ),
           ],
         ),
       ),

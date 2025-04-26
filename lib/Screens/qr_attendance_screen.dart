@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_background_messenger/flutter_background_messenger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +8,7 @@ import 'package:mid_application/Blocs/Attendance/attendance_event.dart';
 import 'package:mid_application/Blocs/Attendance/attendance_state.dart';
 import 'package:mid_application/models/attendance.dart';
 import 'package:mid_application/widgets/attendance_app_bar.dart';
+import 'package:mid_application/widgets/attendance_call_sms_dialog.dart';
 import 'package:mid_application/widgets/counts_column_attendance.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
@@ -271,13 +273,61 @@ class _QrAttendanceScreenState extends State<QrAttendanceScreen> {
                               SizedBox(
                                 width: 90,
                                 child: ElevatedButton(
-                                  onPressed: () {
-                                    // print(state.students[0].status);
-                                    // setState(() {
-                                    //   state.students[0].status = 'present';
-                                    // });
-                                    // print(state.students[0].status);
-                                  },
+                                  onPressed: () => showDialog(
+                                    context: context,
+                                    builder: (context) =>
+                                        AttendanceCallSmsDialog(
+                                      schoolCode: widget.schoolCode,
+                                      onConfirm: (
+                                        smsAbsent,
+                                        smsPresent,
+                                        callAbsent,
+                                        callPresent,
+                                        smsText,
+                                      ) {
+                                        final messenger =
+                                            FlutterBackgroundMessenger();
+                                        if (smsPresent) {
+                                          for (Attendance student
+                                              in attendances) {
+                                            if (student.status == 'present') {
+                                              String message = smsText
+                                                  .replaceAll("{studentName}",
+                                                      student.fullName)
+                                                  .replaceAll("{studentStatus}",
+                                                      student.status!);
+                                              messenger.sendSMS(
+                                                message: message,
+                                                phoneNumber:
+                                                    student.fatherMobNo!,
+                                              );
+                                            }
+                                          }
+                                        }
+                                        if (smsAbsent) {
+                                          for (Attendance student
+                                              in attendances) {
+                                            if (student.status == 'absent' ||
+                                                student.status == 'leave') {
+                                              String message = smsText
+                                                  .replaceAll("{studentName}",
+                                                      student.fullName)
+                                                  .replaceAll("{studentStatus}",
+                                                      student.status!);
+                                              messenger.sendSMS(
+                                                message: message,
+                                                phoneNumber:
+                                                    student.fatherMobNo!,
+                                              );
+                                            }
+                                          }
+                                        }
+
+                                        context.read<AttendanceBloc>().add(
+                                            SaveClassAttendance(attendances));
+                                      },
+                                    ),
+                                  ),
                                   child: Text('Save'),
                                 ),
                               ),

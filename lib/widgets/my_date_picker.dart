@@ -32,7 +32,7 @@ class MyDatePicker extends StatelessWidget {
           onTap: () async {
             DateTime? date = await showDatePicker(
               context: context,
-              firstDate: DateTime(1990),
+              firstDate: DateTime(1947),
               lastDate: DateTime.now(),
             );
             if (date != null) {

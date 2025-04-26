@@ -54,9 +54,15 @@ class _SearchScreenState extends State<SearchScreen> {
                     MaterialPageRoute(
                       builder: (context) => user['designation'] == 'student'
                           ? StudentDetailsScreen(
+                              ready: (user['printStatus'] == "printing" ||
+                                  user['printStatus'] == "printed" ||
+                                  user['printStatus'] == "ready"),
                               schoolCode: widget.schoolCode,
                               admNo: user['userNo'])
                           : StaffDetailsScreen(
+                              ready: (user['printStatus'] == "printing" ||
+                                  user['printStatus'] == "printed" ||
+                                  user['printStatus'] == "ready"),
                               schoolCode: widget.schoolCode,
                               isTeacher: user['designation'] == 'midTeacher',
                               mob: user['userNo'],

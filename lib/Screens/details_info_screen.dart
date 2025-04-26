@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
+import 'package:mid_application/Blocs/Login/login_bloc.dart';
+import 'package:mid_application/Blocs/Login/login_state.dart';
 import 'package:mid_application/Blocs/Staff/staff_bloc.dart';
 import 'package:mid_application/Blocs/Staff/staff_event.dart';
 import 'package:mid_application/Blocs/Staff/staff_state.dart';
@@ -73,60 +75,69 @@ class _DetailsInfoScreenState extends State<DetailsInfoScreen> {
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Row(
-                    children: [
-                      TabButton(
-                        label: 'Class',
-                        selected: _currentIndex == 0,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = 0;
-                          });
-                        },
-                      ),
-                      TabButton(
-                        label: 'Teachers',
-                        selected: _currentIndex == 1,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = 1;
-                          });
-                        },
-                      ),
-                      TabButton(
-                        label: 'Staff',
-                        selected: _currentIndex == 2,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = 2;
-                          });
-                        },
-                      ),
-                      Spacer(),
-                      if (_currentIndex != 0)
-                        SizedBox(
-                          height: 32,
-                          width: 32,
-                          child: ElevatedButton(
-                            onPressed: () {
+                BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+                  if (state is LoggedIn) {
+                    String user = state.user;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: Row(
+                        children: [
+                          TabButton(
+                            label: 'Class',
+                            selected: _currentIndex == 0,
+                            onTap: () {
                               setState(() {
-                                openSort = true;
+                                _currentIndex = 0;
                               });
                             },
-                            child: Icon(Icons.sort),
-                            style: ElevatedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              iconSize: 20,
-                              shape: CircleBorder(),
-                              elevation: 0,
-                            ),
                           ),
-                        )
-                    ],
-                  ),
-                ),
+                          if (user == 'head' || user == 'agent')
+                            TabButton(
+                              label: 'Teachers',
+                              selected: _currentIndex == 1,
+                              onTap: () {
+                                setState(() {
+                                  _currentIndex = 1;
+                                });
+                              },
+                            ),
+                          if (user == 'head' || user == 'agent')
+                            TabButton(
+                              label: 'Staff',
+                              selected: _currentIndex == 2,
+                              onTap: () {
+                                setState(() {
+                                  _currentIndex = 2;
+                                });
+                              },
+                            ),
+                          Spacer(),
+                          if (_currentIndex != 0)
+                            SizedBox(
+                              height: 32,
+                              width: 32,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    openSort = true;
+                                  });
+                                },
+                                child: Icon(Icons.sort),
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  iconSize: 20,
+                                  shape: CircleBorder(),
+                                  elevation: 0,
+                                ),
+                              ),
+                            )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return SizedBox();
+                  }
+                }),
                 SizedBox(
                   height: 5,
                 ),

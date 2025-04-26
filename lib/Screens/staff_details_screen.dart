@@ -31,10 +31,12 @@ class StaffDetailsScreen extends StatefulWidget {
     required this.schoolCode,
     required this.isTeacher,
     required this.mob,
+    required this.ready,
   });
   final String schoolCode;
   final bool isTeacher;
   final String? mob;
+  final bool ready;
 
   @override
   State<StaffDetailsScreen> createState() => _StaffDetailsScreenState();
@@ -243,94 +245,95 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
         ),
         actions: widget.mob != null
             ? [
-                PopupMenuButton(
-                  color: Theme.of(context).colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(6),
-                      topRight: Radius.circular(6),
-                      bottomLeft: Radius.circular(6),
-                      bottomRight: Radius.circular(6),
+                if (!widget.ready)
+                  PopupMenuButton(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(6),
+                        topRight: Radius.circular(6),
+                        bottomLeft: Radius.circular(6),
+                        bottomRight: Radius.circular(6),
+                      ),
                     ),
-                  ),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      onTap: () {
-                        setState(() {
-                          isEdit = true;
-                        });
-                      },
-                      child: MyPopupMenuButton(
-                          label: 'Edit', icon: Icons.edit_outlined),
-                    ),
-                    PopupMenuItem(
-                      child: MyPopupMenuButton(
-                          label: 'Share', icon: Icons.share_outlined),
-                    ),
-                    PopupMenuItem(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => MyAlertDialog(
-                          title:
-                              'Are you sure you want to perform this action?',
-                          subtitle:
-                              'This action only deactivates the account and you cannot use reuse the ADMISSION No. unless you contact app support.',
-                          icon: Icon(
-                            Icons.delete,
-                            size: 35,
-                            color: Theme.of(context).colorScheme.error,
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        onTap: () {
+                          setState(() {
+                            isEdit = true;
+                          });
+                        },
+                        child: MyPopupMenuButton(
+                            label: 'Edit', icon: Icons.edit_outlined),
+                      ),
+                      PopupMenuItem(
+                        child: MyPopupMenuButton(
+                            label: 'Share', icon: Icons.share_outlined),
+                      ),
+                      PopupMenuItem(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => MyAlertDialog(
+                            title:
+                                'Are you sure you want to perform this action?',
+                            subtitle:
+                                'This action only deactivates the account and you cannot use reuse the ADMISSION No. unless you contact app support.',
+                            icon: Icon(
+                              Icons.delete,
+                              size: 35,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            cancel: () => Navigator.pop(context),
+                            confirm: () {
+                              Navigator.pop(context);
+                              context.read<StaffBloc>().add(
+                                    DeleteStaff(
+                                      schoolCode: widget.schoolCode,
+                                      mob: widget.mob!,
+                                    ),
+                                  );
+                            },
                           ),
-                          cancel: () => Navigator.pop(context),
-                          confirm: () {
-                            Navigator.pop(context);
-                            context.read<StaffBloc>().add(
-                                  DeleteStaff(
-                                    schoolCode: widget.schoolCode,
-                                    mob: widget.mob!,
-                                  ),
-                                );
-                          },
+                        ),
+                        child: MyPopupMenuButton(
+                          label: 'Delete',
+                          icon: Icons.delete_outline,
                         ),
                       ),
-                      child: MyPopupMenuButton(
-                        label: 'Delete',
-                        icon: Icons.delete_outline,
-                      ),
-                    ),
-                    PopupMenuItem(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => MyAlertDialog(
-                          title:
-                              'This action will send data to Print. Are you sure you want to perform this action.',
-                          subtitle:
-                              'You will need to contact app support to undo this action.',
-                          icon: Icon(
-                            Icons.print,
-                            size: 25,
-                            color: Theme.of(context).colorScheme.error,
+                      PopupMenuItem(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => MyAlertDialog(
+                            title:
+                                'This action will send data to Print. Are you sure you want to perform this action.',
+                            subtitle:
+                                'You will need to contact app support to undo this action.',
+                            icon: Icon(
+                              Icons.print,
+                              size: 25,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            cancel: () => Navigator.pop(context),
+                            confirm: () {
+                              printStatus = 'ready';
+                              Navigator.pop(context);
+                              context.read<StaffBloc>().add(
+                                    SaveStaffPressed(
+                                      staff: newStaffValues(),
+                                      isMob: widget.mob != null,
+                                    ),
+                                  );
+                            },
                           ),
-                          cancel: () => Navigator.pop(context),
-                          confirm: () {
-                            printStatus = 'ready';
-                            Navigator.pop(context);
-                            context.read<StaffBloc>().add(
-                                  SaveStaffPressed(
-                                    staff: newStaffValues(),
-                                    isMob: widget.mob != null,
-                                  ),
-                                );
-                          },
+                        ),
+                        padding: EdgeInsets.only(left: 16),
+                        child: MyPopupMenuButton(
+                          label: 'Send to Print',
+                          icon: Icons.print_outlined,
                         ),
                       ),
-                      padding: EdgeInsets.only(left: 16),
-                      child: MyPopupMenuButton(
-                        label: 'Send to Print',
-                        icon: Icons.print_outlined,
-                      ),
-                    ),
-                  ],
-                )
+                    ],
+                  )
               ]
             : null,
       ),

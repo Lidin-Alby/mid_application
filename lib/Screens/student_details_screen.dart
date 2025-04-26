@@ -33,9 +33,11 @@ class StudentDetailsScreen extends StatefulWidget {
     super.key,
     required this.schoolCode,
     required this.admNo,
+    required this.ready,
   });
   final String schoolCode;
   final String? admNo;
+  final bool ready;
 
   @override
   State<StudentDetailsScreen> createState() => _StudentDetailsScreenState();
@@ -94,6 +96,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   String? profilePic;
   bool check = false;
   String? printStatus;
+
   bool sendToPrint = false;
   bool isExpanded = false;
 //  late DateTime modified;
@@ -227,95 +230,98 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
         title: Text(widget.admNo == null ? 'New Student' : 'Details'),
         actions: widget.admNo != null
             ? [
-                PopupMenuButton(
-                  color: Theme.of(context).colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(6),
-                      topRight: Radius.circular(6),
-                      bottomLeft: Radius.circular(6),
-                      bottomRight: Radius.circular(6),
+                if (!widget.ready)
+                  PopupMenuButton(
+                    color: Theme.of(context).colorScheme.primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(6),
+                        topRight: Radius.circular(6),
+                        bottomLeft: Radius.circular(6),
+                        bottomRight: Radius.circular(6),
+                      ),
                     ),
-                  ),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      onTap: () {
-                        setState(() {
-                          isEdit = true;
-                        });
-                      },
-                      child: MyPopupMenuButton(
-                          label: 'Edit', icon: Icons.edit_outlined),
-                    ),
-                    PopupMenuItem(
-                      child: MyPopupMenuButton(
-                          label: 'Share', icon: Icons.share_outlined),
-                    ),
-                    PopupMenuItem(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => MyAlertDialog(
-                          title:
-                              'Are you sure you want to perform this action?',
-                          subtitle:
-                              'This action only deactivates the account and you cannot use reuse the ADMISSION No. unless you contact app support.',
-                          icon: Icon(
-                            Icons.delete,
-                            size: 35,
-                            color: Theme.of(context).colorScheme.error,
-                          ),
-                          cancel: () => Navigator.pop(context),
-                          confirm: () {
-                            Navigator.pop(context);
-                            context.read<StudentBloc>().add(
-                                  DeleteStudent(
-                                    widget.schoolCode,
-                                    widget.admNo!,
-                                  ),
-                                );
-                          },
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        onTap: () {
+                          setState(() {
+                            isEdit = true;
+                          });
+                        },
+                        child: MyPopupMenuButton(
+                          label: 'Edit',
+                          icon: Icons.edit_outlined,
                         ),
                       ),
-                      child: MyPopupMenuButton(
-                        label: 'Delete',
-                        icon: Icons.delete_outline,
+                      PopupMenuItem(
+                        child: MyPopupMenuButton(
+                            label: 'Share', icon: Icons.share_outlined),
                       ),
-                    ),
-                    PopupMenuItem(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => MyAlertDialog(
-                          title:
-                              'This action will send data to Print. Are you sure you want to perform this action.',
-                          subtitle:
-                              'You will need to contact app support to undo this action.',
-                          icon: Icon(
-                            Icons.print,
-                            size: 25,
-                            color: Theme.of(context).colorScheme.error,
+                      PopupMenuItem(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => MyAlertDialog(
+                            title:
+                                'Are you sure you want to perform this action?',
+                            subtitle:
+                                'This action only deactivates the account and you cannot use reuse the ADMISSION No. unless you contact app support.',
+                            icon: Icon(
+                              Icons.delete,
+                              size: 35,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            cancel: () => Navigator.pop(context),
+                            confirm: () {
+                              Navigator.pop(context);
+                              context.read<StudentBloc>().add(
+                                    DeleteStudent(
+                                      widget.schoolCode,
+                                      widget.admNo!,
+                                    ),
+                                  );
+                            },
                           ),
-                          cancel: () => Navigator.pop(context),
-                          confirm: () {
-                            printStatus = 'ready';
-                            sendToPrint = true;
-                            Navigator.pop(context);
-                            context.read<StudentBloc>().add(
-                                  SaveStudentPressed(
-                                    student: newStudentValues(),
-                                    checkAdmNo: widget.admNo == null,
-                                  ),
-                                );
-                          },
+                        ),
+                        child: MyPopupMenuButton(
+                          label: 'Delete',
+                          icon: Icons.delete_outline,
                         ),
                       ),
-                      padding: EdgeInsets.only(left: 16),
-                      child: MyPopupMenuButton(
-                        label: 'Send to Print',
-                        icon: Icons.print_outlined,
+                      PopupMenuItem(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => MyAlertDialog(
+                            title:
+                                'This action will send data to Print. Are you sure you want to perform this action.',
+                            subtitle:
+                                'You will need to contact app support to undo this action.',
+                            icon: Icon(
+                              Icons.print,
+                              size: 25,
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                            cancel: () => Navigator.pop(context),
+                            confirm: () {
+                              printStatus = 'ready';
+                              sendToPrint = true;
+                              Navigator.pop(context);
+                              context.read<StudentBloc>().add(
+                                    SaveStudentPressed(
+                                      student: newStudentValues(),
+                                      checkAdmNo: widget.admNo == null,
+                                    ),
+                                  );
+                            },
+                          ),
+                        ),
+                        padding: EdgeInsets.only(left: 16),
+                        child: MyPopupMenuButton(
+                          label: 'Send to Print',
+                          icon: Icons.print_outlined,
+                        ),
                       ),
-                    ),
-                  ],
-                )
+                    ],
+                  )
               ]
             : null,
       ),
@@ -390,6 +396,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                       builder: (context, formState) {
                     if (formState is FormSettingsLoaded) {
                       FormStudent studentFormMid = formState.formStudent;
+
                       return BlocConsumer<StudentBloc, StudentState>(
                         listener: (context, saveState) {
                           if (saveState is StudentDeleted) {
@@ -458,6 +465,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                               if (state is StudentDetailsLoaded &&
                                   widget.admNo != null) {
                                 student = state.student;
+
                                 if (!isEdit) {
                                   assignValues(student);
                                 }

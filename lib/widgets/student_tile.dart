@@ -18,6 +18,9 @@ class StudentTile extends StatelessWidget {
             builder: (context) => StudentDetailsScreen(
               schoolCode: student.schoolCode,
               admNo: student.admNo,
+              ready: (student.printStatus == "printing" ||
+                  student.printStatus == "printed" ||
+                  student.printStatus == "ready"),
             ),
           ),
         );
