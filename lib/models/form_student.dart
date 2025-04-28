@@ -49,27 +49,27 @@ class FormStudent extends Equatable {
 
   factory FormStudent.fromJson(json) {
     return FormStudent(
-      aadhaarNo: bool.parse(json['aadhaarNo']),
+      aadhaarNo: bool.parse(json['aadhaarNo'] ?? false.toString()),
       address: bool.parse(json['address']),
-      bloodGroup: bool.parse(json['bloodGroup']),
+      bloodGroup: bool.parse(json['bloodGroup'] ?? false.toString()),
       boardingType: bool.parse(json['boardingType']),
       caste: bool.parse(json['caste']),
       dob: bool.parse(json['dob']),
       email: bool.parse(json['email']),
       fatherMobNo: bool.parse(json['fatherMobNo']),
       fatherName: bool.parse(json['fatherName']),
-      fatherWhatsApp: bool.parse(json['fatherWhatsApp']),
+      fatherWhatsApp: bool.parse(json['fatherWhatsApp'] ?? false.toString()),
       gender: bool.parse(json['gender']),
       motherMobNo: bool.parse(json['motherMobNo']),
       motherName: bool.parse(json['motherName']),
-      motherWhatsApp: bool.parse(json['motherWhatsApp']),
+      motherWhatsApp: bool.parse(json['motherWhatsApp'] ?? false.toString()),
       religion: bool.parse(json['religion']),
       rfid: bool.parse(json['rfid']),
       schoolHouse: bool.parse(json['schoolHouse']),
       session: bool.parse(json['session']),
       subCaste: bool.parse(json['subCaste']),
       transportMode: bool.parse(json['transportMode']),
-      vehicleNo: bool.parse(json['vehicleNo']),
+      vehicleNo: bool.parse(json['vehicleNo'] ?? false.toString()),
     );
   }
   Map toMap() {

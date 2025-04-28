@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_event.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
-import 'package:mid_application/Blocs/Form%20Settings/form__settings_state.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form_settings_state.dart';
 import 'package:mid_application/Blocs/Form%20Settings/form_settings_bloc.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_bloc.dart';
 import 'package:mid_application/Blocs/School%20details/school_details_event.dart';
@@ -153,7 +153,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
 
   assignValues(Student student) {
     admNo.text = student.admNo;
-    fullName.text = student.fullName;
+    fullName.text = student.fullName.toString();
     classTitle = student.classTitle;
     gender = student.gender;
     dob = student.dob;

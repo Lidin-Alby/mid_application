@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mid_application/Blocs/Form%20Settings/form_settings_event.dart';
-import 'package:mid_application/Blocs/Form%20Settings/form__settings_state.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form_settings_state.dart';
 import 'package:mid_application/ip_address.dart';
 import 'package:http/http.dart' as http;
 import 'package:mid_application/models/form_staff.dart';
@@ -19,7 +19,7 @@ class FormSettingsBloc extends Bloc<FormSettingsEvent, FormSettingsState> {
           var res = await http.get(url);
           if (res.statusCode == 200) {
             Map data = jsonDecode(res.body);
-            // print(data);
+
             FormStudent formStudent = FormStudent();
             FormStaff formTeacher = FormStaff();
             FormStaff formStaff = FormStaff();
@@ -33,8 +33,6 @@ class FormSettingsBloc extends Bloc<FormSettingsEvent, FormSettingsState> {
             if (data.containsKey('staffFormMid')) {
               formStaff = FormStaff.fromJson(data['staffFormMid']);
             }
-
-            // List classList = data['classes'];
 
             emit(FormSettingsLoaded(formStudent, formTeacher, formStaff));
           } else {

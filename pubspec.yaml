@@ -81,10 +81,10 @@ dev_dependencies:
 # flutter_native_splash:
 #   image: assets/images/logoImg.jpg
 flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
+  android: true
+  # ios: true
   image_path: "assets/images/midcardlogo.png"
-  adaptive_icon_background: "#ffffff"
+  adaptive_icon_background: "assets/images/bg_new.png"
   adaptive_icon_foreground: "assets/images/midcardlogo.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

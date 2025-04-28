@@ -62,40 +62,51 @@ class Student {
       this.profilePic});
 
   factory Student.fromJson(json) {
+    // print(json);
     return Student(
-      admNo: json['admNo'],
-      schoolCode: json['schoolCode'],
+      admNo: json['admNo'].toString(),
+      schoolCode: json['schoolCode'].toString(),
       fullName: json['fullName'].toString(),
-      classTitle: json['classTitle'] == "null" ? null : json['classTitle'],
-      printStatus: json['printStatus'],
-      gender: json['gender'] == "null" ? null : json['gender'],
+      classTitle: json['classTitle'] == "null" || json['classTitle'] == ""
+          ? null
+          : json['classTitle'],
+      printStatus: json['printStatus'].toString(),
+      gender: json['gender'] == "null" || json['gender'] == ""
+          ? null
+          : json['gender'],
       dob: json['dob'] == "null" ? null : json['dob'],
-      bloodGroup: json['bloodGroup'] == "null" ? null : json['bloodGroup'],
+      bloodGroup: json['bloodGroup'] == "null" || json['bloodGroup'] == ""
+          ? null
+          : json['bloodGroup'],
       religion: json['religion'] == "null" ? null : json['religion'],
-      caste: json['caste'] == "null" ? null : json['caste'],
+      caste:
+          json['caste'] == "null" || json['caste'] == "" ? null : json['caste'],
       subCaste: json['subCaste'],
       email: json['email'],
       aadhaarNo: json['aadhaarNo'],
       address: json['address'],
       rfid: json['rfid'],
       transportMode:
-          json['transportMode'] == "null" ? null : json['transportMode'],
+          json['transportMode'] == "null" || json['transportMode'] == ""
+              ? null
+              : json['transportMode'],
       session: json['session'],
-      boardingType:
-          json['boardingType'] == "null" ? null : json['boardingType'],
+      boardingType: json['boardingType'] == "null" || json['boardingType'] == ""
+          ? null
+          : json['boardingType'],
       schoolHouse: json['schoolHouse'],
       vehicleNo: json['vehicleNo'],
       fatherName: json['fatherName'],
       motherName: json['motherName'],
       fatherMobNo: json['fatherMobNo'],
       motherMobNo: json['motherMobNo'],
-      fatherWhatsApp: json['fatherWhatsApp'],
-      motherWhatsApp: json['motherWhatsApp'],
+      fatherWhatsApp: json['fatherWhatsApp'].toString(),
+      motherWhatsApp: json['motherWhatsApp'].toString(),
       check: json['check'],
       modified: json['modified'] == null
           ? DateTime.now()
           : DateTime.parse(json['modified']),
-      profilePic: json['profilePic'],
+      profilePic: json['profilePic'].toString(),
     );
   }
   Map toJson() {

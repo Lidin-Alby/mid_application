@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
-import 'package:mid_application/Blocs/Form%20Settings/form__settings_state.dart';
+import 'package:mid_application/Blocs/Form%20Settings/form_settings_state.dart';
 import 'package:mid_application/Blocs/Form%20Settings/form_settings_bloc.dart';
 import 'package:mid_application/Blocs/Staff%20Details/staff_details_event.dart';
 import 'package:mid_application/Blocs/Staff%20Details/staff_details_bloc.dart';

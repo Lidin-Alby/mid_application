@@ -5,6 +5,7 @@ import 'package:mid_application/Blocs/Attendance%20School/school_attendance_bloc
 import 'package:mid_application/Blocs/Attendance%20School/school_attendance_event.dart';
 import 'package:mid_application/Blocs/Attendance%20School/school_attendance_state.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_bloc.dart';
+import 'package:mid_application/Blocs/Class%20Model/class_event.dart';
 import 'package:mid_application/Blocs/Class%20Model/class_state.dart';
 import 'package:mid_application/models/class_model.dart';
 import 'package:mid_application/models/school_attendance.dart';
@@ -109,9 +110,10 @@ class AttendanceDashboard extends StatelessWidget {
           ),
           BlocBuilder<ClassBloc, ClassState>(
             builder: (context, state) {
-              if (state is ClassLoading) {
-                return CircularProgressIndicator();
-              } else if (state is ClassLoaded) {
+              if (state is ClassInitial) {
+                context.read<ClassBloc>().add(LoadClasses(schoolCode));
+              }
+              if (state is ClassLoaded) {
                 List<ClassModel> classes = state.classes;
 
                 return ListView.builder(
@@ -130,8 +132,10 @@ class AttendanceDashboard extends StatelessWidget {
                     ),
                   ),
                 );
+              } else if (state is ClassError) {
+                return Text(state.error);
               } else {
-                return Text((state as ClassError).error);
+                return CircularProgressIndicator();
               }
             },
           ),

@@ -11,10 +11,9 @@ import 'package:mid_application/models/student.dart';
 class StudentDetailsBloc
     extends Bloc<StudentDetailsEvent, StudentDetailsState> {
   StudentDetailsBloc() : super(StudentDetailsInitial()) {
-    on<LoadStudentDetails>(
-      (event, emit) async {
-        emit(StudentDetailsLoading());
-
+    on<LoadStudentDetails>((event, emit) async {
+      emit(StudentDetailsLoading());
+      try {
         var url = Uri.parse(
             '$ipv4/v2/oneStudentDetailsMid/${Uri.encodeComponent(event.schoolCode)}/${Uri.encodeComponent(event.admNo)}');
         var res = await http.get(url);
@@ -26,8 +25,10 @@ class StudentDetailsBloc
         } else {
           emit(StudentDetailsLoadError(res.body));
         }
-      },
-    );
+      } catch (e) {
+        emit(StudentDetailsLoadError(e.toString()));
+      }
+    });
     on<UpdateStudentDetails>(
       (event, emit) {
         emit(StudentDetailsLoaded(event.student));
