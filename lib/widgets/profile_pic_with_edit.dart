@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_bloc.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_event.dart';
 import 'package:mid_application/Blocs/Profile%20Pic/profile_pic_state.dart';
+import 'package:mid_application/Screens/full_image_screen.dart';
 import 'package:mid_application/widgets/profile_pic.dart';
 
 class ProfilePicWithEdit extends StatelessWidget {
@@ -40,10 +41,21 @@ class ProfilePicWithEdit extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-            child: ProfilePicWidget(
-              size: 80,
-              profilePic: oldProfilePic.toString(),
-              schoolCode: schoolCode,
+            child: InkWell(
+              customBorder: CircleBorder(),
+              onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FullImageScreen(
+                      imageUrl: oldProfilePic,
+                      schoolCode: schoolCode,
+                    ),
+                  )),
+              child: ProfilePicWidget(
+                size: 80,
+                profilePic: oldProfilePic.toString(),
+                schoolCode: schoolCode,
+              ),
             ),
           ),
           if (state is ProfilePicUploading)

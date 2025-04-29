@@ -44,6 +44,7 @@ class StudentTile extends StatelessWidget {
                   Row(
                     children: [
                       ProfilePicWidget(
+                        size: 50,
                         profilePic: student.profilePic!,
                         schoolCode: student.schoolCode,
                       ),
@@ -71,7 +72,7 @@ class StudentTile extends StatelessWidget {
                     ],
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 15,
                   ),
                   Row(
                     children: [
@@ -192,7 +193,7 @@ class StudentTile extends StatelessWidget {
                   Text(
                     student.admNo,
                     style: GoogleFonts.inter(
-                      fontSize: 20,
+                      fontSize: 18,
                       color: Colors.grey[800],
                       fontWeight: FontWeight.bold,
                     ),
@@ -202,15 +203,15 @@ class StudentTile extends StatelessWidget {
                     child: Text(
                       'Admission No.',
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.inter(fontSize: 10),
+                      style: GoogleFonts.inter(fontSize: 9),
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                width: 15,
-              ),
-              // Spacer(),
+              if (!(student.check ?? true))
+                SizedBox(
+                  width: 15,
+                ),
               if (student.check ?? false)
                 Align(
                   alignment: Alignment.topRight,

@@ -8,10 +8,17 @@ import 'package:mid_application/Screens/change_password_screen.dart';
 import 'package:mid_application/Screens/manual_screen.dart';
 import 'package:mid_application/Screens/socials_screen.dart';
 import 'package:mid_application/widgets/drawer_tile.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
 
+  @override
+  State<MyDrawer> createState() => _MyDrawerState();
+}
+
+class _MyDrawerState extends State<MyDrawer> {
+  int tapCount = 0;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -70,13 +77,31 @@ class MyDrawer extends StatelessWidget {
               label: 'Logout',
             ),
             Spacer(),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'v2.0.0.0',
-                style: GoogleFonts.inter(
-                    fontSize: 10, fontWeight: FontWeight.w500),
+            GestureDetector(
+              onTap: () {
+                if (tapCount == 5) {
+                  launchUrl(
+                      Uri.parse('https://lidin-alby.github.io/portfolio/'));
+                }
+
+                tapCount++;
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'v2.0.0.0',
+                      style: GoogleFonts.inter(
+                          fontSize: 10, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
               ),
+            ),
+            SizedBox(
+              height: 15,
             ),
           ],
         ),

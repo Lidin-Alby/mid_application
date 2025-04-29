@@ -20,7 +20,7 @@ class ProfilePicWidget extends StatelessWidget {
         height: size,
       ),
       imageUrl: '$ipv4/getPic/$schoolCode/$profilePic',
-      imageBuilder: (context, imageProvider) => Container(
+      imageBuilder: (context, imageProvider) => Ink(
         height: size,
         width: size,
         decoration: BoxDecoration(

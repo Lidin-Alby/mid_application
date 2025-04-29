@@ -38,8 +38,16 @@ class AgentHomeScreen extends StatefulWidget {
 }
 
 class _AgentHomeScreenState extends State<AgentHomeScreen> {
-  String searchText = '';
+  TextEditingController searchText = TextEditingController();
   bool onSearch = false;
+
+  // @override
+  // void dispose() {
+  //   searchText.dispose();
+  //   // searchText = '';
+
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +60,10 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
                 child: SizedBox(
                   height: 34,
                   child: TextField(
+                    controller: searchText,
                     onChanged: (value) {
                       setState(() {
-                        searchText = value.toLowerCase();
+                        searchText.text = value.toLowerCase();
                       });
                     },
                     decoration: InputDecoration(
@@ -96,133 +105,143 @@ class _AgentHomeScreenState extends State<AgentHomeScreen> {
             ),
         ],
       ),
-      body: BlocBuilder<SchoolListBloc, SchoolListState>(
-          // listener: (context, state) {},
-          // bloc: schoolListBloc,
-          builder: (context, state) {
-        if (state is SchoolListError) {
-          return Center(
-            child: Text(state.error),
-          );
-        } else if (state is SchoolListLoaded) {
-          List<School> schools = state.schools;
+      body: PopScope(
+        canPop: !onSearch,
+        onPopInvokedWithResult: (didPop, result) {
+          setState(() {
+            onSearch = false;
+          });
+        },
+        child: BlocBuilder<SchoolListBloc, SchoolListState>(
+            // listener: (context, state) {},
+            // bloc: schoolListBloc,
+            builder: (context, state) {
+          if (state is SchoolListError) {
+            return Center(
+              child: Text(state.error),
+            );
+          } else if (state is SchoolListLoaded) {
+            List<School> schools = state.schools;
 
-          schools = schools
-              .where(
-                (element) =>
-                    element.schoolName.toLowerCase().startsWith(searchText),
-              )
-              .toList();
-          return schools.isEmpty
-              ? Center(
-                  child: Text('No schools added'),
+            schools = schools
+                .where(
+                  (element) => element.schoolName
+                      .toLowerCase()
+                      .startsWith(searchText.text),
                 )
-              : RefreshIndicator(
-                  onRefresh: () async {
-                    context.read<SchoolListBloc>().add(LoadschoolList());
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: ListView.builder(
-                      itemCount: schools.length,
-                      itemBuilder: (context, index) => Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 5),
-                        child: Slidable(
-                          startActionPane:
-                              ActionPane(motion: ScrollMotion(), children: [
-                            SlidableAction(
-                                icon: Icons.edit_outlined,
-                                borderRadius: BorderRadius.horizontal(
-                                    left: Radius.circular(6)),
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                onPressed: (context) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SchoolDetailsScreen(
-                                        school: schools[index],
+                .toList();
+            return schools.isEmpty
+                ? Center(
+                    child: Text('No schools added'),
+                  )
+                : RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<SchoolListBloc>().add(LoadschoolList());
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      child: ListView.builder(
+                        itemCount: schools.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 5),
+                          child: Slidable(
+                            startActionPane:
+                                ActionPane(motion: ScrollMotion(), children: [
+                              SlidableAction(
+                                  icon: Icons.edit_outlined,
+                                  borderRadius: BorderRadius.horizontal(
+                                      left: Radius.circular(6)),
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  onPressed: (context) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SchoolDetailsScreen(
+                                          school: schools[index],
+                                        ),
+                                      ),
+                                    );
+                                  })
+                            ]),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => SchoolHomeScreen(
+                                      isStaff: false,
+                                      // logo: schools[index].schoolLogo.toString(),
+                                      schoolCode: schools[index].schoolCode,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Ink(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8, horizontal: 12),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Row(
+                                  children: [
+                                    ProfilePicWidget(
+                                        size: 52,
+                                        profilePic: schools[index]
+                                            .schoolLogo
+                                            .toString(),
+                                        schoolCode: schools[index].schoolCode),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            schools[index]
+                                                .schoolName
+                                                .toString(),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.inter(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 3,
+                                          ),
+                                          Text(
+                                            schools[index]
+                                                .principalPhone
+                                                .toString(),
+                                            style: GoogleFonts.inter(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w300),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  );
-                                })
-                          ]),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                onSearch = false;
-                              });
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SchoolHomeScreen(
-                                    isStaff: false,
-                                    // logo: schools[index].schoolLogo.toString(),
-                                    schoolCode: schools[index].schoolCode,
-                                  ),
+                                  ],
                                 ),
-                              );
-                            },
-                            child: Ink(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 12),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Row(
-                                children: [
-                                  ProfilePicWidget(
-                                      size: 52,
-                                      profilePic:
-                                          schools[index].schoolLogo.toString(),
-                                      schoolCode: schools[index].schoolCode),
-                                  SizedBox(
-                                    width: 8,
-                                  ),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          schools[index].schoolName.toString(),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: GoogleFonts.inter(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        SizedBox(
-                                          height: 3,
-                                        ),
-                                        Text(
-                                          schools[index]
-                                              .principalPhone
-                                              .toString(),
-                                          style: GoogleFonts.inter(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.w300),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
-        } else {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      }),
+                  );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        }),
+      ),
       floatingActionButton: FloatingActionButton(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Icon(Icons.add),

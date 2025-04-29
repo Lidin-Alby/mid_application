@@ -138,7 +138,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
     }
     fullName.text = staff.fullName;
     mob.text = staff.mob;
-    designation.text = staff.designation!;
+    designation.text = staff.designation.toString();
     gender = staff.gender;
     dob = staff.dob;
     bloodGroup = staff.bloodGroup;
