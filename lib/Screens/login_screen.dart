@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mid_application/Blocs/Login/login_bloc.dart';
 import 'package:mid_application/Blocs/Login/login_event.dart';
 import 'package:mid_application/Blocs/Login/login_state.dart';
+import 'package:mid_application/Screens/signup_screen.dart';
 
 import 'package:mid_application/widgets/my_textfield.dart';
 
@@ -140,6 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController password = TextEditingController();
   bool hide = true;
+  bool isSignup = false;
 
   @override
   Widget build(BuildContext context) {
@@ -153,117 +155,151 @@ class _LoginScreenState extends State<LoginScreen> {
               elevation: 5,
               child: Padding(
                 padding: const EdgeInsets.all(20),
-                child: BlocBuilder<LoginBloc, LoginState>(
-                    builder: (context, state) {
-                  return Column(
-                    spacing: 10,
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: RichText(
-                              text: TextSpan(
-                                style: GoogleFonts.inter(
-                                    fontSize: 27,
-                                    fontWeight: FontWeight.bold,
-                                    height: 1.5,
-                                    letterSpacing: 4,
-                                    color: Colors.black),
+                child: Column(
+                  children: [
+                    isSignup
+                        ? SignupScreen()
+                        : BlocBuilder<LoginBloc, LoginState>(
+                            builder: (context, state) {
+                              return Column(
+                                spacing: 10,
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  TextSpan(
-                                    text: 'Let\'s\nGet\nStarted',
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: RichText(
+                                          text: TextSpan(
+                                            style: GoogleFonts.inter(
+                                                fontSize: 27,
+                                                fontWeight: FontWeight.bold,
+                                                height: 1.5,
+                                                letterSpacing: 4,
+                                                color: Colors.black),
+                                            children: [
+                                              TextSpan(
+                                                text: 'Let\'s\nGet\nStarted',
+                                              ),
+                                              TextSpan(
+                                                text: ' !',
+                                                style: GoogleFonts.inter(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                  letterSpacing: 0.7,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 140,
+                                        // width: 126,
+                                        child: Image.asset(
+                                            'assets/images/login-img.png'),
+                                      ),
+                                    ],
                                   ),
-                                  TextSpan(
-                                    text: ' !',
-                                    style: GoogleFonts.inter(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      letterSpacing: 0.7,
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  MyTextfield(
+                                    label: 'UserID / Admission No.',
+                                    controller: userId,
+                                  ),
+                                  MyTextfield(
+                                    label: 'School Code',
+                                    controller: schoolCode,
+                                  ),
+                                  MyTextfield(
+                                    label: 'Password',
+                                    controller: password,
+                                    obscureText: hide,
+                                    suffix: IconButton(
+                                      icon: Icon(hide
+                                          ? Icons.visibility_off
+                                          : Icons.visibility),
+                                      onPressed: () {
+                                        setState(() {
+                                          hide = !hide;
+                                        });
+                                      },
                                     ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 140,
-                            // width: 126,
-                            child: Image.asset('assets/images/login-img.png'),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      MyTextfield(
-                        label: 'UserID / Admission No.',
-                        controller: userId,
-                      ),
-                      MyTextfield(
-                        label: 'School Code',
-                        controller: schoolCode,
-                      ),
-                      MyTextfield(
-                        label: 'Password',
-                        controller: password,
-                        obscureText: hide,
-                        suffix: IconButton(
-                          icon: Icon(
-                              hide ? Icons.visibility_off : Icons.visibility),
-                          onPressed: () {
-                            setState(() {
-                              hide = !hide;
-                            });
-                          },
-                        ),
-                      ),
-                      if (state is LoginFailure)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Text(
-                            state.error,
-                            style: GoogleFonts.inter(
-                              color: Theme.of(context).colorScheme.error,
-                            ),
-                          ),
-                        ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      state is LoginLoading || state is LoggedIn
-                          ? CircularProgressIndicator()
-                          : Row(
-                              children: [
-                                Expanded(
-                                  child: FilledButton(
-                                    style: FilledButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4),
+                                  if (state is LoginFailure)
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5),
+                                      child: Text(
+                                        state.error,
+                                        style: GoogleFonts.inter(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .error,
+                                        ),
                                       ),
                                     ),
-                                    onPressed: () {
-                                      BlocProvider.of<LoginBloc>(context).add(
-                                        LoginPressed(
-                                            userId: userId.text.trim(),
-                                            schoolCode: schoolCode.text.trim(),
-                                            password: password.text.trim()),
-                                      );
-                                    },
-                                    child: Text('LOGIN'),
+                                  SizedBox(
+                                    height: 5,
                                   ),
-                                ),
-                              ],
-                            ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                    ],
-                  );
-                }),
+                                  state is LoginLoading || state is LoggedIn
+                                      ? CircularProgressIndicator()
+                                      : Row(
+                                          children: [
+                                            Expanded(
+                                              child: FilledButton(
+                                                style: FilledButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4),
+                                                  ),
+                                                ),
+                                                onPressed: () {
+                                                  BlocProvider.of<LoginBloc>(
+                                                          context)
+                                                      .add(
+                                                    LoginPressed(
+                                                        userId:
+                                                            userId.text.trim(),
+                                                        schoolCode: schoolCode
+                                                            .text
+                                                            .trim(),
+                                                        password: password.text
+                                                            .trim()),
+                                                  );
+                                                },
+                                                child: Text('LOGIN'),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                ],
+                              );
+                            },
+                          ),
+                    TextButton(
+                      onPressed: () {
+                        setState(() {
+                          isSignup = !isSignup;
+                        });
+                      },
+                      child: Text(
+                          isSignup
+                              ? 'Already Registered? Login Here'
+                              : 'Not Registred? Request Here',
+                          style: GoogleFonts.inter(fontSize: 10)),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

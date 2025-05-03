@@ -69,9 +69,13 @@ class Student {
     // print(json);
     return Student(
       honorificFather:
-          json['honorificFather'] == 'null' ? 'MR.' : json['honorificFather'],
+          json['honorificFather'] == 'null' || json['honorificFather'] == null
+              ? 'Mr.'
+              : json['honorificFather'],
       honorificMother:
-          json['honorificMother'] == 'null' ? 'MRS.' : json['honorificMother'],
+          json['honorificMother'] == 'null' || json['honorificMother'] == null
+              ? 'Mrs.'
+              : json['honorificMother'],
       admNo: json['admNo'].toString(),
       schoolCode: json['schoolCode'].toString(),
       fullName: json['fullName'].toString(),

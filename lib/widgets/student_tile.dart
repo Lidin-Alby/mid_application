@@ -26,7 +26,7 @@ class StudentTile extends StatelessWidget {
         );
       },
       child: Container(
-        height: 128,
+        // height: 128,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(5),
@@ -44,7 +44,7 @@ class StudentTile extends StatelessWidget {
                   Row(
                     children: [
                       ProfilePicWidget(
-                        size: 50,
+                        size: 70,
                         profilePic: student.profilePic!,
                         schoolCode: student.schoolCode,
                       ),

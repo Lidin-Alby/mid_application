@@ -29,7 +29,7 @@ class ClassBloc extends Bloc<ClassEvent, ClassState> {
             emit(ClassError(res.body));
           }
         } catch (e) {
-          ClassError(e.toString());
+          emit(ClassError(e.toString()));
         }
       },
     );

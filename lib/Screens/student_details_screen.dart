@@ -98,8 +98,8 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   String? printStatus;
   String? honorificFather;
   String? honorificMother;
-  List honorificList1 = ['MR.', 'SHRI.', 'MOHD.', 'DR.'];
-  List honorificList2 = ['MRS.', 'SMT.', 'MISS', 'DR.'];
+  List honorificList1 = ['Mr.', 'Shri.', 'Mohd.', 'Dr.'];
+  List honorificList2 = ['Mrs.', 'Smt.', 'Miss', 'Dr.'];
 
   bool sendToPrint = false;
   bool isExpanded = false;
@@ -765,50 +765,49 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                           )
                                       ],
                                     ),
-                                  if (studentFormMid.fatherName ||
-                                      studentFormMid.motherName)
-                                    if (studentFormMid.fatherName)
-                                      Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 90,
-                                            child: MyDropdownButton(
-                                              label: 'Father Name',
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  honorificFather = value;
-                                                });
-                                              },
-                                              items: honorificList1
-                                                  .map(
-                                                    (e) => DropdownMenuItem(
-                                                      value: e,
-                                                      child: Text(e),
-                                                    ),
-                                                  )
-                                                  .toList(),
-                                              value: honorificFather,
-                                            ),
+                                  if (studentFormMid.fatherName)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        SizedBox(
+                                          width: 95,
+                                          child: MyDropdownButton(
+                                            label: 'Father Name',
+                                            onChanged: (value) {
+                                              setState(() {
+                                                honorificFather = value;
+                                              });
+                                            },
+                                            items: honorificList1
+                                                .map(
+                                                  (e) => DropdownMenuItem(
+                                                    value: e,
+                                                    child: Text(e),
+                                                  ),
+                                                )
+                                                .toList(),
+                                            value: honorificFather,
                                           ),
-                                          Expanded(
-                                            child: MyTextfield(
-                                              label: '',
-                                              controller: fatherName,
-                                            ),
+                                        ),
+                                        Expanded(
+                                          child: MyTextfield(
+                                            label: '',
+                                            controller: fatherName,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
+                                    ),
                                   if (studentFormMid.motherName)
                                     Row(
                                       spacing: spacing,
                                       children: [
                                         SizedBox(
-                                          width: 90,
+                                          width: 95,
                                           child: MyDropdownButton(
                                             label: 'Mother Name',
                                             onChanged: (value) {
                                               setState(() {
-                                                honorificFather = value;
+                                                honorificMother = value;
                                               });
                                             },
                                             items: honorificList2
@@ -819,7 +818,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                                   ),
                                                 )
                                                 .toList(),
-                                            value: honorificFather,
+                                            value: honorificMother,
                                           ),
                                         ),
                                         Expanded(

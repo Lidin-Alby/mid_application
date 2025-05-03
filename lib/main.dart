@@ -22,6 +22,7 @@ import 'package:mid_application/Blocs/Staff%20Details/staff_details_bloc.dart';
 import 'package:mid_application/Blocs/Staff/staff_bloc.dart';
 import 'package:mid_application/Blocs/Student%20Details/student_details_bloc.dart';
 import 'package:mid_application/Blocs/Student/student_bloc.dart';
+import 'package:mid_application/Blocs/signup/signup_bloc.dart';
 import 'package:mid_application/Screens/agent_home_screen.dart';
 
 import 'package:mid_application/Screens/login_screen.dart';
@@ -91,6 +92,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ChangePasswordBloc(),
+        ),
+        BlocProvider(
+          create: (context) => SignupBloc(),
         ),
         BlocProvider(
           create: (context) => ProfilePicBloc(
