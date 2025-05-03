@@ -1,5 +1,6 @@
 class Staff {
   final String schoolCode;
+  final String? honorific;
   final String fullName;
   final String mob;
   final String? designation;
@@ -28,6 +29,7 @@ class Staff {
 
   Staff({
     required this.schoolCode,
+    this.honorific,
     required this.fullName,
     required this.mob,
     this.designation,
@@ -58,6 +60,7 @@ class Staff {
   factory Staff.fromJson(json) {
     return Staff(
       schoolCode: json['schoolCode'],
+      honorific: json['honorific'] == "null" ? null : json['honorific'],
       fullName: json['fullName'].toString(),
       mob: json['mob'],
       printStatus: json['printStatus'],
@@ -91,6 +94,7 @@ class Staff {
   Map toJson() {
     return {
       'schoolCode': schoolCode,
+      'honorific': honorific.toString(),
       'firstName': fullName,
       'mob': mob,
       'aadhaarNo': aadhaarNo,

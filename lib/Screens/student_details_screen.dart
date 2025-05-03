@@ -96,6 +96,10 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   String? profilePic;
   bool check = false;
   String? printStatus;
+  String? honorificFather;
+  String? honorificMother;
+  List honorificList1 = ['MR.', 'SHRI.', 'MOHD.', 'DR.'];
+  List honorificList2 = ['MRS.', 'SMT.', 'MISS', 'DR.'];
 
   bool sendToPrint = false;
   bool isExpanded = false;
@@ -153,6 +157,8 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
 
   assignValues(Student student) {
     admNo.text = student.admNo;
+    honorificFather = student.honorificFather;
+    honorificMother = student.honorificMother;
     fullName.text = student.fullName.toString();
     classTitle = student.classTitle;
     gender = student.gender;
@@ -184,6 +190,8 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
   Student newStudentValues() {
     return Student(
       admNo: admNo.text.trim(),
+      honorificFather: honorificFather,
+      honorificMother: honorificMother,
       fullName: fullName.text.trim(),
       schoolCode: widget.schoolCode,
       aadhaarNo: aadhaarNo.text.trim(),
@@ -521,7 +529,12 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                         : null,
                                   ),
                                   MyTextfield(
-                                      label: 'Full Name', controller: fullName),
+                                    label: 'Full Name',
+                                    controller: fullName,
+                                    textCapitalization:
+                                        TextCapitalization.characters,
+                                    onlyCaps: true,
+                                  ),
                                   MyDropdownButton(
                                     value: classTitle,
                                     label: 'Class',
@@ -538,7 +551,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                         )
                                         .toList(),
                                   ),
-                                  if (studentFormMid.gender &&
+                                  if (studentFormMid.gender ||
                                       studentFormMid.dob)
                                     Row(
                                       spacing: spacing,
@@ -568,7 +581,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                           )
                                       ],
                                     ),
-                                  if (studentFormMid.bloodGroup &&
+                                  if (studentFormMid.bloodGroup ||
                                       studentFormMid.religion)
                                     Row(
                                       spacing: spacing,
@@ -615,7 +628,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                           ),
                                       ],
                                     ),
-                                  if (studentFormMid.caste &&
+                                  if (studentFormMid.caste ||
                                       studentFormMid.subCaste)
                                     Row(
                                       spacing: spacing,
@@ -663,7 +676,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                       label: 'Address',
                                       controller: address,
                                     ),
-                                  if (studentFormMid.rfid &&
+                                  if (studentFormMid.rfid ||
                                       studentFormMid.transportMode)
                                     Row(
                                       spacing: spacing,
@@ -697,7 +710,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                           ),
                                       ],
                                     ),
-                                  if (studentFormMid.session &&
+                                  if (studentFormMid.session ||
                                       studentFormMid.boardingType)
                                     Row(
                                       spacing: spacing,
@@ -731,7 +744,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                           ),
                                       ],
                                     ),
-                                  if (studentFormMid.schoolHouse &&
+                                  if (studentFormMid.schoolHouse ||
                                       studentFormMid.vehicleNo)
                                     Row(
                                       spacing: spacing,
@@ -752,25 +765,69 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                           )
                                       ],
                                     ),
-                                  if (studentFormMid.fatherName &&
+                                  if (studentFormMid.fatherName ||
                                       studentFormMid.motherName)
-                                    Row(
-                                      spacing: spacing,
-                                      children: [
-                                        if (studentFormMid.fatherName)
+                                    if (studentFormMid.fatherName)
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: 90,
+                                            child: MyDropdownButton(
+                                              label: 'Father Name',
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  honorificFather = value;
+                                                });
+                                              },
+                                              items: honorificList1
+                                                  .map(
+                                                    (e) => DropdownMenuItem(
+                                                      value: e,
+                                                      child: Text(e),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                              value: honorificFather,
+                                            ),
+                                          ),
                                           Expanded(
                                             child: MyTextfield(
-                                              label: 'Father Name',
+                                              label: '',
                                               controller: fatherName,
                                             ),
                                           ),
-                                        if (studentFormMid.motherName)
-                                          Expanded(
-                                            child: MyTextfield(
-                                              label: 'Mother Name',
-                                              controller: motherName,
-                                            ),
+                                        ],
+                                      ),
+                                  if (studentFormMid.motherName)
+                                    Row(
+                                      spacing: spacing,
+                                      children: [
+                                        SizedBox(
+                                          width: 90,
+                                          child: MyDropdownButton(
+                                            label: 'Mother Name',
+                                            onChanged: (value) {
+                                              setState(() {
+                                                honorificFather = value;
+                                              });
+                                            },
+                                            items: honorificList2
+                                                .map(
+                                                  (e) => DropdownMenuItem(
+                                                    value: e,
+                                                    child: Text(e),
+                                                  ),
+                                                )
+                                                .toList(),
+                                            value: honorificFather,
                                           ),
+                                        ),
+                                        Expanded(
+                                          child: MyTextfield(
+                                            label: '',
+                                            controller: motherName,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   Row(
@@ -794,7 +851,7 @@ class _StudentDetailsScreenState extends State<StudentDetailsScreen> {
                                         )
                                     ],
                                   ),
-                                  if (studentFormMid.fatherWhatsApp &&
+                                  if (studentFormMid.fatherWhatsApp ||
                                       studentFormMid.motherWhatsApp)
                                     Row(
                                       spacing: spacing,

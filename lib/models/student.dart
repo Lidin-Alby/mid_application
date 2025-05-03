@@ -1,5 +1,7 @@
 class Student {
   final String admNo;
+  final String? honorificFather;
+  final String? honorificMother;
   final String schoolCode;
   final String fullName;
   final String? classTitle;
@@ -32,6 +34,8 @@ class Student {
 
   Student(
       {required this.admNo,
+      this.honorificFather,
+      this.honorificMother,
       required this.schoolCode,
       required this.fullName,
       this.printStatus,
@@ -64,6 +68,10 @@ class Student {
   factory Student.fromJson(json) {
     // print(json);
     return Student(
+      honorificFather:
+          json['honorificFather'] == 'null' ? 'MR.' : json['honorificFather'],
+      honorificMother:
+          json['honorificMother'] == 'null' ? 'MRS.' : json['honorificMother'],
       admNo: json['admNo'].toString(),
       schoolCode: json['schoolCode'].toString(),
       fullName: json['fullName'].toString(),
@@ -113,6 +121,8 @@ class Student {
     return {
       'admNo': admNo.toString(),
       'schoolCode': schoolCode.toString(),
+      'honorificFather': honorificFather.toString(),
+      'honorificMother': honorificMother.toString(),
       'firstName': fullName.toString(),
       'classTitle': classTitle.toString(),
       'gender': gender.toString(),

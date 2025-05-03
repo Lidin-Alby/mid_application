@@ -77,6 +77,8 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
     'Yahudi',
     'Other'
   ];
+  String? honorific;
+  List honorificList = ['MR.', 'MRS.', 'SHRI.', 'SMT.', 'MISS', 'MOHD.', 'DR.'];
   List bloodGroupList = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
   List casteList = ['General', 'OBC', 'SC', 'ST'];
   List<ClassModel> classList = [];
@@ -113,6 +115,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
     fullName.clear();
     mob.clear();
     designation.clear();
+    honorific = null;
     gender = null;
     dob = null;
     bloodGroup = null;
@@ -137,6 +140,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
       classes = (staff).classes!.toSet();
     }
     fullName.text = staff.fullName;
+    honorific = staff.honorific;
     mob.text = staff.mob;
     designation.text = staff.designation.toString();
     gender = staff.gender;
@@ -166,6 +170,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
     if (widget.isTeacher) {
       return Teacher(
         schoolCode: widget.schoolCode,
+        honorific: honorific,
         fullName: fullName.text.trim(),
         mob: mob.text.trim(),
         designation: 'midTeacher',
@@ -195,6 +200,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
     }
     return Staff(
       schoolCode: widget.schoolCode,
+      honorific: honorific,
       fullName: fullName.text.trim(),
       mob: mob.text.trim(),
       designation: designation.text.trim(),
@@ -386,6 +392,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                         BlocBuilder<StaffDetailsBloc, StaffDetailsState>(
                             builder: (context, state) {
                       Staff staff = Staff(
+                        honorific: null,
                         designation: '',
                         fullName: '',
                         mob: '',
@@ -393,6 +400,7 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                       );
                       if (widget.isTeacher) {
                         staff = Teacher(
+                          honorific: null,
                           schoolCode: widget.schoolCode,
                           fullName: '',
                           mob: '',
@@ -425,12 +433,39 @@ class _StaffDetailsScreenState extends State<StaffDetailsScreen> {
                           SizedBox(
                             height: 10,
                           ),
-                          MyTextfield(
-                              label: 'Full Name',
-                              controller: fullName,
-                              error: saveState is StaffSaveError
-                                  ? saveState.fullNameError
-                                  : null),
+                          Row(
+                            spacing: spacing,
+                            children: [
+                              SizedBox(
+                                width: 90,
+                                child: MyDropdownButton(
+                                  label: 'Full Name',
+                                  onChanged: (value) {
+                                    setState(() {
+                                      honorific = value;
+                                    });
+                                  },
+                                  items: honorificList
+                                      .map(
+                                        (e) => DropdownMenuItem(
+                                          value: e,
+                                          child: Text(e),
+                                        ),
+                                      )
+                                      .toList(),
+                                  value: honorific,
+                                ),
+                              ),
+                              Expanded(
+                                child: MyTextfield(
+                                    label: '',
+                                    controller: fullName,
+                                    error: saveState is StaffSaveError
+                                        ? saveState.fullNameError
+                                        : null),
+                              ),
+                            ],
+                          ),
                           if (formStaff.gender && formStaff.dob)
                             Row(
                               spacing: spacing,

@@ -48,7 +48,7 @@ class FormStaff extends Equatable {
     return FormStaff(
       joiningDate: bool.parse(json['joiningDate']),
       department: bool.parse(json['department']),
-      designation: bool.parse(json['designation']),
+      designation: bool.parse(json['designation'] ?? false.toString()),
       rfid: bool.parse(json['rfid']),
       gender: bool.parse(json['gender']),
       dob: bool.parse(json['dob']),

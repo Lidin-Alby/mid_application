@@ -6,6 +6,7 @@ class Teacher extends Staff {
   final List? classes;
   Teacher({
     required super.schoolCode,
+    super.honorific,
     required super.fullName,
     required super.mob,
     super.designation,
@@ -39,6 +40,7 @@ class Teacher extends Staff {
 
     return Teacher(
       schoolCode: staff.schoolCode,
+      honorific: staff.honorific,
       fullName: staff.fullName,
       mob: staff.mob,
       designation: staff.designation,
